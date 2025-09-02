@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mic/bar/mic_appbarone.dart';
 import 'package:mic/bar/mic_underbar.dart';
 import 'package:mic/function/datas.dart';
@@ -47,11 +48,11 @@ class _CubeScreenState extends State<CubeScreen> {
               children: [
                 Expanded(
                   child: Container(
-                    margin: const EdgeInsets.fromLTRB(16, 16, 16, 16),
-                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+                    margin: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 16.h),
+                    padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 16.h),
                     decoration: BoxDecoration(
                       color: Color(0x8CFFFFFF),
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(12.r),
                     ),
                   ),
                 ),

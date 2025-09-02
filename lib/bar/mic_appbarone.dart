@@ -33,7 +33,7 @@ class MicAppbarone extends StatelessWidget implements PreferredSizeWidget {
       title: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Image.asset(barimg, width: 60.w, height: 60.h),
+          Image.asset(barimg, width: 58.w, height: 58.h),
           SizedBox(width: 10.w),
           Stack(
             alignment: Alignment.center,
@@ -42,7 +42,7 @@ class MicAppbarone extends StatelessWidget implements PreferredSizeWidget {
               Image.asset(
                 'assets/images/icons/titlebar.png',
                 width: 190.w,
-                height: 50.h,
+                height: 45.h,
                 fit: BoxFit.fill,
               ),
 
