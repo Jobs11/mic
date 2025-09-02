@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 List<String> backgroundsimg = [
   "assets/images/themes/spring.png",
   "assets/images/themes/summer.png",
@@ -39,3 +41,50 @@ List<String> bossimg = [
   "https://i.namu.wiki/i/Ueodj-SchRMNduY0WqGZGS698HcRlsfwennN4EQcXDKB1Dq6owFHhgCp_x06H_UjZySDwfCndnDmPfDDXrvfgg.webp", //반 레온
   "https://i.namu.wiki/i/y7uLf6cl_g4AYsF5v6-wACgFLJvnETSPzks5SoWhHYKWU7obIILrglT6M3IOsZ1uh-BrPb-rJYlB2YhqHRzoMg.webp", //혼테일
 ];
+
+List<String> equipimg = [
+  "https://i.namu.wiki/i/sYTUI2nRdQenS-Cgbn_psfLD7vDz0jQkMzNi6hP66pT_kS1Vh6NrKHbnSCIcRK7QhdpwrCOsQ1nILKHxwz5AEQ.webp", // 무기
+  "https://i.namu.wiki/i/1nhs4sD4wI52AIvV74FizBESqH2oHA3YyiFsmGUL5eVEfgS5gLmMcvmip1sWqv_WQWwqJd7NAneEVtOOx4ddWw.png", // 보조무기
+  "https://i.namu.wiki/i/ta1dYb7b4bgfGHoQ-huKMUUYBJEmfbFd8Lu0Hmnm-UG47EoGrASsZI4pBMJW2XhMf1tke8ZxqpgMAjL5ncWL2A.webp", // 엠블렘
+  "https://i.namu.wiki/i/WqpULUkCvVuvJlJw8ke9rmMhDkUEqGnBqaWaXnTEqAIEunCgKARkmlmrfQImEffZ4eNYyK9xuxWaUb4Uz0QTUQ.png", // 모자
+  "https://i.namu.wiki/i/GwAW-tf-GUB6iJEMiOB73URAbsbmydFrzcIjLWFD0kRSFwFL_hxqnnLasNZ2-QyIyMBICdYdzFN3rr3yamZZBQ.png", // 상의
+  "https://i.namu.wiki/i/QdJkPGnuQIiy-EUvCZMsAvF1PWaEZMbsMRPdlpdBi0qp9cQPd9KHrEQMH-SwCEjYdUM_SLXkbAkHEBYckhmW3w.png", // 하의
+  "https://i.namu.wiki/i/khYeQ6aKnXt-jlvD697SV7oAi0MDsfXRGrJP_F8wW4ICnP5WABheIOoOM6rCgWjc0mCKlDjnLfrmpP05QS_1Dg.png", // 신발
+  "https://i.namu.wiki/i/kEIjzJOTkgoUSkoamT4IcUkRvcsCoUFxcH3qIFUEKjJ31Q_bOuRvzlMqESoMDSRCbhmXf7p0UUflauh0tCbf-A.png", // 장갑
+  "https://i.namu.wiki/i/5i4AoSDZfg3gE6zsW2uU2JA2omT76AcsQNWUTksZk_ggLLljS3jz1VpGwqjGqKt6DrzTw2UV6BAbccWNopki1w.png", // 견장
+  "https://i.namu.wiki/i/iimrd4dtG5Q_XUQDwtbQzdtojg--5GW2fY0jHmUrBbx4NO8RMRb-SD0mWMj4TPFAPrhoZasJOsV2oTVrhItLrg.png", // 망토
+  "https://i.namu.wiki/i/RrOcSamWWkDXxywJaQjODI5hZm5Pt3AW0c4YnXNg4HOHj3KX5g8lKd5QXj6l9KseHLTm1AMYOdON0InpVatQcA.webp", // 귀고리
+  "https://i.namu.wiki/i/h9P8xO-S_wbNocE9zyscF8aZ4jlegPrRtJMrrWWIDMH77nwMI3v2oAIXmXrjNSOJ2xuJzLahOKv4xQdH6tOV0Q.png", // 얼장
+  "https://i.namu.wiki/i/zNxRsNo1U9dE3B1FYZCIgGNnj-I6GRG0W9YJc9kVl02w_TqrCbCqxcGeb870vudIiXJJgvLRrQpAHMKm3GXyog.webp", // 눈장
+  "https://i.namu.wiki/i/KHJjAU9ddj1IrLFtkVXScpzkHipUWo6qU-hJmMBbCIIrQ5SWxvNudVyiC94JRizHKvdBf0p28Xfn8BmxaJRPTw.webp", // 반지
+  "https://i.namu.wiki/i/SHdg5cgWjK1PBOAryc-pooUKft-a4D-ZYZhPt3csvH44yeYXS59JPbnRNSZVxvWXkmHlYmw4xwW9up5WEOWXZw.png", // 팬던트
+  "https://i.namu.wiki/i/2zQde-EsaBNnNnyII-2y7GMxQxA5hpdMp5GxSjGW7aUqQ-kS85SlAUC7LBlyKcKtDMzKetXNu9HJI2i8GI-QzA.png", // 하트
+  "https://i.namu.wiki/i/_bKK-YNDWKWyTy-4wwoc6pAq5wJqNZKhEJNslW3eHGJAlVOg7K5hCWD33qQmAnOehBvujo26Lj6BR8zbNnRrnw.png", // 벨트
+];
+
+List<String> equiptype = [
+  "무기",
+  "보조무기",
+  "엠블렘",
+  "모자",
+  "상의",
+  "하의",
+  "신발",
+  "장갑",
+  "견장",
+  "망토",
+  "귀고리",
+  "얼굴장식",
+  "눈장식",
+  "반지",
+  "팬던트",
+  "하트",
+  "벨트",
+];
+
+final Map<String, Color> gradeColor = {
+  '레어': Color(0xFF2EABC6),
+  '에픽': Color(0xFF775AD9),
+  '유니크': Color(0xFFf8a039),
+  '레전드리': Color(0xFF7dbc00),
+};

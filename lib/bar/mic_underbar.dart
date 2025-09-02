@@ -16,79 +16,68 @@ class MicUnderbar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: const Color(0xFFF9F4ED), // 크림색
-        // border: Border.all(color: Color(0xFFB75A22), width: 2.w), // 오렌지 테두리
-        // borderRadius: BorderRadius.only(
-        //   topLeft: Radius.circular(20.r),
-        //   topRight: Radius.circular(20.r),
-        // ),
-      ),
-      child: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        currentIndex: currentIndex, // ✅ 선택 인덱스
-        onTap: onTap,
-        // selectedItemColor: Color(0xFFE9742B),
-        // unselectedItemColor: Color(0xFF4C2B1A),
-        selectedIconTheme: IconThemeData(size: 40.sp),
-        unselectedIconTheme: IconThemeData(size: 36.sp),
-        selectedLabelStyle: TextStyle(
-          fontSize: 12.sp,
-          fontWeight: FontWeight.w700,
-          height: 1.2.h,
-        ),
-        unselectedLabelStyle: TextStyle(
-          fontSize: 11.sp,
-          fontWeight: FontWeight.w600,
-          height: 1.2.h,
-        ),
+    final icons = [
+      'assets/images/icons/mainhome.png',
+      'assets/images/icons/boss.png',
+      'assets/images/icons/exp.png',
+      'assets/images/icons/dice.png',
+      'assets/images/icons/star.png',
+    ];
+    final labels = ["메인화면", "보스결정석", "경험치", "잠재능력", "스타포스"];
 
-        items: [
-          BottomNavigationBarItem(
-            icon: Image.asset(
-              'assets/images/icons/mainhome.png',
-              width: 24.w, // 아이콘 크기 지정
-              height: 24.h,
+    List<Widget> items = [];
+    for (int i = 0; i < 5; i++) {
+      items.add(
+        Expanded(
+          child: InkWell(
+            onTap: () => onTap(i),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(height: 8.h), // 위쪽 여백(조금 줄임)
+                Image.asset(
+                  icons[i],
+                  width: 24.w,
+                  height: 24.h,
+                  color: currentIndex == i ? Color(0xFFE9742B) : null,
+                ),
+                SizedBox(height: 2.h),
+                Text(
+                  labels[i],
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: currentIndex == i ? 12.sp : 11.sp,
+                    fontWeight: currentIndex == i
+                        ? FontWeight.w700
+                        : FontWeight.w600,
+                    color: currentIndex == i
+                        ? Color(0xFFE9742B)
+                        : Color(0xFF4C2B1A),
+                    height: 1.2.h,
+                  ),
+                ),
+              ],
             ),
-            label: "메인화면\n  ",
           ),
-          BottomNavigationBarItem(
-            icon: Image.asset(
-              'assets/images/icons/boss.png',
-              width: 24.w, // 아이콘 크기 지정
-              height: 24.h,
-            ),
-            label: "보스결정석\n   계산기",
+        ),
+      );
+      // 마지막 아이템 뒤에는 막대 추가하지 않음
+      if (i != 4) {
+        items.add(
+          Container(
+            margin: EdgeInsets.only(top: 16.h), // 막대도 위로 맞춤
+            width: 1.5.w,
+            height: 28.h, // 높이도 70에 맞게 조정
+            color: Color(0xFF000000),
           ),
-          BottomNavigationBarItem(
-            icon: Image.asset(
-              'assets/images/icons/exp.png',
-              width: 24.w, // 아이콘 크기 지정
-              height: 24.h,
-            ),
-            label: "경험치\n계산기",
-          ),
-          BottomNavigationBarItem(
-            icon: Image.asset(
-              'assets/images/icons/dice.png',
-              width: 24.w, // 아이콘 크기 지정
-              height: 24.h,
-            ),
-            label: "잠재능력 설정\n  비용 계산기",
-          ),
-          BottomNavigationBarItem(
-            icon: Image.asset(
-              'assets/images/icons/star.png',
-              width: 24.w, // 아이콘 크기 지정
-              height: 24.h,
-            ),
-            label: "  스타포스\n비용 계산기",
-          ),
-        ],
-      ),
+        );
+      }
+    }
+
+    return Container(
+      decoration: BoxDecoration(color: const Color(0xFFF9F4ED)),
+      height: 70.h,
+      child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: items),
     );
   }
 }

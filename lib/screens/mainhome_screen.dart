@@ -264,6 +264,7 @@ class _MainhomeScreenState extends State<MainhomeScreen> {
             setState(() {
               CurrentUser.instance.ocid = null;
               ischecked = false;
+              Bossdata.bossList.clear();
             });
           },
           child: Container(
@@ -393,7 +394,6 @@ class _MainhomeScreenState extends State<MainhomeScreen> {
               GestureDetector(
                 onTap: () {
                   nickController.clear();
-                  Bossdata.bossList.clear();
                 },
                 child: Container(
                   alignment: Alignment.center,
