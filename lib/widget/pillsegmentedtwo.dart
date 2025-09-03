@@ -44,7 +44,7 @@ class Pillsegmentedtwo extends StatelessWidget {
 
     return Container(
       height: height,
-      padding: padding,
+
       decoration: BoxDecoration(
         color: Colors.transparent,
         borderRadius: BorderRadius.circular(radius),

@@ -22,6 +22,10 @@ class _CubeScreenState extends State<CubeScreen> {
   int equipindex = 0;
   String equipvalues = equiptype.first;
 
+  final onecubecontroller = TextEditingController();
+  final twocubecontroller = TextEditingController();
+  final thrcubecontroller = TextEditingController();
+
   final List<Widget> _pages = const [
     MainhomeScreen(),
     BossScreen(),
@@ -96,12 +100,13 @@ class _CubeScreenState extends State<CubeScreen> {
     );
   }
 
+  // 시뮬레이터 텝
   Column simulatorTap() {
     return Column(
       children: [
         Container(
           width: 200.w,
-          height: 200.h,
+          height: 240.h,
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter, // 시작점 (위쪽)
@@ -113,6 +118,31 @@ class _CubeScreenState extends State<CubeScreen> {
           ),
           child: Column(
             children: [
+              Container(
+                alignment: Alignment.center,
+                width: double.infinity,
+                height: 30.h,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Color(0xFF94590a), // 위쪽: 어두운 차콜
+                      Color(0xFFe7b822), // 아래쪽: 연한 금색
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(9),
+                ),
+                child: Text(
+                  '잠재능력 옵션',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF000000),
+                  ),
+                ),
+              ),
+
               Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Container(
@@ -174,34 +204,10 @@ class _CubeScreenState extends State<CubeScreen> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    '레전드리',
-                    style: TextStyle(
-                      color: gradeColor['레전드리'],
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    '보스 공격시 데미지 40%',
-                    style: TextStyle(
-                      color: gradeColor['레전드리'],
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    '공격력 9%',
-                    style: TextStyle(
-                      color: gradeColor['유니크'],
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    '공격력 12%',
-                    style: TextStyle(
-                      color: gradeColor['레전드리'],
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  cubeOption('레전드리', gradeColor['레전드리']!),
+                  cubeOption('보스 공격시 데미지 40%', gradeColor['레전드리']!),
+                  cubeOption('공격력 9%', gradeColor['유니크']!),
+                  cubeOption('공격력 12%', gradeColor['레전드리']!),
                 ],
               ),
             ],
@@ -262,11 +268,442 @@ class _CubeScreenState extends State<CubeScreen> {
             ),
           ),
         ),
+        SizedBox(height: 10.h),
+        Container(
+          width: 110.w,
+          height: 40.h,
+          padding: EdgeInsets.all(3), // border 두께
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+              colors: [
+                Color(0xFF232323), // 위쪽: 어두운 차콜
+                Color(0xFFFFE082), // 아래쪽: 연한 금색
+              ],
+            ),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color(0xFF3B3B3B), // 위쪽: 어두운 차콜
+                  Color(0xFF000000), // 아래쪽: 연한 금색
+                ],
+              ),
+              borderRadius: BorderRadius.circular(9),
+            ),
+            child: Row(
+              children: [
+                Image.network(
+                  'https://i.namu.wiki/i/Waig8xp1A2c1AIAriu70I43kz-FhcJhaPruwz-QkoeihwgpjysxM_-B1nOtqjZYdbPR6U7pPFVsKVMkuIx7-wA.webp',
+                  width: 25.w,
+                  height: 25.h,
+                ),
+                SizedBox(width: 10.w),
+                Text(
+                  '+1024 개',
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    color: Color(0xFFFFFFFF),
+                    fontWeight: FontWeight.bold,
+                    shadows: [
+                      Shadow(
+                        color: Color(0x80FFFFFF),
+                        blurRadius: 2,
+                        offset: Offset(0, 1),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        SizedBox(height: 10.h),
+        Container(
+          width: double.infinity,
+          height: 40.h,
+          padding: EdgeInsets.all(3), // border 두께
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+              colors: [
+                Color(0xFF232323), // 위쪽: 어두운 차콜
+                Color(0xFFFFE082), // 아래쪽: 연한 금색
+              ],
+            ),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color(0xFF3B3B3B), // 위쪽: 어두운 차콜
+                  Color(0xFF000000), // 아래쪽: 연한 금색
+                ],
+              ),
+              borderRadius: BorderRadius.circular(9),
+            ),
+            child: Row(
+              children: [
+                Image.asset(
+                  'assets/images/icons/coin.png',
+                  width: 36.w,
+                  height: 36.w,
+                ),
+
+                SizedBox(width: 50.w),
+                Text(
+                  '4,000,000,000 메소',
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFFFFFFFF),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        SizedBox(height: 10.h),
+        Row(children: [btnChoice('계산하기'), btnChoice('초기화')]),
       ],
     );
   }
 
+  Container btnChoice(String title) {
+    return Container(
+      width: 110.w,
+      height: 40.h,
+      padding: EdgeInsets.all(3), // border 두께
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+          colors: [
+            Color(0xFF232323), // 위쪽: 어두운 차콜
+            Color(0xFFFFE082), // 아래쪽: 연한 금색
+          ],
+        ),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Container(
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFF3B3B3B), // 위쪽: 어두운 차콜
+              Color(0xFF000000), // 아래쪽: 연한 금색
+            ],
+          ),
+          borderRadius: BorderRadius.circular(9),
+        ),
+        child: Text(
+          title,
+          style: TextStyle(
+            fontSize: 24.sp,
+            color: Color(0xFFFFFFFF),
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Text cubeOption(String title, Color colors) {
+    return Text(
+      title,
+      style: TextStyle(color: colors, fontWeight: FontWeight.bold),
+    );
+  }
+
+  // 기댓값 텝
   Column expectedTap() {
-    return Column(children: [Text('기댓값')]);
+    return Column(
+      children: [
+        Container(
+          width: double.infinity,
+          height: 240.h,
+          padding: EdgeInsets.all(3), // border 두께
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+              colors: [
+                Color(0xFF232323), // 위쪽: 어두운 차콜
+                Color(0xFFb06f0e), // 아래쪽: 연한 금색
+              ],
+            ),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color(0xFF3B3B3B), // 위쪽: 어두운 차콜
+                  Color(0xFF000000), // 아래쪽: 연한 금색
+                ],
+              ),
+              borderRadius: BorderRadius.circular(9),
+            ),
+            child: Column(
+              children: [
+                Container(
+                  alignment: Alignment.center,
+                  width: double.infinity,
+                  height: 30.h,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Color(0xFF94590a), // 위쪽: 어두운 차콜
+                        Color(0xFFe7b822), // 아래쪽: 연한 금색
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(9),
+                  ),
+                  child: Text(
+                    '잠재능력 옵션 입력칸',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF000000),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center, // 가로축 가운데
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    chooseOption('레전드리'),
+                    SizedBox(width: 10.w),
+                    chooseOption('방어구'),
+                  ],
+                ),
+                SizedBox(height: 10.h),
+
+                inputOption('보스 공격시 데미지', onecubecontroller),
+                SizedBox(height: 10.h),
+                inputOption('보스 공격시 데미지', twocubecontroller),
+                SizedBox(height: 10.h),
+                inputOption('보스 공격시 데미지', thrcubecontroller),
+                SizedBox(height: 10.h),
+                Container(
+                  width: 150.w,
+                  height: 32.h,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Color(0xFF94590a), // 위쪽: 어두운 차콜
+                        Color(0xFFe7b822), // 아래쪽: 연한 금색
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(9),
+                    border: Border.all(color: Color(0XFFb06f0e), width: 2.w),
+                  ),
+                  child: Text(
+                    '계산하기',
+                    style: TextStyle(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF000000),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        SizedBox(height: 10.h),
+        expectedList(
+          true,
+          '명장의 큐브',
+          'https://i.namu.wiki/i/AQa-mkHDXJW3If3nhhPwHkRQjvM__oRkhYJauuLcpGfuPwdOxyvydFYlE7PjY2cCfplXChYLE5BvznVUOED_kg.webp',
+          '24 개',
+        ),
+        SizedBox(height: 10.h),
+        expectedList(
+          true,
+          '블랙 큐브',
+          'https://i.namu.wiki/i/Waig8xp1A2c1AIAriu70I43kz-FhcJhaPruwz-QkoeihwgpjysxM_-B1nOtqjZYdbPR6U7pPFVsKVMkuIx7-wA.webp',
+          '24 개',
+        ),
+        SizedBox(height: 10.h),
+        expectedList(false, '메소 재설정', 'assets/images/icons/coin1.png', '24 개'),
+      ],
+    );
+  }
+
+  Container expectedList(bool isOpen, String title, String img, String value) {
+    return Container(
+      width: double.infinity,
+      height: 40.h,
+      decoration: BoxDecoration(
+        color: Color(0xFF393838),
+        border: Border.all(color: Colors.black, width: 2.w),
+        borderRadius: BorderRadius.circular(12.r),
+      ),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 12.w),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            isOpen
+                ? Image.network(img, width: 20.w, height: 20.h)
+                : Image.asset(img, width: 20.w, height: 20.h),
+
+            SizedBox(width: 10.w),
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 20.sp,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFFFFFFFF),
+              ),
+            ),
+            SizedBox(width: 10.w),
+            Text(
+              value,
+              style: TextStyle(
+                fontSize: 20.sp,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFFFFFFFF),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Container chooseOption(String title) {
+    return Container(
+      width: 90.w,
+      height: 28.h,
+      padding: EdgeInsets.all(3), // border 두께
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+          colors: [
+            Color(0xFF232323), // 위쪽: 어두운 차콜
+            Color(0xFFb06f0e), // 아래쪽: 연한 금색
+          ],
+        ),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Container(
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: Color(0xFFf9f4ed),
+          borderRadius: BorderRadius.circular(9),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 12.sp,
+                color: Color(0xFF000000),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(width: 8.w),
+            Image.asset(
+              'assets/images/icons/down.png',
+              width: 10.h,
+              height: 10.h,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Row inputOption(String title, TextEditingController controller) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center, // 가로축 가운데
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: 180.w,
+          height: 28.h,
+          padding: EdgeInsets.all(3), // border 두께
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+              colors: [
+                Color(0xFF232323), // 위쪽: 어두운 차콜
+                Color(0xFFb06f0e), // 아래쪽: 연한 금색
+              ],
+            ),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Container(
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: Color(0xFFf9f4ed),
+              borderRadius: BorderRadius.circular(9),
+            ),
+            child: Text(
+              title,
+              style: TextStyle(
+                fontSize: 12.sp,
+                color: Color(0xFF000000),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+        SizedBox(width: 10.w),
+        Container(
+          width: 30.w,
+          height: 20.h,
+
+          decoration: BoxDecoration(
+            color: Color(0xFFf9f4ed),
+            borderRadius: BorderRadius.circular(4.r),
+          ),
+          child: TextFormField(
+            controller: controller,
+            maxLength: 2,
+            textAlign: TextAlign.center,
+            decoration: InputDecoration(
+              counterText: '',
+              border: InputBorder.none, // 테두리 제거 (BoxDecoration에서 그림)
+              hintText: '수치', // 플레이스홀더
+              hintStyle: TextStyle(
+                fontSize: 12.sp,
+                color: Color(0xFF7f622a),
+                fontWeight: FontWeight.bold,
+                fontFamily: 'MaplestoryOTFBOLD',
+              ),
+            ),
+
+            style: TextStyle(fontSize: 16.sp),
+          ),
+        ),
+      ],
+    );
   }
 }

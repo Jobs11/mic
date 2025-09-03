@@ -464,10 +464,11 @@ class _BossScreenState extends State<BossScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Image.asset(
-                                'assets/images/icons/coin.png',
-                                width: 21.w,
-                                height: 21.h,
+                                'assets/images/icons/coin1.png',
+                                width: 15.w,
+                                height: 15.h,
                               ),
+                              SizedBox(width: 5.w),
                               Text(
                                 '${formatNumber(sumprice)} 메소',
                                 style: TextStyle(
