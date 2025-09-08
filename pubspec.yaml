@@ -15,7 +15,7 @@ dependencies:
   intl: ^0.20.2
   fluttertoast: ^8.2.2
   permission_handler: ^11.3.0
-  flutter_screenutil: ^5.9.0 
+  flutter_screenutil: ^5.9.0
 
 dev_dependencies:
   flutter_test:
@@ -28,6 +28,8 @@ flutter:
     - assets/images/icons/
     - assets/images/themes/
     - assets/images/bosses/
+    - assets/images/items/
+    - assets/images/areas/
 
   fonts:
     - family: MaplestoryOTF

@@ -578,7 +578,7 @@ class _BossScreenState extends State<BossScreen> {
                 color: Color(0xFFf9f4ed),
                 border: Border.all(color: Colors.black, width: 1.w),
               ),
-              child: Image.network(
+              child: Image.asset(
                 item['bossimg'],
                 width: 14.w,
                 height: 14.h,
@@ -750,7 +750,7 @@ class _BossScreenState extends State<BossScreen> {
             colors: [Color(0xFFffffff), Color(0xFFc5c5c5)],
           ),
         ),
-        child: Image.network(img, width: 19.w, height: 19.h, fit: BoxFit.cover),
+        child: Image.asset(img, width: 19.w, height: 19.h, fit: BoxFit.cover),
       ),
     );
   }

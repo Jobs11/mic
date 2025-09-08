@@ -189,7 +189,7 @@ class _CubeScreenState extends State<CubeScreen> {
                   ),
                 ),
               ),
-              Image.network(equipimg[equipindex], width: 70.w, height: 70.h),
+              Image.asset(equipimg[equipindex], width: 70.w, height: 70.h),
               SizedBox(height: 5.h),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w),

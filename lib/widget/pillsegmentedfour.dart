@@ -10,10 +10,10 @@ class Pillsegmentedfour extends StatelessWidget {
     this.height = 44,
     this.borderWidth = 2,
     this.radius = 22,
-    this.selectedColor = const Color(0xFF3b3b3b),
-    this.unselectedColor = const Color(0xFFEFE8DC),
-    this.selectedTextColor = const Color(0xFF3b3b3b),
-    this.unselectedTextColor = const Color(0xFFEFE8DC),
+    this.selectedColor = const Color(0xFFFFE8A3),
+    this.unselectedColor = const Color(0xFFFFFDF6),
+    this.selectedTextColor = const Color(0xFF5C3B09),
+    this.unselectedTextColor = const Color(0xFF7A5C2D),
     this.borderColor = Colors.black,
     this.textStyle = const TextStyle(
       fontSize: 14,
@@ -78,8 +78,8 @@ class Pillsegmentedfour extends StatelessWidget {
                             ..style = PaintingStyle.stroke
                             ..strokeWidth = 2
                             ..color = isSelected
-                                ? Color(0xFFEFE8DC)
-                                : Color(0xFF3b3b3b),
+                                ? Color(0xFFB1751A)
+                                : Color(0xFFD4C6A2),
                         ),
                       ),
                       // 안쪽 채우기
