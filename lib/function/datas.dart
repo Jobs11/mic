@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-List<String> backgroundsimg = [
+const List<String> backgroundsimg = [
   "assets/images/themes/spring.png",
   "assets/images/themes/summer.png",
   "assets/images/themes/fall.png",
@@ -11,7 +11,7 @@ class Backgroundnum {
   static int bn = 0;
 }
 
-List<String> bossimg = [
+const List<String> bossimg = [
   "assets/images/bosses/blackmage.png", // 검은마법사
   "assets/images/bosses/baldrix.png", // 발드릭스
   "assets/images/bosses/limbo.png", // 림보
@@ -42,7 +42,7 @@ List<String> bossimg = [
   "assets/images/bosses/horntail.png", // 혼테일
 ];
 
-List<String> equipimg = [
+const List<String> equipimg = [
   "assets/images/items/weapon.png", // 무기
   "assets/images/items/sub.png", // 보조무기
   "assets/images/items/emblem.png", // 엠블렘
@@ -62,7 +62,7 @@ List<String> equipimg = [
   "assets/images/items/belt.png", // 벨트
 ];
 
-List<String> equiptype = [
+const List<String> equiptype = [
   "무기",
   "보조무기",
   "엠블렘",

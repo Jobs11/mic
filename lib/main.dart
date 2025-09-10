@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mic/screens/mainhome_screen.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // 세로 모드만 허용
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp, // 세로 위
+    DeviceOrientation.portraitDown, // 세로 아래
+  ]);
+
   runApp(const MainApp());
 }
 

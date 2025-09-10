@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mic/dialog.dart/monsterpark.dart';
-import 'package:mic/function/daycontents.dart';
+import 'package:mic/function/day_contents.dart';
 import 'package:mic/model/basic.dart';
 import 'package:mic/widget/daypilltwo.dart';
 
@@ -234,12 +234,12 @@ class _DaytapState extends State<Daytap> {
 
           Expanded(
             child: Text(
-              '$arcane 일일 퀘스트',
-              style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold),
+              '$arcane (Lv: ${daylevellimit[arcane]})',
+              style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
             ),
           ),
           SizedBox(width: 10.w),
-          (widget.b.characterlevel >= levellimit[arcane]!)
+          (widget.b.characterlevel >= daylevellimit[arcane]!)
               ? Checkbox(
                   value: dayquest[arcane],
                   onChanged: (v) {
@@ -270,13 +270,13 @@ class _DaytapState extends State<Daytap> {
 
           Expanded(
             child: Text(
-              '$grandis 일일 퀘스트',
-              style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold),
+              '$grandis (Lv: ${daylevellimit[grandis]})',
+              style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
             ),
           ),
           SizedBox(width: 10.w),
 
-          (widget.b.characterlevel >= levellimit[grandis]!)
+          (widget.b.characterlevel >= daylevellimit[grandis]!)
               ? Checkbox(
                   value: dayquest[grandis],
                   onChanged: (v) {

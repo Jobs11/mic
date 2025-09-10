@@ -25,3 +25,29 @@ String formatNumber(num value) {
   final formatter = NumberFormat('#,###');
   return formatter.format(value);
 }
+
+String formatPower(int number) {
+  if (number == 0) return "0";
+
+  int eok = number ~/ 100000000; // 억 단위
+  int man = (number % 100000000) ~/ 10000; // 만 단위
+  int rest = number % 10000; // 나머지
+
+  StringBuffer result = StringBuffer();
+
+  if (eok > 0) {
+    result.write("$eok억");
+    if (man > 0 || rest > 0) result.write(" ");
+  }
+
+  if (man > 0) {
+    result.write("$man만");
+    if (rest > 0) result.write(" ");
+  }
+
+  if (rest > 0) {
+    result.write("$rest");
+  }
+
+  return result.toString();
+}

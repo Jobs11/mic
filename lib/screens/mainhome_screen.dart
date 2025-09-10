@@ -86,6 +86,7 @@ class _MainhomeScreenState extends State<MainhomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: MicAppbarone(
         title: "메이플 계산기",
         scolor: Color(0xFFf7e5c4),

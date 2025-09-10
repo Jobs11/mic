@@ -16,6 +16,7 @@ dependencies:
   fluttertoast: ^8.2.2
   permission_handler: ^11.3.0
   flutter_screenutil: ^5.9.0
+  flutter_launcher_icons: ^0.13.1
 
 dev_dependencies:
   flutter_test:
@@ -30,6 +31,8 @@ flutter:
     - assets/images/bosses/
     - assets/images/items/
     - assets/images/areas/
+    - assets/images/weeks/
+    - assets/images/consumes/
 
   fonts:
     - family: MaplestoryOTF
@@ -38,3 +41,8 @@ flutter:
           weight: 300
         - asset: assets/fonts/Maplestory Bold.ttf
           weight: 700
+
+flutter_launcher_icons:
+  android: true
+  ios: false
+  image_path: "assets/images/icons/app_icon.png"

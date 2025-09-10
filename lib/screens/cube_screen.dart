@@ -243,11 +243,10 @@ class _CubeScreenState extends State<CubeScreen> {
             ),
             child: Column(
               children: [
-                Image.network(
-                  'https://i.namu.wiki/i/Waig8xp1A2c1AIAriu70I43kz-FhcJhaPruwz-QkoeihwgpjysxM_-B1nOtqjZYdbPR6U7pPFVsKVMkuIx7-wA.webp',
+                Image.asset(
+                  'assets/images/items/blackcube.png',
                   width: 50.w,
                   height: 50.h,
-                  fit: BoxFit.fill,
                 ),
                 SizedBox(height: 10.h),
                 Text(
@@ -298,8 +297,8 @@ class _CubeScreenState extends State<CubeScreen> {
             ),
             child: Row(
               children: [
-                Image.network(
-                  'https://i.namu.wiki/i/Waig8xp1A2c1AIAriu70I43kz-FhcJhaPruwz-QkoeihwgpjysxM_-B1nOtqjZYdbPR6U7pPFVsKVMkuIx7-wA.webp',
+                Image.asset(
+                  'assets/images/items/blackcube.png',
                   width: 25.w,
                   height: 25.h,
                 ),
@@ -531,26 +530,16 @@ class _CubeScreenState extends State<CubeScreen> {
           ),
         ),
         SizedBox(height: 10.h),
-        expectedList(
-          true,
-          '명장의 큐브',
-          'https://i.namu.wiki/i/AQa-mkHDXJW3If3nhhPwHkRQjvM__oRkhYJauuLcpGfuPwdOxyvydFYlE7PjY2cCfplXChYLE5BvznVUOED_kg.webp',
-          '24 개',
-        ),
+        expectedList('명장의 큐브', 'assets/images/items/commandercube.png', '24 개'),
         SizedBox(height: 10.h),
-        expectedList(
-          true,
-          '블랙 큐브',
-          'https://i.namu.wiki/i/Waig8xp1A2c1AIAriu70I43kz-FhcJhaPruwz-QkoeihwgpjysxM_-B1nOtqjZYdbPR6U7pPFVsKVMkuIx7-wA.webp',
-          '24 개',
-        ),
+        expectedList('블랙 큐브', 'assets/images/items/blackcube.png', '24 개'),
         SizedBox(height: 10.h),
-        expectedList(false, '메소 재설정', 'assets/images/icons/coin1.png', '24 개'),
+        expectedList('메소 재설정', 'assets/images/icons/coin1.png', '24 개'),
       ],
     );
   }
 
-  Container expectedList(bool isOpen, String title, String img, String value) {
+  Container expectedList(String title, String img, String value) {
     return Container(
       width: double.infinity,
       height: 40.h,
@@ -565,9 +554,7 @@ class _CubeScreenState extends State<CubeScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            isOpen
-                ? Image.network(img, width: 20.w, height: 20.h)
-                : Image.asset(img, width: 20.w, height: 20.h),
+            Image.asset(img, width: 20.w, height: 20.h),
 
             SizedBox(width: 10.w),
             Text(

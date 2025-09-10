@@ -56,6 +56,7 @@ class _ExpScreenState extends State<ExpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: MicAppbarone(
         title: "경험치 계산기",
         scolor: Color(0xFF2f88b1),

@@ -100,25 +100,52 @@ class _BossScreenState extends State<BossScreen> {
 
                             final b = snapshot.data!;
 
-                            return Row(
-                              children: [
-                                Image.network(
-                                  b.characterimage,
-                                  width: 120.w,
-                                  height: 120.h,
-                                  fit: BoxFit.cover,
+                            return Container(
+                              width: double.infinity,
+                              height: 170.h,
+                              padding: EdgeInsets.all(3), // border 두께
+                              decoration: BoxDecoration(
+                                color: Color(0xFFf1d4a5),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Color(0xFFfdeaca),
+                                  borderRadius: BorderRadius.circular(9),
+                                  border: Border.all(color: Color(0xFFd2a673)),
                                 ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    profileText('닉네임: ', b.charactername),
-                                    profileText(
-                                      '레벨: ',
-                                      b.characterlevel.toString(),
+                                    Row(
+                                      children: [
+                                        Image.network(
+                                          b.characterimage,
+                                          width: 120.w,
+                                          height: 120.h,
+                                          fit: BoxFit.cover,
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            profileText(
+                                              '닉네임: ',
+                                              b.charactername,
+                                            ),
+                                            profileText(
+                                              '레벨: ',
+                                              b.characterlevel.toString(),
+                                            ),
+                                            profileText(
+                                              '직업: ',
+                                              b.characterclass,
+                                            ),
+                                            profileText('월드: ', b.worldname),
+                                          ],
+                                        ),
+                                      ],
                                     ),
-                                    profileText('직업: ', b.characterclass),
-                                    profileText('월드: ', b.worldname),
-
                                     FutureBuilder<Map<String, Stat>>(
                                       future: statMap,
                                       builder: (context, snapshot) {
@@ -134,26 +161,33 @@ class _BossScreenState extends State<BossScreen> {
                                         final combat = data["전투력"];
                                         return profileText(
                                           '전투력: ',
-                                          combat!.statValueRaw,
+                                          formatPower(
+                                            int.parse(combat!.statValueRaw),
+                                          ),
+                                          size: 250,
                                         );
                                       },
                                     ),
                                   ],
                                 ),
-                              ],
+                              ),
                             );
                           },
                         ),
+                        SizedBox(height: 6.h),
                         Container(
                           width: 400.w,
                           height: 110.h,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(17.r),
-                            border: Border.all(color: Colors.black, width: 2.w),
+                            border: Border.all(
+                              color: Color(0xFFd2a673),
+                              width: 2.w,
+                            ),
                             gradient: LinearGradient(
                               begin: Alignment.topCenter, // 시작점 (위쪽)
                               end: Alignment.bottomCenter, // 끝점 (아래쪽)
-                              colors: [Color(0xFFfffcf5), Color(0xFFd8d5ca)],
+                              colors: [Color(0xFFf1d4a5), Color(0xFFfdeaca)],
                             ),
                           ),
                           child: Column(
@@ -173,261 +207,290 @@ class _BossScreenState extends State<BossScreen> {
                                 ],
                               ),
                               SizedBox(height: 5.h),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  bossIcon(
-                                    bossimg[1],
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 15.w),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    bossIcon(
+                                      bossimg[1],
 
-                                    '발드릭스',
-                                    [1200000000, 2160000000],
-                                    ['노말', '하드'],
-                                    [1, 2, 3],
-                                  ), // 발드릭스
-                                  SizedBox(width: 2.w),
-                                  bossIcon(
-                                    bossimg[2],
+                                      '발드릭스',
+                                      [1200000000, 2160000000],
+                                      ['노말', '하드'],
+                                      [1, 2, 3],
+                                    ), // 발드릭스
 
-                                    '림보',
-                                    [900000000, 1930000000],
-                                    ['노말', '하드'],
-                                    [1, 2, 3],
-                                  ), // 림보
-                                  SizedBox(width: 2.w),
-                                  bossIcon(
-                                    bossimg[3],
+                                    bossIcon(
+                                      bossimg[2],
 
-                                    '카링',
-                                    [
-                                      381000000,
-                                      595000000,
-                                      1310000000,
-                                      3150000000,
-                                    ],
-                                    ['이지', '노말', '하드', '익스트림'],
-                                    [1, 2, 3, 4, 5, 6],
-                                  ), // 카링
-                                  SizedBox(width: 2.w),
-                                  bossIcon(
-                                    bossimg[5],
+                                      '림보',
+                                      [900000000, 1930000000],
+                                      ['노말', '하드'],
+                                      [1, 2, 3],
+                                    ), // 림보
 
-                                    '칼로스',
-                                    [
-                                      345000000,
-                                      510000000,
-                                      1120000000,
-                                      2700000000,
-                                    ],
-                                    ['이지', '노말', '하드', '익스트림'],
-                                    [1, 2, 3, 4, 5, 6],
-                                  ), // 칼로스
-                                  SizedBox(width: 2.w),
-                                  bossIcon(
-                                    bossimg[6],
+                                    bossIcon(
+                                      bossimg[3],
 
-                                    '세렌',
-                                    [295000000, 440000000, 2420000000],
-                                    ['노말', '하드', '익스트림'],
-                                    [1, 2, 3, 4, 5, 6],
-                                  ), // 세렌
-                                  SizedBox(width: 2.w),
-                                  bossIcon(
-                                    bossimg[7],
+                                      '카링',
+                                      [
+                                        381000000,
+                                        595000000,
+                                        1310000000,
+                                        3150000000,
+                                      ],
+                                      ['이지', '노말', '하드', '익스트림'],
+                                      [1, 2, 3, 4, 5, 6],
+                                    ), // 카링
 
-                                    '스우',
-                                    [22000000, 77400000, 549000000],
-                                    ['노말', '하드', '익스트림'],
-                                    [1, 2, 3, 4, 5, 6],
-                                  ), // 스우
-                                  SizedBox(width: 2.w),
-                                  bossIcon(
-                                    bossimg[8],
+                                    bossIcon(
+                                      bossimg[4],
 
-                                    '진힐라',
-                                    [107000000, 160000000],
-                                    ['노말', '하드'],
-                                    [1, 2, 3, 4, 5, 6],
-                                  ), // 진힐라
-                                  SizedBox(width: 2.w),
-                                  bossIcon(
-                                    bossimg[9],
+                                      '대적자',
+                                      [
+                                        361000000,
+                                        530000000,
+                                        1260000000,
+                                        2920000000,
+                                      ],
+                                      ['이지', '노말', '하드', '익스트림'],
+                                      [1, 2, 3],
+                                    ), // 대적자
 
-                                    '듄켈',
-                                    [62500000, 142000000],
-                                    ['노말', '하드'],
-                                    [1, 2, 3, 4, 5, 6],
-                                  ), // 듄켈
-                                  SizedBox(width: 2.w),
-                                  bossIcon(
-                                    bossimg[10],
+                                    bossIcon(
+                                      bossimg[5],
 
-                                    '가디언엔젤슬라임',
-                                    [33500000, 113000000],
-                                    ['노말', '하드'],
-                                    [1, 2, 3, 4, 5, 6],
-                                  ), // 가디언 엔젤 슬라임
-                                  SizedBox(width: 2.w),
-                                  bossIcon(
-                                    bossimg[11],
+                                      '칼로스',
+                                      [
+                                        345000000,
+                                        510000000,
+                                        1120000000,
+                                        2700000000,
+                                      ],
+                                      ['이지', '노말', '하드', '익스트림'],
+                                      [1, 2, 3, 4, 5, 6],
+                                    ), // 칼로스
 
-                                    '더스크',
-                                    [57900000, 105000000],
-                                    ['노말', '카오스'],
-                                    [1, 2, 3, 4, 5, 6],
-                                  ), // 더스크
-                                  SizedBox(width: 2.w),
-                                  bossIcon(
-                                    bossimg[12],
+                                    bossIcon(
+                                      bossimg[6],
 
-                                    '윌',
-                                    [42500000, 54100000, 116000000],
-                                    ['이지', '노말', '하드'],
-                                    [1, 2, 3, 4, 5, 6],
-                                  ), // 윌
-                                  SizedBox(width: 2.w),
-                                  bossIcon(
-                                    bossimg[13],
+                                      '세렌',
+                                      [295000000, 440000000, 2420000000],
+                                      ['노말', '하드', '익스트림'],
+                                      [1, 2, 3, 4, 5, 6],
+                                    ), // 세렌
 
-                                    '루시드',
-                                    [39200000, 46900000, 94500000],
-                                    ['이지', '노말', '하드'],
-                                    [1, 2, 3, 4, 5, 6],
-                                  ), // 루시드
-                                  SizedBox(width: 2.w),
-                                  bossIcon(
-                                    bossimg[14],
+                                    bossIcon(
+                                      bossimg[7],
 
-                                    '데미안',
-                                    [23000000, 73500000],
-                                    ['노말', '하드'],
-                                    [1, 2, 3, 4, 5, 6],
-                                  ), // 데미안
-                                  SizedBox(width: 2.w),
-                                ],
+                                      '스우',
+                                      [22000000, 77400000, 549000000],
+                                      ['노말', '하드', '익스트림'],
+                                      [1, 2, 3, 4, 5, 6],
+                                    ), // 스우
+
+                                    bossIcon(
+                                      bossimg[8],
+
+                                      '진힐라',
+                                      [107000000, 160000000],
+                                      ['노말', '하드'],
+                                      [1, 2, 3, 4, 5, 6],
+                                    ), // 진힐라
+
+                                    bossIcon(
+                                      bossimg[9],
+
+                                      '듄켈',
+                                      [62500000, 142000000],
+                                      ['노말', '하드'],
+                                      [1, 2, 3, 4, 5, 6],
+                                    ), // 듄켈
+                                  ],
+                                ),
                               ),
 
                               SizedBox(height: 5.h),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  bossIcon(
-                                    bossimg[15],
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 15.w),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    bossIcon(
+                                      bossimg[10],
 
-                                    '파풀라투스',
-                                    [390000, 1520000, 17300000],
-                                    ['이지', '노말', '카오스'],
-                                    [1, 2, 3, 4, 5, 6],
-                                  ), // 파풀라투스
-                                  SizedBox(width: 2.w),
-                                  bossIcon(
-                                    bossimg[16],
+                                      '가디언엔젤슬라임',
+                                      [33500000, 113000000],
+                                      ['노말', '하드'],
+                                      [1, 2, 3, 4, 5, 6],
+                                    ), // 가디언 엔젤 슬라임
 
-                                    '벨룸',
-                                    [551000, 9280000],
-                                    ['노말', '카오스'],
-                                    [1, 2, 3, 4, 5, 6],
-                                  ), // 벨룸
-                                  SizedBox(width: 2.w),
-                                  bossIcon(
-                                    bossimg[17],
+                                    bossIcon(
+                                      bossimg[11],
 
-                                    '블러드퀸',
-                                    [551000, 8140000],
-                                    ['노말', '카오스'],
-                                    [1, 2, 3, 4, 5, 6],
-                                  ), // 블러드퀸
-                                  SizedBox(width: 2.w),
-                                  bossIcon(
-                                    bossimg[18],
+                                      '더스크',
+                                      [57900000, 105000000],
+                                      ['노말', '카오스'],
+                                      [1, 2, 3, 4, 5, 6],
+                                    ), // 더스크
 
-                                    '피에르',
-                                    [551000, 8170000],
-                                    ['노말', '카오스'],
-                                    [1, 2, 3, 4, 5, 6],
-                                  ), // 피에르
-                                  SizedBox(width: 2.w),
-                                  bossIcon(
-                                    bossimg[19],
+                                    bossIcon(
+                                      bossimg[12],
 
-                                    '반반',
-                                    [551000, 8150000],
-                                    ['노말', '카오스'],
-                                    [1, 2, 3, 4, 5, 6],
-                                  ), // 반반
-                                  SizedBox(width: 2.w),
-                                  bossIcon(
-                                    bossimg[20],
+                                      '윌',
+                                      [42500000, 54100000, 116000000],
+                                      ['이지', '노말', '하드'],
+                                      [1, 2, 3, 4, 5, 6],
+                                    ), // 윌
 
-                                    '매그너스',
-                                    [411000, 1480000, 8560000],
-                                    ['이지', '노말', '카오스'],
-                                    [1, 2, 3, 4, 5, 6],
-                                  ), // 매그너스
-                                  SizedBox(width: 2.w),
-                                  bossIcon(
-                                    bossimg[21],
+                                    bossIcon(
+                                      bossimg[13],
 
-                                    '시그너스',
-                                    [4550000, 7500000],
-                                    ['이지', '노말'],
-                                    [1, 2, 3, 4, 5, 6],
-                                  ), // 시그너스
-                                  SizedBox(width: 2.w),
-                                  bossIcon(
-                                    bossimg[22],
+                                      '루시드',
+                                      [39200000, 46900000, 94500000],
+                                      ['이지', '노말', '하드'],
+                                      [1, 2, 3, 4, 5, 6],
+                                    ), // 루시드
 
-                                    '핑크빈',
-                                    [799000, 6580000],
-                                    ['노말', '카오스'],
-                                    [1, 2, 3, 4, 5, 6],
-                                  ), // 핑크빈
-                                  SizedBox(width: 2.w),
-                                  bossIcon(
-                                    bossimg[23],
+                                    bossIcon(
+                                      bossimg[14],
 
-                                    '힐라',
-                                    [455000, 5750000],
-                                    ['노말', '하드'],
-                                    [1, 2, 3, 4, 5, 6],
-                                  ), // 힐라
-                                  SizedBox(width: 2.w),
-                                  bossIcon(
-                                    bossimg[24],
+                                      '데미안',
+                                      [23000000, 73500000],
+                                      ['노말', '하드'],
+                                      [1, 2, 3, 4, 5, 6],
+                                    ), // 데미안
 
-                                    '자쿰',
-                                    [114000, 349000, 8080000],
-                                    ['이지', '노말', '카오스'],
-                                    [1, 2, 3, 4, 5, 6],
-                                  ), // 자쿰
-                                  SizedBox(width: 2.w),
-                                  bossIcon(
-                                    bossimg[25],
+                                    bossIcon(
+                                      bossimg[15],
 
-                                    '아카이럼',
-                                    [656000, 1430000],
-                                    ['이지', '노말'],
-                                    [1, 2, 3, 4, 5, 6],
-                                  ), // 아카이럼
-                                  SizedBox(width: 2.w),
-                                  bossIcon(
-                                    bossimg[26],
+                                      '파풀라투스',
+                                      [390000, 1520000, 17300000],
+                                      ['이지', '노말', '카오스'],
+                                      [1, 2, 3, 4, 5, 6],
+                                    ), // 파풀라투스
 
-                                    '반레온',
-                                    [602000, 830000, 1390000],
-                                    ['이지', '노말', '하드'],
-                                    [1, 2, 3, 4, 5, 6],
-                                  ), // 반레온
-                                  SizedBox(width: 2.w),
-                                  bossIcon(
-                                    bossimg[27],
+                                    bossIcon(
+                                      bossimg[16],
 
-                                    '혼테일',
-                                    [502000, 576000, 770000],
-                                    ['이지', '노말', '카오스'],
-                                    [1, 2, 3, 4, 5, 6],
-                                  ), // 혼테일
-                                  SizedBox(width: 2.w),
-                                ],
+                                      '벨룸',
+                                      [551000, 9280000],
+                                      ['노말', '카오스'],
+                                      [1, 2, 3, 4, 5, 6],
+                                    ), // 벨룸
+
+                                    bossIcon(
+                                      bossimg[17],
+
+                                      '블러드퀸',
+                                      [551000, 8140000],
+                                      ['노말', '카오스'],
+                                      [1, 2, 3, 4, 5, 6],
+                                    ), // 블러드퀸
+
+                                    bossIcon(
+                                      bossimg[18],
+
+                                      '피에르',
+                                      [551000, 8170000],
+                                      ['노말', '카오스'],
+                                      [1, 2, 3, 4, 5, 6],
+                                    ), // 피에르
+                                  ],
+                                ),
+                              ),
+                              SizedBox(height: 5.h),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 15.w),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    bossIcon(
+                                      bossimg[19],
+
+                                      '반반',
+                                      [551000, 8150000],
+                                      ['노말', '카오스'],
+                                      [1, 2, 3, 4, 5, 6],
+                                    ), // 반반
+
+                                    bossIcon(
+                                      bossimg[20],
+
+                                      '매그너스',
+                                      [411000, 1480000, 8560000],
+                                      ['이지', '노말', '카오스'],
+                                      [1, 2, 3, 4, 5, 6],
+                                    ), // 매그너스
+
+                                    bossIcon(
+                                      bossimg[21],
+
+                                      '시그너스',
+                                      [4550000, 7500000],
+                                      ['이지', '노말'],
+                                      [1, 2, 3, 4, 5, 6],
+                                    ), // 시그너스
+
+                                    bossIcon(
+                                      bossimg[22],
+
+                                      '핑크빈',
+                                      [799000, 6580000],
+                                      ['노말', '카오스'],
+                                      [1, 2, 3, 4, 5, 6],
+                                    ), // 핑크빈
+
+                                    bossIcon(
+                                      bossimg[23],
+
+                                      '힐라',
+                                      [455000, 5750000],
+                                      ['노말', '하드'],
+                                      [1, 2, 3, 4, 5, 6],
+                                    ), // 힐라
+
+                                    bossIcon(
+                                      bossimg[24],
+
+                                      '자쿰',
+                                      [114000, 349000, 8080000],
+                                      ['이지', '노말', '카오스'],
+                                      [1, 2, 3, 4, 5, 6],
+                                    ), // 자쿰
+
+                                    bossIcon(
+                                      bossimg[25],
+
+                                      '아카이럼',
+                                      [656000, 1430000],
+                                      ['이지', '노말'],
+                                      [1, 2, 3, 4, 5, 6],
+                                    ), // 아카이럼
+
+                                    bossIcon(
+                                      bossimg[26],
+
+                                      '반레온',
+                                      [602000, 830000, 1390000],
+                                      ['이지', '노말', '하드'],
+                                      [1, 2, 3, 4, 5, 6],
+                                    ), // 반레온
+
+                                    bossIcon(
+                                      bossimg[27],
+
+                                      '혼테일',
+                                      [502000, 576000, 770000],
+                                      ['이지', '노말', '카오스'],
+                                      [1, 2, 3, 4, 5, 6],
+                                    ), // 혼테일
+                                  ],
+                                ),
                               ),
                             ],
                           ),
@@ -456,7 +519,7 @@ class _BossScreenState extends State<BossScreen> {
                             gradient: LinearGradient(
                               begin: Alignment.topCenter, // 시작점 (위쪽)
                               end: Alignment.bottomCenter, // 끝점 (아래쪽)
-                              colors: [Color(0xFFfffcf5), Color(0xFFd8d5ca)],
+                              colors: [Color(0xFFf1d4a5), Color(0xFFfdeaca)],
                             ),
                             border: Border.all(color: Colors.black, width: 4.w),
                           ),
@@ -550,7 +613,7 @@ class _BossScreenState extends State<BossScreen> {
         gradient: LinearGradient(
           begin: Alignment.topCenter, // 시작점 (위쪽)
           end: Alignment.bottomCenter, // 끝점 (아래쪽)
-          colors: [Color(0xFFfffcf5), Color(0xFFd8d5ca)],
+          colors: [Color(0xFFf1d4a5), Color(0xFFfdeaca)],
         ),
       ),
       child: Padding(
@@ -755,19 +818,50 @@ class _BossScreenState extends State<BossScreen> {
     );
   }
 
-  Row profileText(String title, String b) {
-    return Row(
-      children: [
-        Text(
-          title,
-          style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold),
+  Widget profileText(String title, String b, {double? size}) {
+    double sized = size ?? 150;
+    return Padding(
+      padding: EdgeInsets.only(top: 2.h),
+      child: Container(
+        width: sized.w,
+        height: 28.h,
+        padding: EdgeInsets.all(3), // border 두께
+        decoration: BoxDecoration(
+          color: Color(0xFFe6a93a),
+          border: Border.all(color: Color(0xFF9a5325)),
+          borderRadius: BorderRadius.circular(12),
         ),
-        SizedBox(width: 10.w),
-        Text(
-          b,
-          style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold),
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 12.w),
+          decoration: BoxDecoration(
+            color: Color(0xFF9a5325),
+            border: Border.all(color: Color(0xFF9a5325)),
+            borderRadius: BorderRadius.circular(9),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                title,
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFFfdeebe),
+                ),
+              ),
+              SizedBox(width: 10.w),
+              Text(
+                b,
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFFfdeebe),
+                ),
+              ),
+            ],
+          ),
         ),
-      ],
+      ),
     );
   }
 }
