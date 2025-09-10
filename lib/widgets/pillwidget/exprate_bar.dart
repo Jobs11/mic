@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class Expratebar extends StatelessWidget {
-  const Expratebar({
+class ExprateBar extends StatelessWidget {
+  const ExprateBar({
     super.key,
     required this.value, // 0.0 ~ 1.0
     this.height = 32,

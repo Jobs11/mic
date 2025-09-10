@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mic/dialog.dart/monsterpark.dart';
 import 'package:mic/function/day_contents.dart';
-import 'package:mic/model/basic.dart';
-import 'package:mic/widget/daypilltwo.dart';
+import 'package:mic/api/model/basic.dart';
+import 'package:mic/widgets/pillwidget/day_pill_two.dart';
 
-class Daytap extends StatefulWidget {
-  const Daytap({super.key, required this.b});
+class DayTap extends StatefulWidget {
+  const DayTap({super.key, required this.b});
 
   final Basic b;
 
   @override
-  State<Daytap> createState() => _DaytapState();
+  State<DayTap> createState() => _DaytapState();
 }
 
-class _DaytapState extends State<Daytap> {
+class _DaytapState extends State<DayTap> {
   bool isChecked = false;
 
   @override
@@ -91,7 +91,7 @@ class _DaytapState extends State<Daytap> {
           ),
           child: Column(
             children: [
-              Daypilltwo(
+              DayPillTwo(
                 value: isChecked ? SimTab.arcane : SimTab.grandis,
                 onChanged: (v) =>
                     setState(() => isChecked = (v == SimTab.grandis)),

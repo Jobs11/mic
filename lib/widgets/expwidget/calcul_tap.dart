@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mic/model/basic.dart';
-import 'package:mic/widget/expratebar.dart';
+import 'package:mic/api/model/basic.dart';
+import 'package:mic/widgets/pillwidget/exprate_bar.dart';
 
-class Calcultap extends StatefulWidget {
-  const Calcultap({super.key, required this.b});
+class CalculTap extends StatefulWidget {
+  const CalculTap({super.key, required this.b});
 
   final Basic b;
 
   @override
-  State<Calcultap> createState() => _CalcultapState();
+  State<CalculTap> createState() => _CalcultapState();
 }
 
-class _CalcultapState extends State<Calcultap> {
+class _CalcultapState extends State<CalculTap> {
   final goalcontroller = TextEditingController();
 
   @override
@@ -253,7 +253,7 @@ class _CalcultapState extends State<Calcultap> {
               SizedBox(height: 5.h),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.w),
-                child: Expratebar(
+                child: ExprateBar(
                   value: double.parse(widget.b.characterexprate) / 100,
                 ),
               ),

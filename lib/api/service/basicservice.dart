@@ -2,28 +2,26 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:mic/function/currentuser.dart';
-import 'package:mic/model/stat.dart';
+import 'package:mic/api/model/basic.dart';
 
-class Statservice {
+class Basicservice {
   static const String baseUrl =
-      "https://open.api.nexon.com/maplestory/v1/character/stat";
+      "https://open.api.nexon.com/maplestory/v1/character/basic";
 
-  static Future<List<Stat>> getStat(String ocid) async {
-    final uri = Uri.parse("$baseUrl?ocid=$ocid");
+  static Future<Basic> getOcidByCharacterName(String ocid) async {
+    final url = Uri.parse('$baseUrl?ocid=${Uri.encodeQueryComponent(ocid)}');
 
     final response = await http.get(
-      uri,
+      url,
       headers: {"x-nxopen-api-key": ApiKey.apiKey},
     );
 
     if (response.statusCode == 200) {
       final decoded = jsonDecode(response.body);
 
+      // 응답 예: { "ocid": "xxxxxxxx..." }
       if (decoded is Map<String, dynamic>) {
-        final list = decoded['final_stat'] as List<dynamic>? ?? [];
-        return list
-            .map((e) => Stat.fromJson(e as Map<String, dynamic>))
-            .toList();
+        return Basic.fromJson(decoded); // Ocid 모델이 {"ocid": "..."} 형태를 받는다고 가정
       }
 
       throw Exception("Unexpected JSON format: ${response.body}");

@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mic/function/coupon_contents.dart';
-import 'package:mic/model/basic.dart';
+import 'package:mic/api/model/basic.dart';
 
-class Coupontap extends StatefulWidget {
-  const Coupontap({super.key, required this.b});
+class CouponTap extends StatefulWidget {
+  const CouponTap({super.key, required this.b});
 
   final Basic b;
 
   @override
-  State<Coupontap> createState() => _CoupontapState();
+  State<CouponTap> createState() => _CoupontapState();
 }
 
-class _CoupontapState extends State<Coupontap> {
+class _CoupontapState extends State<CouponTap> {
   late List<TextEditingController> usecontrollers;
   late List<TextEditingController> timecontrollers;
 

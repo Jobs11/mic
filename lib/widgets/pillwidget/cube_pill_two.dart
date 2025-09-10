@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 enum SimTab { simulator, expected }
 
-class Pillsegmentedtwo extends StatelessWidget {
-  const Pillsegmentedtwo({
+class CubePillTwo extends StatelessWidget {
+  const CubePillTwo({
     super.key,
     required this.value,
     required this.onChanged,

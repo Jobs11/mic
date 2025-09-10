@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:mic/function/currentuser.dart';
-import 'package:mic/model/ocid.dart';
+import 'package:mic/api/model/ocid.dart';
 
 class Ocidservice {
   static const String baseUrl = "https://open.api.nexon.com/maplestory/v1/id";

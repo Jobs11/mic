@@ -6,14 +6,14 @@ import 'package:mic/bar/mic_appbarone.dart';
 import 'package:mic/bar/mic_underbar.dart';
 import 'package:mic/function/currentuser.dart';
 import 'package:mic/function/datas.dart';
-import 'package:mic/model/basic.dart';
-import 'package:mic/model/stat.dart';
+import 'package:mic/api/model/basic.dart';
+import 'package:mic/api/model/stat.dart';
 import 'package:mic/screens/cube_screen.dart';
 import 'package:mic/screens/exp_screen.dart';
 import 'package:mic/screens/mainhome_screen.dart';
 import 'package:mic/screens/star_screen.dart';
-import 'package:mic/service/basicservice.dart';
-import 'package:mic/service/statservice.dart';
+import 'package:mic/api/service/basicservice.dart';
+import 'package:mic/api/service/statservice.dart';
 
 class BossScreen extends StatefulWidget {
   const BossScreen({super.key});

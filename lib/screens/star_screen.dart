@@ -7,6 +7,9 @@ import 'package:mic/screens/boss_screen.dart';
 import 'package:mic/screens/cube_screen.dart';
 import 'package:mic/screens/exp_screen.dart';
 import 'package:mic/screens/mainhome_screen.dart';
+import 'package:mic/widgets/pillwidget/starforce_pill_two.dart';
+import 'package:mic/widgets/starforcewidget/enhance_tap.dart';
+import 'package:mic/widgets/starforcewidget/star_expected_tap.dart';
 
 class StarScreen extends StatefulWidget {
   const StarScreen({super.key});
@@ -16,6 +19,7 @@ class StarScreen extends StatefulWidget {
 }
 
 class _StarScreenState extends State<StarScreen> {
+  bool isChecked = false;
   int _index = 4;
 
   final List<Widget> _pages = const [
@@ -53,6 +57,27 @@ class _StarScreenState extends State<StarScreen> {
                     decoration: BoxDecoration(
                       color: Color(0x8CFFFFFF),
                       borderRadius: BorderRadius.circular(12.r),
+                    ),
+                    child: Column(
+                      children: [
+                        StarforcePillTwo(
+                          value: isChecked
+                              ? SimTab.starexpected
+                              : SimTab.enhance,
+                          onChanged: (v) {
+                            setState(() {
+                              if (v == SimTab.starexpected) {
+                                isChecked = true;
+                              } else {
+                                isChecked = false;
+                              }
+                            });
+                          },
+                        ),
+
+                        SizedBox(height: 10.h),
+                        (isChecked) ? StarExpectedTap() : EnhanceTap(),
+                      ],
                     ),
                   ),
                 ),

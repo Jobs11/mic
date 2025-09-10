@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 enum SimTab { arcane, grandis }
 
-class Daypilltwo extends StatelessWidget {
-  const Daypilltwo({
+class DayPillTwo extends StatelessWidget {
+  const DayPillTwo({
     super.key,
     required this.value,
     required this.onChanged,

@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mic/bar/mic_appbarone.dart';
 import 'package:mic/bar/mic_underbar.dart';
-import 'package:mic/expwidget/calcultap.dart';
-import 'package:mic/expwidget/coupontap.dart';
-import 'package:mic/expwidget/daytap.dart';
-import 'package:mic/expwidget/weektap.dart';
+import 'package:mic/widgets/expwidget/calcul_tap.dart';
+import 'package:mic/widgets/expwidget/coupon_tap.dart';
+import 'package:mic/widgets/expwidget/day_tap.dart';
+import 'package:mic/widgets/expwidget/week_tap.dart';
 import 'package:mic/function/currentuser.dart';
 import 'package:mic/function/datas.dart';
-import 'package:mic/model/basic.dart';
+import 'package:mic/api/model/basic.dart';
 import 'package:mic/screens/boss_screen.dart';
 import 'package:mic/screens/cube_screen.dart';
 import 'package:mic/screens/mainhome_screen.dart';
 import 'package:mic/screens/star_screen.dart';
-import 'package:mic/service/basicservice.dart';
+import 'package:mic/api/service/basicservice.dart';
 
-import 'package:mic/widget/pillsegmentedfour.dart';
+import 'package:mic/widgets/pillwidget/pill_segmented_four.dart';
 
 class ExpScreen extends StatefulWidget {
   const ExpScreen({super.key});
@@ -39,10 +39,10 @@ class _ExpScreenState extends State<ExpScreen> {
   ];
 
   List<Widget> tapWidgets(Basic b) => [
-    Calcultap(b: b),
-    Daytap(b: b),
-    Weektap(b: b),
-    Coupontap(b: b),
+    CalculTap(b: b),
+    DayTap(b: b),
+    WeekTap(b: b),
+    CouponTap(b: b),
   ];
 
   @override
@@ -85,7 +85,7 @@ class _ExpScreenState extends State<ExpScreen> {
                     ),
                     child: Column(
                       children: [
-                        Pillsegmentedfour(
+                        PillSegmentedFour(
                           value: selected,
                           onChanged: (i) => setState(() => selected = i),
                           labels: ["계산기", "일일", "주간", "쿠폰"],

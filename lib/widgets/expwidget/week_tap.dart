@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mic/function/week_contents.dart';
-import 'package:mic/model/basic.dart';
+import 'package:mic/api/model/basic.dart';
 
-class Weektap extends StatefulWidget {
-  const Weektap({super.key, required this.b});
+class WeekTap extends StatefulWidget {
+  const WeekTap({super.key, required this.b});
 
   final Basic b;
 
   @override
-  State<Weektap> createState() => _WeektapState();
+  State<WeekTap> createState() => _WeektapState();
 }
 
-class _WeektapState extends State<Weektap> {
+class _WeektapState extends State<WeekTap> {
   @override
   Widget build(BuildContext context) {
     return Column(

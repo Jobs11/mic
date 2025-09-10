@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class Pillsegmentedfour extends StatelessWidget {
-  const Pillsegmentedfour({
+class PillSegmentedFour extends StatelessWidget {
+  const PillSegmentedFour({
     super.key,
     required this.value,
     required this.onChanged,

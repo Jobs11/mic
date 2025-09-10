@@ -1,5 +1,5 @@
 import 'package:intl/intl.dart';
-import 'package:mic/model/ocid.dart';
+import 'package:mic/api/model/ocid.dart';
 
 class CurrentUser {
   // 1) 프로그램 전체에서 딱 1개만 존재하는 instance

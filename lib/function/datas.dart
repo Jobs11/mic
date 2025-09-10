@@ -53,8 +53,8 @@ const List<String> equipimg = [
   "assets/images/items/gloves.png", // 장갑
   "assets/images/items/shoulder.png", // 견장
   "assets/images/items/cape.png", // 망토
-  "assets/images/items/face.png", // 귀고리
-  "assets/images/items/horntail.png", // 얼장
+  "assets/images/items/earrings.png", // 귀고리
+  "assets/images/items/face.png", // 얼장
   "assets/images/items/eye.png", // 눈장
   "assets/images/items/ring.png", // 반지
   "assets/images/items/pendant.png", // 팬던트
@@ -81,6 +81,8 @@ const List<String> equiptype = [
   "하트",
   "벨트",
 ];
+
+const List<String> equiplevel = ["250", "200", "160", "150", "140"];
 
 final Map<String, Color> gradeColor = {
   '레어': Color(0xFF2EABC6),

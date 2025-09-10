@@ -5,13 +5,13 @@ import 'package:mic/bar/mic_appbarone.dart';
 import 'package:mic/bar/mic_underbar.dart';
 import 'package:mic/function/currentuser.dart';
 import 'package:mic/function/datas.dart';
-import 'package:mic/model/basic.dart';
+import 'package:mic/api/model/basic.dart';
 import 'package:mic/screens/boss_screen.dart';
 import 'package:mic/screens/cube_screen.dart';
 import 'package:mic/screens/exp_screen.dart';
 import 'package:mic/screens/star_screen.dart';
-import 'package:mic/service/basicservice.dart';
-import 'package:mic/service/ocidservice.dart';
+import 'package:mic/api/service/basicservice.dart';
+import 'package:mic/api/service/ocidservice.dart';
 
 class MainhomeScreen extends StatefulWidget {
   const MainhomeScreen({super.key});
