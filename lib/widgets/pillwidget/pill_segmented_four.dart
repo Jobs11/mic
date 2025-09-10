@@ -70,7 +70,7 @@ class PillSegmentedFour extends StatelessWidget {
                       Text(
                         labels[index],
                         style: textStyle.copyWith(
-                          fontSize: isSelected ? 18.sp : 14.sp,
+                          fontSize: isSelected ? 16.sp : 14.sp,
                           fontWeight: isSelected
                               ? FontWeight.w800
                               : FontWeight.w700,
@@ -86,7 +86,7 @@ class PillSegmentedFour extends StatelessWidget {
                       Text(
                         labels[index],
                         style: textStyle.copyWith(
-                          fontSize: isSelected ? 18.sp : 14.sp,
+                          fontSize: isSelected ? 16.sp : 14.sp,
                           fontWeight: isSelected
                               ? FontWeight.w800
                               : FontWeight.w700,

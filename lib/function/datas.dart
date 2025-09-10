@@ -43,9 +43,6 @@ const List<String> bossimg = [
 ];
 
 const List<String> equipimg = [
-  "assets/images/items/weapon.png", // 무기
-  "assets/images/items/sub.png", // 보조무기
-  "assets/images/items/emblem.png", // 엠블렘
   "assets/images/items/hat.png", // 모자
   "assets/images/items/top.png", // 상의
   "assets/images/items/bottom.png", // 하의
@@ -60,12 +57,12 @@ const List<String> equipimg = [
   "assets/images/items/pendant.png", // 팬던트
   "assets/images/items/heart.png", // 하트
   "assets/images/items/belt.png", // 벨트
+  "assets/images/items/weapon.png", // 무기
+  "assets/images/items/sub.png", // 보조무기
+  "assets/images/items/emblem.png", // 엠블렘
 ];
 
 const List<String> equiptype = [
-  "무기",
-  "보조무기",
-  "엠블렘",
   "모자",
   "상의",
   "하의",
@@ -80,6 +77,27 @@ const List<String> equiptype = [
   "팬던트",
   "하트",
   "벨트",
+  "무기",
+  "보조무기",
+  "엠블렘",
+];
+
+const List<String> forcetype = [
+  "모자",
+  "상의",
+  "하의",
+  "신발",
+  "장갑",
+  "견장",
+  "망토",
+  "귀고리",
+  "얼굴장식",
+  "눈장식",
+  "반지",
+  "팬던트",
+  "하트",
+  "벨트",
+  "무기",
 ];
 
 const List<String> equiplevel = ["250", "200", "160", "150", "140"];
