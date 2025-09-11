@@ -108,3 +108,29 @@ final Map<String, Color> gradeColor = {
   '유니크': Color(0xFFf8a039),
   '레전드리': Color(0xFF7dbc00),
 };
+
+final List<List<dynamic>> rows = [
+  ['1', '55.6', 1580452],
+  ['2', '11', 1826],
+  ['3', '11', 40000],
+  ['3', '16', 36998],
+  ['4', '55.6', 81698],
+  ['5', '41.0', 41000],
+  ['6', '36.9', 12400],
+  ['7', '41.0', 41050],
+  ['8', '—', '—'],
+];
+
+class Typicalcolor {
+  static Color title = Color(0xFFff9d01);
+  static Color subtitle = Color(0xFFf6d53c);
+
+  static Color bg = Color(0xFFffefd6);
+  static Color subbg = Color(0xFFffdcca);
+
+  static Color font = Color(0xFF67462a);
+  static Color subfont = Color(0xFF77644c);
+
+  static Color border = Color(0xFFc13e24);
+  static Color subborder = Color(0xFFf59064);
+}

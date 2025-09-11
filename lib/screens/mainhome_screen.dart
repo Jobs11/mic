@@ -314,6 +314,7 @@ class _MainhomeScreenState extends State<MainhomeScreen> {
     return Column(
       children: [
         Container(
+          padding: EdgeInsets.symmetric(horizontal: 6.w),
           alignment: Alignment.centerLeft,
           decoration: BoxDecoration(
             color: Color(0xFFe1bf77),

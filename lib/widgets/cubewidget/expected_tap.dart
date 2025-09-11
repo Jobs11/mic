@@ -19,7 +19,7 @@ class _ExpectedTapState extends State<ExpectedTap> {
       children: [
         Container(
           width: double.infinity,
-          height: 240.h,
+          height: 440.h,
           padding: EdgeInsets.all(3), // border 두께
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -113,56 +113,68 @@ class _ExpectedTapState extends State<ExpectedTap> {
                     ),
                   ),
                 ),
+
+                SizedBox(height: 60.h),
+                expectedList(
+                  '명장의 큐브',
+                  'assets/images/items/commandercube.png',
+                  '24 개',
+                ),
+                SizedBox(height: 10.h),
+                expectedList(
+                  '블랙 큐브',
+                  'assets/images/items/blackcube.png',
+                  '24 개',
+                ),
+                SizedBox(height: 10.h),
+                expectedList('메소 재설정', 'assets/images/icons/coin1.png', '24 개'),
               ],
             ),
           ),
         ),
-        SizedBox(height: 10.h),
-        expectedList('명장의 큐브', 'assets/images/items/commandercube.png', '24 개'),
-        SizedBox(height: 10.h),
-        expectedList('블랙 큐브', 'assets/images/items/blackcube.png', '24 개'),
-        SizedBox(height: 10.h),
-        expectedList('메소 재설정', 'assets/images/icons/coin1.png', '24 개'),
       ],
     );
   }
 
-  Container expectedList(String title, String img, String value) {
-    return Container(
-      width: double.infinity,
-      height: 40.h,
-      decoration: BoxDecoration(
-        color: Color(0xFF393838),
-        border: Border.all(color: Colors.black, width: 2.w),
-        borderRadius: BorderRadius.circular(12.r),
-      ),
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 12.w),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Image.asset(img, width: 20.w, height: 20.h),
+  Widget expectedList(String title, String img, String value) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 8.w),
+      child: Container(
+        width: double.infinity,
+        height: 40.h,
+        decoration: BoxDecoration(
+          color: Color(0xFF393838),
+          border: Border.all(color: Colors.black, width: 2.w),
+          borderRadius: BorderRadius.circular(12.r),
+        ),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 12.w),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.asset(img, width: 20.w, height: 20.h),
 
-            SizedBox(width: 10.w),
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 20.sp,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFFFFFFFF),
+              SizedBox(width: 10.w),
+              Text(
+                title,
+                style: TextStyle(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFFFFFFFF),
+                ),
               ),
-            ),
-            SizedBox(width: 10.w),
-            Text(
-              value,
-              style: TextStyle(
-                fontSize: 20.sp,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFFFFFFFF),
+              SizedBox(width: 10.w),
+              Text(
+                value,
+                style: TextStyle(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFFFFFFFF),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

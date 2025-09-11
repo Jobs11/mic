@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mic/function/currentuser.dart';
+import 'package:mic/function/datas.dart';
+import 'package:mic/widgets/starforcewidget/starforce_bar_chart.dart';
 
 class StarExpectedTap extends StatefulWidget {
   const StarExpectedTap({super.key});
@@ -13,6 +16,7 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
   double _value = 0;
   final goalController = TextEditingController();
   bool isDestroy = false;
+  bool eventOn = false;
 
   @override
   Widget build(BuildContext context) {
@@ -81,12 +85,26 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
                           destroywidget(),
                         ],
                       ),
+                      SizedBox(height: 5.h),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           avgtimes('평균 시도 \n횟수', '55.6', 14),
-                          avgtimes('평균 시도 \n메소', '1,580,000,000', 9),
+                          avgtimes('평균 시도 \n메소', formatPower(15800000000), 14),
+                          destroytime('파괴확률', '41%', 14),
+                          eventbtn(),
                         ],
                       ),
+                      SizedBox(height: 5.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          starTable(),
+                          StarforceBarChart(rows: rows),
+                        ],
+                      ),
+                      SizedBox(height: 10.h),
+                      resultbtn(),
                     ],
                   ),
                 ),
@@ -341,7 +359,7 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
 
   Widget avgtimes(String title, String data, double size) {
     return Container(
-      width: 90.w,
+      width: 80.w,
       height: 80.h,
       padding: EdgeInsets.all(3), // border 두께
       decoration: BoxDecoration(
@@ -385,6 +403,297 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
               textAlign: TextAlign.center,
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget destroytime(String title, String data, double size) {
+    return Container(
+      width: 60.w,
+      height: 80.h,
+      padding: EdgeInsets.all(3), // border 두께
+      decoration: BoxDecoration(
+        color: Color(0xFF020b17),
+        borderRadius: BorderRadius.circular(12.r),
+      ),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: [
+              Color(0xFF083566), // 위쪽: 어두운 차콜
+              Color(0xFF002645), // 아래쪽: 연한 금색
+            ],
+          ),
+          borderRadius: BorderRadius.circular(9.r),
+          border: Border.all(color: Color(0xFF163e6c)),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 14.sp,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFFfdebc6),
+              ),
+              textAlign: TextAlign.center,
+            ),
+
+            Text(
+              data,
+              style: TextStyle(
+                fontSize: size.sp,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFFfdebc6),
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget eventbtn() {
+    return Container(
+      width: 50.w,
+      height: 80.h,
+      padding: EdgeInsets.all(3), // border 두께
+      decoration: BoxDecoration(
+        color: Color(0xFF020b17),
+        borderRadius: BorderRadius.circular(12.r),
+      ),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4.h),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: [
+              Color(0xFF083566), // 위쪽: 어두운 차콜
+              Color(0xFF002645), // 아래쪽: 연한 금색
+            ],
+          ),
+          borderRadius: BorderRadius.circular(9.r),
+          border: Border.all(color: Color(0xFF163e6c)),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              '이벤트',
+              style: TextStyle(
+                fontSize: 9.sp,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFFfdebc6),
+              ),
+              textAlign: TextAlign.center,
+            ),
+            // 토글 캡슐 + 노란 점
+            GestureDetector(
+              onTap: () => setState(() => eventOn = !eventOn),
+              child: Container(
+                width: 45,
+                height: 18,
+                padding: EdgeInsets.symmetric(horizontal: 4.w),
+                decoration: BoxDecoration(
+                  color: Color(0xFF002646),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: const Color(0xFF00162b)),
+                  boxShadow: const [
+                    BoxShadow(
+                      offset: Offset(0, 1),
+                      blurRadius: 0.5,
+                      color: Color(0xFF08202E),
+                    ),
+                  ],
+                ),
+                child: AnimatedAlign(
+                  duration: const Duration(milliseconds: 200),
+                  alignment: eventOn
+                      ? Alignment.centerRight
+                      : Alignment.centerLeft,
+                  child: Container(
+                    width: 12,
+                    height: 12,
+                    decoration: BoxDecoration(
+                      color: Color(0xFFe2b061),
+                      shape: BoxShape.circle,
+                      boxShadow: const [
+                        BoxShadow(
+                          offset: Offset(0, 1),
+                          blurRadius: 0.5,
+                          color: Colors.black26,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'ON',
+                  style: TextStyle(
+                    fontSize: 9.sp,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFFfdebc6),
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+
+                Text(
+                  'OFF',
+                  style: TextStyle(
+                    fontSize: 9.sp,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFFfdebc6),
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget starTable() {
+    return Container(
+      width: 160,
+      padding: EdgeInsets.all(3), // border 두께
+      decoration: BoxDecoration(
+        color: Color(0xFF020b17),
+        borderRadius: BorderRadius.circular(12.r),
+      ),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4.h),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: [
+              Color(0xFF083566), // 위쪽: 어두운 차콜
+              Color(0xFF002645), // 아래쪽: 연한 금색
+            ],
+          ),
+          borderRadius: BorderRadius.circular(9.r),
+          border: Border.all(color: Color(0xFF163e6c)),
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Table(
+            columnWidths: const {
+              0: FixedColumnWidth(40), // 성
+              1: FlexColumnWidth(1), // 성공률
+              2: FlexColumnWidth(1.3), // 기대 메소
+            },
+            border: TableBorder(
+              horizontalInside: BorderSide(color: Color(0xFF0A2837), width: 1),
+              verticalInside: BorderSide(color: Color(0xFF0A2837), width: 1),
+              // 바깥 테두리는 Container로 처리했으니 여기선 inside만
+            ),
+            defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+            children: [
+              // 헤더
+              TableRow(
+                decoration: const BoxDecoration(color: Color(0xFF083566)),
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 5.h),
+                    child: _cell('성', bold: true),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 5.h),
+                    child: _cell('성공률', bold: true),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 5.h),
+                    child: _cell('기대 메소', bold: true),
+                  ),
+                ],
+              ),
+              // 데이터
+              ...rows.map(
+                (r) => TableRow(
+                  decoration: const BoxDecoration(color: Color(0xFF002645)),
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 5.h),
+                      child: _cell(r[0]),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 5.h),
+                      child: _cell(r[1]),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 5.h),
+                      child: _cell(r[2].toString(), align: TextAlign.right),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Text _cell(
+    String text, {
+    bool bold = false,
+    TextAlign align = TextAlign.center,
+  }) {
+    return Text(
+      text,
+      textAlign: align,
+      style: TextStyle(
+        fontSize: 10.sp,
+        fontWeight: bold ? FontWeight.w800 : FontWeight.w700,
+        color: Color(0xFFfdebc6),
+      ),
+    );
+  }
+
+  Widget resultbtn() {
+    return Container(
+      width: 135.w,
+      padding: EdgeInsets.all(3), // border 두께
+      decoration: BoxDecoration(
+        color: Color(0xFF020b17),
+        borderRadius: BorderRadius.circular(12.r),
+      ),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 8.w),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: [
+              Color(0xFF083566), // 위쪽: 어두운 차콜
+              Color(0xFF002645), // 아래쪽: 연한 금색
+            ],
+          ),
+          borderRadius: BorderRadius.circular(9.r),
+          border: Border.all(color: Color(0xFF163e6c)),
+        ),
+        child: Text(
+          "결과 확인",
+          style: TextStyle(
+            color: Color(0xFFfdebc6),
+            fontSize: 20.sp,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
     );
