@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mic/function/datas.dart';
 
 class ExprateBar extends StatelessWidget {
   const ExprateBar({
@@ -24,9 +25,9 @@ class ExprateBar extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: const [
-                    Color(0xFF114E7A), // 위
-                    Color(0xFF0A3C62), // 아래
+                  colors: [
+                    Typicalcolor.border, // 위
+                    Typicalcolor.subborder, // 아래
                   ],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
@@ -40,9 +41,9 @@ class ExprateBar extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(height * 0.32),
                 child: Container(
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     gradient: LinearGradient(
-                      colors: [Color(0xFF09588f), Color(0xFF094d7f)],
+                      colors: [Typicalcolor.bg, Typicalcolor.subbg],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
@@ -65,11 +66,11 @@ class ExprateBar extends StatelessWidget {
                         duration: const Duration(milliseconds: 350),
                         curve: Curves.easeOutCubic,
                         width: w,
-                        decoration: const BoxDecoration(
+                        decoration: BoxDecoration(
                           gradient: LinearGradient(
                             colors: [
-                              Color(0xFF2A8AC8), // 왼쪽 밝은 파랑
-                              Color(0xFF3BA7ED), // 오른쪽
+                              Typicalcolor.title, // 왼쪽 밝은 파랑
+                              Typicalcolor.subtitle, // 오른쪽
                             ],
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
@@ -123,7 +124,7 @@ class ExprateBar extends StatelessWidget {
                     style: TextStyle(
                       fontSize: height * 0.55,
                       fontWeight: FontWeight.w800,
-                      color: const Color(0xFFFBE9C9), // 살짝 크림톤
+                      color: Typicalcolor.subfont, // 살짝 크림톤
                       shadows: const [
                         Shadow(
                           blurRadius: 2,
@@ -140,7 +141,7 @@ class ExprateBar extends StatelessWidget {
             // 바깥 테두리(얇은 어두운 라인)
             Container(
               decoration: BoxDecoration(
-                border: Border.all(color: const Color(0xFF08314E), width: 2),
+                border: Border.all(color: Typicalcolor.title, width: 2),
                 borderRadius: BorderRadius.circular(height * 0.4),
               ),
             ),

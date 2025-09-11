@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 const List<String> backgroundsimg = [
   "assets/images/themes/spring.png",
@@ -133,4 +134,62 @@ class Typicalcolor {
 
   static Color border = Color(0xFFc13e24);
   static Color subborder = Color(0xFFf59064);
+}
+
+Stack twoTitle(String title, double size) {
+  return Stack(
+    children: [
+      // 테두리
+      Text(
+        title,
+        style: TextStyle(
+          fontSize: size.sp,
+          fontWeight: FontWeight.bold,
+          foreground: Paint()
+            ..style = PaintingStyle.stroke
+            ..strokeWidth = 3
+            ..color = Color(0xFFFFFFFF),
+        ),
+      ),
+      // 안쪽 채우기
+      Text(
+        title,
+        style: TextStyle(
+          fontSize: size.sp,
+          fontWeight: FontWeight.bold,
+          color: Typicalcolor.subfont,
+        ),
+      ),
+    ],
+  );
+}
+
+Stack twoText(String title, double size, {TextAlign align = TextAlign.center}) {
+  return Stack(
+    children: [
+      // 테두리
+      Text(
+        title,
+        style: TextStyle(
+          fontSize: size.sp,
+          fontWeight: FontWeight.bold,
+          foreground: Paint()
+            ..style = PaintingStyle.stroke
+            ..strokeWidth = 3
+            ..color = Typicalcolor.subfont,
+        ),
+        textAlign: align,
+      ),
+      // 안쪽 채우기
+      Text(
+        title,
+        style: TextStyle(
+          fontSize: size.sp,
+          fontWeight: FontWeight.bold,
+          color: Color(0xFFFFFFFF),
+        ),
+        textAlign: align,
+      ),
+    ],
+  );
 }

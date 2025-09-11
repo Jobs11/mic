@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mic/function/datas.dart';
 import 'package:mic/function/day_contents.dart';
 
 Future<String?> monsterParkPick(BuildContext context) {
@@ -62,7 +63,7 @@ class __MosterParkDialogState extends State<_MosterParkDialog> {
                   decoration: BoxDecoration(
                     color: cardBg,
                     borderRadius: BorderRadius.circular(24.r),
-                    border: Border.all(color: Colors.black),
+                    border: Border.all(color: Typicalcolor.font),
                     boxShadow: const [
                       BoxShadow(
                         color: Colors.black12,

@@ -30,14 +30,14 @@ class _EnhanceTapState extends State<EnhanceTap> {
           padding: EdgeInsets.all(3), // border 두께
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
               colors: [
-                Color(0xFFf4ba50), // 위쪽: 어두운 차콜
-                Color(0xFFb4802b), // 아래쪽: 연한 금색
+                Typicalcolor.subborder, // 위쪽: 어두운 차콜
+                Typicalcolor.border, // 아래쪽: 연한 금색
               ],
             ),
-            border: Border.all(color: Colors.black),
+            border: Border.all(color: Typicalcolor.font),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Container(
@@ -47,11 +47,11 @@ class _EnhanceTapState extends State<EnhanceTap> {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Color(0xFF081525), // 위쪽: 어두운 차콜
-                  Color(0xFF13406d), // 아래쪽: 연한 금색
+                  Typicalcolor.bg, // 위쪽: 어두운 차콜
+                  Typicalcolor.subbg, // 아래쪽: 연한 금색
                 ],
               ),
-              border: Border.all(color: Colors.black),
+              border: Border.all(color: Typicalcolor.font),
               borderRadius: BorderRadius.circular(9),
             ),
             child: Column(
@@ -61,18 +61,11 @@ class _EnhanceTapState extends State<EnhanceTap> {
                   width: double.infinity,
                   height: 30.h,
                   decoration: BoxDecoration(
-                    color: Color(0xFF15304a),
+                    color: Typicalcolor.title,
 
                     borderRadius: BorderRadius.circular(8.r),
                   ),
-                  child: Text(
-                    '스타포스 강화 시뮬레이터',
-                    style: TextStyle(
-                      fontSize: 15.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFFf4e7c5),
-                    ),
-                  ),
+                  child: twoTitle('스타포스 강화 시뮬레이터', 18),
                 ),
                 Padding(
                   padding: EdgeInsets.all(8.0),
@@ -284,7 +277,7 @@ class _EnhanceTapState extends State<EnhanceTap> {
                             Color(0xFF000000),
                             Color(0xFF153d59),
                             Color(0xFFf9d771),
-                            Color(0xFF1d4e72),
+                            Typicalcolor.bg,
                           ),
                           SizedBox(width: 15.w),
                           btntype(
@@ -292,7 +285,7 @@ class _EnhanceTapState extends State<EnhanceTap> {
                             Color(0xFF000000),
                             Color(0xFF16354f),
                             Color(0xFF62b3cb),
-                            Color(0xFF1a4b6f),
+                            Typicalcolor.bg,
                           ),
                         ],
                       ),
@@ -350,14 +343,7 @@ class _EnhanceTapState extends State<EnhanceTap> {
       alignment: Alignment.center,
       child: Column(
         children: [
-          Text(
-            title,
-            style: TextStyle(
-              color: Color(0xFFeddec1),
-              fontSize: 10.sp,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+          twoText(title, 10),
 
           Checkbox(
             value: value,
@@ -371,16 +357,16 @@ class _EnhanceTapState extends State<EnhanceTap> {
             // 선택/비활성 등 상태별 채움색
             fillColor: WidgetStateProperty.resolveWith<Color?>((states) {
               if (states.contains(WidgetState.disabled)) {
-                return const Color(0xFF13334d);
+                return Typicalcolor.bg;
               }
               if (states.contains(WidgetState.selected)) {
-                return const Color(0xFF217098); // 선택 시
+                return Typicalcolor.title; // 선택 시
               }
-              return const Color(0xFF13334d); // 평소
+              return Typicalcolor.bg; // 평소
             }),
-            side: const BorderSide(
+            side: BorderSide(
               // 테두리 색
-              color: Color(0xFF889192),
+              color: Typicalcolor.subborder,
               width: 2,
             ),
           ),
@@ -396,27 +382,13 @@ class _EnhanceTapState extends State<EnhanceTap> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: 16.sp,
-              color: Color(0xFFeddec1),
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+          twoText(title, 16),
 
           Row(
             children: [
               Image.asset(img, width: 25.w, height: 25.h),
 
-              Text(
-                data,
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  color: Color(0xFFeddec1),
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              twoText(data, 16),
             ],
           ),
         ],
@@ -430,25 +402,7 @@ class _EnhanceTapState extends State<EnhanceTap> {
       padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: 16.sp,
-              color: Color(0xFFeddec1),
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-
-          Text(
-            data,
-            style: TextStyle(
-              fontSize: 16.sp,
-              color: Color(0xFFeddec1),
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ],
+        children: [twoText(title, 16), twoText(data, 16)],
       ),
     );
   }
@@ -475,14 +429,7 @@ class _EnhanceTapState extends State<EnhanceTap> {
           border: Border.all(color: border2, width: 2.w),
           borderRadius: BorderRadius.circular(9),
         ),
-        child: Text(
-          title,
-          style: TextStyle(
-            fontSize: 20.sp,
-            fontWeight: FontWeight.bold,
-            color: Color(0xFFfdebc6),
-          ),
-        ),
+        child: twoText(title, 20),
       ),
     );
   }

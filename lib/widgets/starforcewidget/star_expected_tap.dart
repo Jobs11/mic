@@ -13,10 +13,10 @@ class StarExpectedTap extends StatefulWidget {
 }
 
 class _StarExpectedTapState extends State<StarExpectedTap> {
-  double _value = 0;
-  final goalController = TextEditingController();
-  bool isDestroy = false;
-  bool eventOn = false;
+  double _value = 0; // 시작 스타포스 성
+  final goalController = TextEditingController(); // 목표 스타포스 성
+  bool isDestroy = false; // 파괴방지 여부
+  bool eventOn = false; // 이벤트 여부 체크
 
   @override
   Widget build(BuildContext context) {
@@ -28,14 +28,14 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
           padding: EdgeInsets.all(3), // border 두께
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
               colors: [
-                Color(0xFFf4ba50), // 위쪽: 어두운 차콜
-                Color(0xFFb4802b), // 아래쪽: 연한 금색
+                Typicalcolor.subborder, // 위쪽: 어두운 차콜
+                Typicalcolor.border, // 아래쪽: 연한 금색
               ],
             ),
-            border: Border.all(color: Colors.black),
+            border: Border.all(color: Typicalcolor.font),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Container(
@@ -45,11 +45,11 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Color(0xFF081525), // 위쪽: 어두운 차콜
-                  Color(0xFF13406d), // 아래쪽: 연한 금색
+                  Typicalcolor.bg, // 위쪽: 어두운 차콜
+                  Typicalcolor.subbg, // 아래쪽: 연한 금색
                 ],
               ),
-              border: Border.all(color: Colors.black),
+              border: Border.all(color: Typicalcolor.font),
               borderRadius: BorderRadius.circular(9),
             ),
             child: Column(
@@ -59,21 +59,15 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
                   width: double.infinity,
                   height: 30.h,
                   decoration: BoxDecoration(
-                    color: Color(0xFF15304a),
+                    color: Typicalcolor.title,
 
                     borderRadius: BorderRadius.circular(8.r),
                   ),
-                  child: Text(
-                    '스타포스 기댓값',
-                    style: TextStyle(
-                      fontSize: 15.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFFf4e7c5),
-                    ),
-                  ),
+                  child: twoTitle('스타포스 기댓값', 18),
                 ),
                 SizedBox(height: 5.h),
                 startStage(),
+                SizedBox(height: 5.h),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 6.w),
                   child: Column(
@@ -122,8 +116,9 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
       child: Container(
         padding: EdgeInsets.all(3), // border 두께
         decoration: BoxDecoration(
-          color: Color(0xFF020b17),
+          color: Typicalcolor.subborder,
           borderRadius: BorderRadius.circular(12.r),
+          border: Border.all(color: Color(0xFF000000)),
         ),
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 12.w),
@@ -132,28 +127,21 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
               colors: [
-                Color(0xFF083566), // 위쪽: 어두운 차콜
-                Color(0xFF011a35), // 아래쪽: 연한 금색
+                Typicalcolor.title, // 위쪽: 어두운 차콜
+                Typicalcolor.subtitle, // 아래쪽: 연한 금색
               ],
             ),
             borderRadius: BorderRadius.circular(9.r),
-            border: Border.all(color: Color(0xFF163e6c)),
+            border: Border.all(color: Color(0xFF000000)),
           ),
           child: Row(
             children: [
-              Text(
-                "시작★",
-                style: TextStyle(
-                  color: Color(0xFFfdebc6),
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              twoText('시작★', 14),
               SizedBox(width: 5.w),
               Container(
                 width: 2.w,
                 height: 30.h,
-                decoration: BoxDecoration(color: Color(0xFF163e6c)),
+                decoration: BoxDecoration(color: Typicalcolor.subfont),
               ),
               SizedBox(width: 5.w),
               Expanded(
@@ -164,7 +152,7 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
                     trackHeight: 2,
 
                     // 🔵 슬라이더 동그라미 색상
-                    thumbColor: Colors.amber,
+                    thumbColor: Typicalcolor.font,
 
                     // 🔵 동그라미 크기 조절
                     thumbShape: const RoundSliderThumbShape(
@@ -184,14 +172,7 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
                 ),
               ),
               SizedBox(width: 12.w),
-              Text(
-                _value.toInt().toString(),
-                style: TextStyle(
-                  color: Color(0xFFfdebc6),
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              twoText(_value.toInt().toString(), 14),
             ],
           ),
         ),
@@ -204,8 +185,9 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
       width: 135.w,
       padding: EdgeInsets.all(3), // border 두께
       decoration: BoxDecoration(
-        color: Color(0xFF020b17),
+        color: Typicalcolor.subborder,
         borderRadius: BorderRadius.circular(12.r),
+        border: Border.all(color: Color(0xFF000000)),
       ),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 8.w),
@@ -214,31 +196,25 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
             colors: [
-              Color(0xFF083566), // 위쪽: 어두운 차콜
-              Color(0xFF002645), // 아래쪽: 연한 금색
+              Typicalcolor.title, // 위쪽: 어두운 차콜
+              Typicalcolor.subtitle, // 아래쪽: 연한 금색
             ],
           ),
           borderRadius: BorderRadius.circular(9.r),
-          border: Border.all(color: Color(0xFF163e6c)),
+          border: Border.all(color: Color(0xFF000000)),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
               children: [
-                Text(
-                  "목표★",
-                  style: TextStyle(
-                    color: Color(0xFFfdebc6),
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                twoText("목표★", 14),
+
                 SizedBox(width: 5.w),
                 Container(
                   width: 2.w,
                   height: 30.h,
-                  decoration: BoxDecoration(color: Color(0xFF163e6c)),
+                  decoration: BoxDecoration(color: Typicalcolor.subfont),
                 ),
               ],
             ),
@@ -247,8 +223,8 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
               width: 50.w,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(6.r),
-                color: Color(0xFF001e36),
-                border: Border.all(color: Color(0xFF001e36), width: 2.w),
+                color: Typicalcolor.bg,
+                border: Border.all(color: Typicalcolor.subborder, width: 2.w),
               ),
               child: TextField(
                 controller: goalController,
@@ -261,7 +237,7 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
                 style: TextStyle(
                   fontSize: 14.sp, // 글자 크기 (원하는 크기로 조정)
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFFfdebc6),
+                  color: Typicalcolor.subfont,
                 ),
                 decoration: const InputDecoration(
                   border: InputBorder.none, // 테두리 제거 (컨테이너 테두리만 보이게)
@@ -282,8 +258,9 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
       width: 135.w,
       padding: EdgeInsets.all(3), // border 두께
       decoration: BoxDecoration(
-        color: Color(0xFF020b17),
+        color: Typicalcolor.subborder,
         borderRadius: BorderRadius.circular(12.r),
+        border: Border.all(color: Color(0xFF000000)),
       ),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 8.w),
@@ -292,31 +269,24 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
             colors: [
-              Color(0xFF083566), // 위쪽: 어두운 차콜
-              Color(0xFF002645), // 아래쪽: 연한 금색
+              Typicalcolor.title, // 위쪽: 어두운 차콜
+              Typicalcolor.subtitle, // 아래쪽: 연한 금색
             ],
           ),
           borderRadius: BorderRadius.circular(9.r),
-          border: Border.all(color: Color(0xFF163e6c)),
+          border: Border.all(color: Color(0xFF000000)),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
               children: [
-                Text(
-                  "파괴방지",
-                  style: TextStyle(
-                    color: Color(0xFFfdebc6),
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                twoText('파괴방지', 14),
                 SizedBox(width: 5.w),
                 Container(
                   width: 2.w,
                   height: 30.h,
-                  decoration: BoxDecoration(color: Color(0xFF163e6c)),
+                  decoration: BoxDecoration(color: Typicalcolor.subfont),
                 ),
               ],
             ),
@@ -338,16 +308,16 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
               // 선택/비활성 등 상태별 채움색
               fillColor: WidgetStateProperty.resolveWith<Color?>((states) {
                 if (states.contains(WidgetState.disabled)) {
-                  return const Color(0xFF13334d);
+                  return Typicalcolor.bg;
                 }
                 if (states.contains(WidgetState.selected)) {
-                  return const Color(0xFF217098); // 선택 시
+                  return Typicalcolor.title; // 선택 시
                 }
-                return const Color(0xFF13334d); // 평소
+                return Typicalcolor.bg; // 평소
               }),
-              side: const BorderSide(
+              side: BorderSide(
                 // 테두리 색
-                color: Color(0xFF889192),
+                color: Typicalcolor.subborder,
                 width: 2,
               ),
             ),
@@ -363,8 +333,9 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
       height: 80.h,
       padding: EdgeInsets.all(3), // border 두께
       decoration: BoxDecoration(
-        color: Color(0xFF020b17),
+        color: Typicalcolor.subborder,
         borderRadius: BorderRadius.circular(12.r),
+        border: Border.all(color: Typicalcolor.font),
       ),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
@@ -373,36 +344,16 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
             colors: [
-              Color(0xFF083566), // 위쪽: 어두운 차콜
-              Color(0xFF002645), // 아래쪽: 연한 금색
+              Typicalcolor.title, // 위쪽: 어두운 차콜
+              Typicalcolor.subtitle, // 아래쪽: 연한 금색
             ],
           ),
           borderRadius: BorderRadius.circular(9.r),
-          border: Border.all(color: Color(0xFF163e6c)),
+          border: Border.all(color: Typicalcolor.font),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFFfdebc6),
-              ),
-              textAlign: TextAlign.center,
-            ),
-
-            Text(
-              data,
-              style: TextStyle(
-                fontSize: size.sp,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFFfdebc6),
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
+          children: [twoText(title, 13), twoText(data, size)],
         ),
       ),
     );
@@ -414,8 +365,9 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
       height: 80.h,
       padding: EdgeInsets.all(3), // border 두께
       decoration: BoxDecoration(
-        color: Color(0xFF020b17),
+        color: Typicalcolor.subborder,
         borderRadius: BorderRadius.circular(12.r),
+        border: Border.all(color: Typicalcolor.font),
       ),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
@@ -424,36 +376,16 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
             colors: [
-              Color(0xFF083566), // 위쪽: 어두운 차콜
-              Color(0xFF002645), // 아래쪽: 연한 금색
+              Typicalcolor.title, // 위쪽: 어두운 차콜
+              Typicalcolor.subtitle, // 아래쪽: 연한 금색
             ],
           ),
           borderRadius: BorderRadius.circular(9.r),
-          border: Border.all(color: Color(0xFF163e6c)),
+          border: Border.all(color: Typicalcolor.font),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFFfdebc6),
-              ),
-              textAlign: TextAlign.center,
-            ),
-
-            Text(
-              data,
-              style: TextStyle(
-                fontSize: size.sp,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFFfdebc6),
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
+          children: [twoText(title, 14), twoText(data, size)],
         ),
       ),
     );
@@ -465,8 +397,9 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
       height: 80.h,
       padding: EdgeInsets.all(3), // border 두께
       decoration: BoxDecoration(
-        color: Color(0xFF020b17),
+        color: Typicalcolor.subborder,
         borderRadius: BorderRadius.circular(12.r),
+        border: Border.all(color: Typicalcolor.font),
       ),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4.h),
@@ -475,25 +408,17 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
             colors: [
-              Color(0xFF083566), // 위쪽: 어두운 차콜
-              Color(0xFF002645), // 아래쪽: 연한 금색
+              Typicalcolor.title, // 위쪽: 어두운 차콜
+              Typicalcolor.subtitle, // 아래쪽: 연한 금색
             ],
           ),
           borderRadius: BorderRadius.circular(9.r),
-          border: Border.all(color: Color(0xFF163e6c)),
+          border: Border.all(color: Typicalcolor.font),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              '이벤트',
-              style: TextStyle(
-                fontSize: 9.sp,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFFfdebc6),
-              ),
-              textAlign: TextAlign.center,
-            ),
+            twoText('이벤트', 9),
             // 토글 캡슐 + 노란 점
             GestureDetector(
               onTap: () => setState(() => eventOn = !eventOn),
@@ -502,9 +427,9 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
                 height: 18,
                 padding: EdgeInsets.symmetric(horizontal: 4.w),
                 decoration: BoxDecoration(
-                  color: Color(0xFF002646),
+                  color: Typicalcolor.bg,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: const Color(0xFF00162b)),
+                  border: Border.all(color: Typicalcolor.subborder),
                   boxShadow: const [
                     BoxShadow(
                       offset: Offset(0, 1),
@@ -522,7 +447,7 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
                     width: 12,
                     height: 12,
                     decoration: BoxDecoration(
-                      color: Color(0xFFe2b061),
+                      color: Typicalcolor.font,
                       shape: BoxShape.circle,
                       boxShadow: const [
                         BoxShadow(
@@ -538,27 +463,7 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'ON',
-                  style: TextStyle(
-                    fontSize: 9.sp,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFFfdebc6),
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-
-                Text(
-                  'OFF',
-                  style: TextStyle(
-                    fontSize: 9.sp,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFFfdebc6),
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
+              children: [twoText('ON', 9), twoText('OFF', 9)],
             ),
           ],
         ),
@@ -571,8 +476,9 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
       width: 160,
       padding: EdgeInsets.all(3), // border 두께
       decoration: BoxDecoration(
-        color: Color(0xFF020b17),
+        color: Typicalcolor.subborder,
         borderRadius: BorderRadius.circular(12.r),
+        border: Border.all(color: Typicalcolor.font),
       ),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4.h),
@@ -581,15 +487,15 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
             colors: [
-              Color(0xFF083566), // 위쪽: 어두운 차콜
-              Color(0xFF002645), // 아래쪽: 연한 금색
+              Typicalcolor.bg, // 위쪽: 어두운 차콜
+              Typicalcolor.subbg, // 아래쪽: 연한 금색
             ],
           ),
           borderRadius: BorderRadius.circular(9.r),
-          border: Border.all(color: Color(0xFF163e6c)),
+          border: Border.all(color: Typicalcolor.font),
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(12.r),
           child: Table(
             columnWidths: const {
               0: FixedColumnWidth(40), // 성
@@ -597,46 +503,65 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
               2: FlexColumnWidth(1.3), // 기대 메소
             },
             border: TableBorder(
-              horizontalInside: BorderSide(color: Color(0xFF0A2837), width: 1),
-              verticalInside: BorderSide(color: Color(0xFF0A2837), width: 1),
+              horizontalInside: BorderSide(
+                color: Typicalcolor.subborder,
+                width: 1,
+              ),
+              verticalInside: BorderSide(
+                color: Typicalcolor.subborder,
+                width: 1,
+              ),
               // 바깥 테두리는 Container로 처리했으니 여기선 inside만
             ),
             defaultVerticalAlignment: TableCellVerticalAlignment.middle,
             children: [
               // 헤더
               TableRow(
-                decoration: const BoxDecoration(color: Color(0xFF083566)),
+                decoration: BoxDecoration(color: Typicalcolor.title),
                 children: [
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 5.h),
-                    child: _cell('성', bold: true),
+                    child: twoText('성', 10),
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 5.h),
-                    child: _cell('성공률', bold: true),
+                    child: twoText('성공률', 10),
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 5.h),
-                    child: _cell('기대 메소', bold: true),
+                    child: twoText('기대 메소', 10),
                   ),
                 ],
               ),
               // 데이터
               ...rows.map(
                 (r) => TableRow(
-                  decoration: const BoxDecoration(color: Color(0xFF002645)),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      colors: [
+                        Typicalcolor.bg, // 위쪽: 어두운 차콜
+                        Typicalcolor.subborder, // 아래쪽: 연한 금색
+                      ],
+                    ),
+                  ),
                   children: [
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: 5.h),
-                      child: _cell(r[0]),
+                      child: twoText(r[0], 10),
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: 5.h),
-                      child: _cell(r[1]),
+                      child: twoText(r[1], 10),
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: 5.h),
-                      child: _cell(r[2].toString(), align: TextAlign.right),
+                      child: twoText(
+                        r[2].toString(),
+                        10,
+                        align: TextAlign.right,
+                      ),
                     ),
                   ],
                 ),
@@ -648,29 +573,14 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
     );
   }
 
-  Text _cell(
-    String text, {
-    bool bold = false,
-    TextAlign align = TextAlign.center,
-  }) {
-    return Text(
-      text,
-      textAlign: align,
-      style: TextStyle(
-        fontSize: 10.sp,
-        fontWeight: bold ? FontWeight.w800 : FontWeight.w700,
-        color: Color(0xFFfdebc6),
-      ),
-    );
-  }
-
   Widget resultbtn() {
     return Container(
       width: 135.w,
       padding: EdgeInsets.all(3), // border 두께
       decoration: BoxDecoration(
-        color: Color(0xFF020b17),
+        color: Typicalcolor.subborder,
         borderRadius: BorderRadius.circular(12.r),
+        border: Border.all(color: Typicalcolor.font),
       ),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 8.w),
@@ -680,21 +590,14 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
             colors: [
-              Color(0xFF083566), // 위쪽: 어두운 차콜
-              Color(0xFF002645), // 아래쪽: 연한 금색
+              Typicalcolor.title, // 위쪽: 어두운 차콜
+              Typicalcolor.subtitle, // 아래쪽: 연한 금색
             ],
           ),
           borderRadius: BorderRadius.circular(9.r),
-          border: Border.all(color: Color(0xFF163e6c)),
+          border: Border.all(color: Typicalcolor.font),
         ),
-        child: Text(
-          "결과 확인",
-          style: TextStyle(
-            color: Color(0xFFfdebc6),
-            fontSize: 20.sp,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        child: twoText('결과 확인', 20),
       ),
     );
   }
