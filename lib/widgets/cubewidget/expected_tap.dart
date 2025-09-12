@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mic/function/datas.dart';
 
 class ExpectedTap extends StatefulWidget {
   const ExpectedTap({super.key});
@@ -23,12 +24,9 @@ class _ExpectedTapState extends State<ExpectedTap> {
           padding: EdgeInsets.all(3), // border 두께
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              colors: [
-                Color(0xFF232323), // 위쪽: 어두운 차콜
-                Color(0xFFb06f0e), // 아래쪽: 연한 금색
-              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Typicalcolor.border, Typicalcolor.subborder],
             ),
             borderRadius: BorderRadius.circular(12),
           ),
@@ -37,10 +35,7 @@ class _ExpectedTapState extends State<ExpectedTap> {
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [
-                  Color(0xFF3B3B3B), // 위쪽: 어두운 차콜
-                  Color(0xFF000000), // 아래쪽: 연한 금색
-                ],
+                colors: [Typicalcolor.bg, Typicalcolor.subbg],
               ),
               borderRadius: BorderRadius.circular(9),
             ),
@@ -54,21 +49,11 @@ class _ExpectedTapState extends State<ExpectedTap> {
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
-                      colors: [
-                        Color(0xFF94590a), // 위쪽: 어두운 차콜
-                        Color(0xFFe7b822), // 아래쪽: 연한 금색
-                      ],
+                      colors: [Typicalcolor.title, Typicalcolor.border],
                     ),
                     borderRadius: BorderRadius.circular(9),
                   ),
-                  child: Text(
-                    '잠재능력 옵션 입력칸',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF000000),
-                    ),
-                  ),
+                  child: twoTitle('잠재능력 옵션 입력칸', 18),
                 ),
                 SizedBox(height: 10.h),
                 Row(
@@ -96,22 +81,12 @@ class _ExpectedTapState extends State<ExpectedTap> {
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
-                      colors: [
-                        Color(0xFF94590a), // 위쪽: 어두운 차콜
-                        Color(0xFFe7b822), // 아래쪽: 연한 금색
-                      ],
+                      colors: [Typicalcolor.title, Typicalcolor.subtitle],
                     ),
                     borderRadius: BorderRadius.circular(9),
-                    border: Border.all(color: Color(0XFFb06f0e), width: 2.w),
+                    border: Border.all(color: Typicalcolor.border, width: 2.w),
                   ),
-                  child: Text(
-                    '계산하기',
-                    style: TextStyle(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF000000),
-                    ),
-                  ),
+                  child: twoText('계산하기', 20),
                 ),
 
                 SizedBox(height: 60.h),
@@ -143,8 +118,12 @@ class _ExpectedTapState extends State<ExpectedTap> {
         width: double.infinity,
         height: 40.h,
         decoration: BoxDecoration(
-          color: Color(0xFF393838),
-          border: Border.all(color: Colors.black, width: 2.w),
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Typicalcolor.title, Typicalcolor.subtitle],
+          ),
+          border: Border.all(color: Typicalcolor.border, width: 2.w),
           borderRadius: BorderRadius.circular(12.r),
         ),
         child: Padding(
@@ -156,23 +135,9 @@ class _ExpectedTapState extends State<ExpectedTap> {
               Image.asset(img, width: 20.w, height: 20.h),
 
               SizedBox(width: 10.w),
-              Text(
-                title,
-                style: TextStyle(
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFFFFFFFF),
-                ),
-              ),
+              twoText(title, 20),
               SizedBox(width: 10.w),
-              Text(
-                value,
-                style: TextStyle(
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFFFFFFFF),
-                ),
-              ),
+              twoText(value, 20),
             ],
           ),
         ),
@@ -187,19 +152,16 @@ class _ExpectedTapState extends State<ExpectedTap> {
       padding: EdgeInsets.all(3), // border 두께
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          begin: Alignment.centerLeft,
-          end: Alignment.centerRight,
-          colors: [
-            Color(0xFF232323), // 위쪽: 어두운 차콜
-            Color(0xFFb06f0e), // 아래쪽: 연한 금색
-          ],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Typicalcolor.border, Typicalcolor.subborder],
         ),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Container(
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: Color(0xFFf9f4ed),
+          color: Typicalcolor.bg,
           borderRadius: BorderRadius.circular(9),
         ),
         child: Row(
@@ -237,19 +199,16 @@ class _ExpectedTapState extends State<ExpectedTap> {
           padding: EdgeInsets.all(3), // border 두께
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              colors: [
-                Color(0xFF232323), // 위쪽: 어두운 차콜
-                Color(0xFFb06f0e), // 아래쪽: 연한 금색
-              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Typicalcolor.border, Typicalcolor.subborder],
             ),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Container(
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: Color(0xFFf9f4ed),
+              color: Typicalcolor.bg,
               borderRadius: BorderRadius.circular(9),
             ),
             child: Text(

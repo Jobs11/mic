@@ -105,14 +105,16 @@ class _BossScreenState extends State<BossScreen> {
                               height: 170.h,
                               padding: EdgeInsets.all(3), // border 두께
                               decoration: BoxDecoration(
-                                color: Color(0xFFf1d4a5),
+                                color: Typicalcolor.bg,
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: Container(
                                 decoration: BoxDecoration(
-                                  color: Color(0xFFfdeaca),
+                                  color: Typicalcolor.bg,
                                   borderRadius: BorderRadius.circular(9),
-                                  border: Border.all(color: Color(0xFFd2a673)),
+                                  border: Border.all(
+                                    color: Typicalcolor.border,
+                                  ),
                                 ),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -181,13 +183,13 @@ class _BossScreenState extends State<BossScreen> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(17.r),
                             border: Border.all(
-                              color: Color(0xFFd2a673),
+                              color: Typicalcolor.border,
                               width: 2.w,
                             ),
                             gradient: LinearGradient(
                               begin: Alignment.topCenter, // 시작점 (위쪽)
                               end: Alignment.bottomCenter, // 끝점 (아래쪽)
-                              colors: [Color(0xFFf1d4a5), Color(0xFFfdeaca)],
+                              colors: [Typicalcolor.bg, Typicalcolor.subbg],
                             ),
                           ),
                           child: Column(
@@ -519,9 +521,12 @@ class _BossScreenState extends State<BossScreen> {
                             gradient: LinearGradient(
                               begin: Alignment.topCenter, // 시작점 (위쪽)
                               end: Alignment.bottomCenter, // 끝점 (아래쪽)
-                              colors: [Color(0xFFf1d4a5), Color(0xFFfdeaca)],
+                              colors: [Typicalcolor.bg, Typicalcolor.subbg],
                             ),
-                            border: Border.all(color: Colors.black, width: 4.w),
+                            border: Border.all(
+                              color: Typicalcolor.border,
+                              width: 4.w,
+                            ),
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -532,13 +537,7 @@ class _BossScreenState extends State<BossScreen> {
                                 height: 15.h,
                               ),
                               SizedBox(width: 5.w),
-                              Text(
-                                '${formatNumber(sumprice)} 메소',
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
+                              twoText('${formatNumber(sumprice)} 메소', 12),
                             ],
                           ),
                         ),
@@ -613,7 +612,7 @@ class _BossScreenState extends State<BossScreen> {
         gradient: LinearGradient(
           begin: Alignment.topCenter, // 시작점 (위쪽)
           end: Alignment.bottomCenter, // 끝점 (아래쪽)
-          colors: [Color(0xFFf1d4a5), Color(0xFFfdeaca)],
+          colors: [Typicalcolor.bg, Typicalcolor.subbg],
         ),
       ),
       child: Padding(
@@ -649,17 +648,11 @@ class _BossScreenState extends State<BossScreen> {
               ),
             ),
             SizedBox(width: 4.w),
-            SizedBox(
-              width: 40.w,
-              child: Text(item['bossname'], style: TextStyle(fontSize: 8.sp)),
-            ),
+            SizedBox(width: 40.w, child: twoText(item['bossname'], 8)),
             SizedBox(width: 4.w),
             SizedBox(
               width: 80.w,
-              child: Text(
-                '${formatNumber(item['sumP'])} 메소',
-                style: TextStyle(fontSize: 8.sp),
-              ),
+              child: twoText('${formatNumber(item['sumP'])} 메소', 8),
             ),
             SizedBox(width: 4.w),
 
@@ -669,10 +662,10 @@ class _BossScreenState extends State<BossScreen> {
                 value: item['selD'],
                 hint: const Text('난이도 선택'),
                 isExpanded: true,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 8,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: Typicalcolor.font,
                 ),
                 items: diffOptions
                     .map((d) => DropdownMenuItem(value: d, child: Text(d)))
@@ -700,10 +693,10 @@ class _BossScreenState extends State<BossScreen> {
                 value: item['selN'],
                 hint: const Text('파티 인원 선택'),
                 isExpanded: true,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 8,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: Typicalcolor.font,
                 ),
                 items: personOptions
                     .map(
@@ -733,16 +726,13 @@ class _BossScreenState extends State<BossScreen> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(17.r),
         gradient: LinearGradient(
-          begin: Alignment.topCenter, // 시작점 (위쪽)
-          end: Alignment.bottomCenter, // 끝점 (아래쪽)
-          colors: [Color(0xFF6a8aff), Color(0xFFb2fbff)],
+          begin: Alignment.centerLeft, // 시작점 (위쪽)
+          end: Alignment.centerRight, // 끝점 (아래쪽)
+          colors: [Typicalcolor.title, Typicalcolor.subtitle],
         ),
-        border: Border.all(color: Colors.black, width: 4.w),
+        border: Border.all(color: Typicalcolor.border, width: 4.w),
       ),
-      child: Text(
-        title,
-        style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold),
-      ),
+      child: twoText(title, 12),
     );
   }
 
@@ -827,37 +817,27 @@ class _BossScreenState extends State<BossScreen> {
         height: 28.h,
         padding: EdgeInsets.all(3), // border 두께
         decoration: BoxDecoration(
-          color: Color(0xFFe6a93a),
-          border: Border.all(color: Color(0xFF9a5325)),
+          color: Typicalcolor.subbg,
+          border: Border.all(color: Typicalcolor.border),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 12.w),
           decoration: BoxDecoration(
-            color: Color(0xFF9a5325),
-            border: Border.all(color: Color(0xFF9a5325)),
+            gradient: LinearGradient(
+              begin: Alignment.centerLeft, // 시작점 (위쪽)
+              end: Alignment.centerRight, // 끝점 (아래쪽)
+              colors: [Typicalcolor.title, Typicalcolor.subtitle],
+            ),
+            border: Border.all(color: Typicalcolor.border),
             borderRadius: BorderRadius.circular(9),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                title,
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFFfdeebe),
-                ),
-              ),
+              twoText(title, 14),
               SizedBox(width: 10.w),
-              Text(
-                b,
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFFfdeebe),
-                ),
-              ),
+              twoText(b, 14),
             ],
           ),
         ),

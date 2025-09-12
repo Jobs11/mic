@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mic/function/coupon_contents.dart';
+import 'package:mic/function/datas.dart';
+import 'package:mic/function/expdata/coupon_contents.dart';
 import 'package:mic/api/model/basic.dart';
 
 class CouponTap extends StatefulWidget {
@@ -53,65 +54,7 @@ class _CoupontapState extends State<CouponTap> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          width: double.infinity,
-          height: 40.h,
-          decoration: BoxDecoration(
-            color: Color(0xFFf3d090),
-            border: Border.all(color: Color(0xFF6a4423), width: 3.w),
-            borderRadius: BorderRadius.circular(12.r),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 20.w,
-                    height: 2.h,
-                    decoration: BoxDecoration(color: Color(0xFF6a4423)),
-                  ),
-                  SizedBox(height: 15.h),
-                  Container(
-                    width: 10.w,
-                    height: 2.h,
-                    decoration: BoxDecoration(color: Color(0xFF6a4423)),
-                  ),
-                ],
-              ),
-
-              Text(
-                '쿠폰 컨텐츠',
-                style: TextStyle(
-                  fontSize: 15.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF4b3f32),
-                ),
-              ),
-
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(height: 8.h),
-                  Container(
-                    width: 20.w,
-                    height: 2.h,
-                    decoration: BoxDecoration(color: Color(0xFF6a4423)),
-                  ),
-                  SizedBox(height: 15.h),
-                  Container(
-                    width: 10.w,
-                    height: 2.h,
-                    decoration: BoxDecoration(color: Color(0xFF6a4423)),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
+        expTitle('쿠폰 컨텐츠'),
         SizedBox(height: 10.h),
         useitems(),
         SizedBox(height: 10.h),
@@ -125,8 +68,8 @@ class _CoupontapState extends State<CouponTap> {
       width: double.infinity,
       height: 200.h,
       decoration: BoxDecoration(
-        color: Color(0xFFfdecbe),
-        border: Border.all(color: Color(0xFF6a4423), width: 3.w),
+        color: Typicalcolor.bg,
+        border: Border.all(color: Typicalcolor.border, width: 3.w),
         borderRadius: BorderRadius.circular(12.r),
       ),
       child: Column(
@@ -136,14 +79,14 @@ class _CoupontapState extends State<CouponTap> {
             width: double.infinity,
             height: 30.h,
             decoration: BoxDecoration(
-              color: Color(0xFFfdecbe),
-              border: Border.all(color: Color(0xFF6a4423), width: 3.w),
-              borderRadius: BorderRadius.circular(8.r),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Typicalcolor.title, Typicalcolor.border],
+              ),
+              borderRadius: BorderRadius.circular(9),
             ),
-            child: Text(
-              '소비 아이템',
-              style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold),
-            ),
+            child: twoTitle('소비 아이템', 15),
           ),
           SizedBox(height: 10.h),
 
@@ -170,12 +113,7 @@ class _CoupontapState extends State<CouponTap> {
 
           SizedBox(width: 10.w),
 
-          Expanded(
-            child: Text(
-              useitem,
-              style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
-            ),
-          ),
+          Expanded(child: twoText(useitem, 14)),
           SizedBox(width: 10.w),
 
           Padding(
@@ -225,8 +163,8 @@ class _CoupontapState extends State<CouponTap> {
       width: double.infinity,
       height: 120.h,
       decoration: BoxDecoration(
-        color: Color(0xFFfdecbe),
-        border: Border.all(color: Color(0xFF6a4423), width: 3.w),
+        color: Typicalcolor.bg,
+        border: Border.all(color: Typicalcolor.border, width: 3.w),
         borderRadius: BorderRadius.circular(12.r),
       ),
       child: Column(
@@ -236,14 +174,14 @@ class _CoupontapState extends State<CouponTap> {
             width: double.infinity,
             height: 30.h,
             decoration: BoxDecoration(
-              color: Color(0xFFfdecbe),
-              border: Border.all(color: Color(0xFF6a4423), width: 3.w),
-              borderRadius: BorderRadius.circular(8.r),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Typicalcolor.title, Typicalcolor.border],
+              ),
+              borderRadius: BorderRadius.circular(9),
             ),
-            child: Text(
-              '기간 아이템',
-              style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold),
-            ),
+            child: twoTitle('기간 아이템', 15),
           ),
           SizedBox(height: 10.h),
 
@@ -270,12 +208,7 @@ class _CoupontapState extends State<CouponTap> {
 
           SizedBox(width: 10.w),
 
-          Expanded(
-            child: Text(
-              timeitem,
-              style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
-            ),
-          ),
+          Expanded(child: twoText(timeitem, 14)),
           SizedBox(width: 10.w),
 
           Padding(

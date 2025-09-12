@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mic/function/week_contents.dart';
+import 'package:mic/function/datas.dart';
+import 'package:mic/function/expdata/week_contents.dart';
 import 'package:mic/api/model/basic.dart';
 
 class WeekTap extends StatefulWidget {
@@ -17,65 +18,7 @@ class _WeektapState extends State<WeekTap> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          width: double.infinity,
-          height: 40.h,
-          decoration: BoxDecoration(
-            color: Color(0xFFf3d090),
-            border: Border.all(color: Color(0xFF6a4423), width: 3.w),
-            borderRadius: BorderRadius.circular(12.r),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 20.w,
-                    height: 2.h,
-                    decoration: BoxDecoration(color: Color(0xFF6a4423)),
-                  ),
-                  SizedBox(height: 15.h),
-                  Container(
-                    width: 10.w,
-                    height: 2.h,
-                    decoration: BoxDecoration(color: Color(0xFF6a4423)),
-                  ),
-                ],
-              ),
-
-              Text(
-                '주간 컨텐츠',
-                style: TextStyle(
-                  fontSize: 15.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF4b3f32),
-                ),
-              ),
-
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(height: 8.h),
-                  Container(
-                    width: 20.w,
-                    height: 2.h,
-                    decoration: BoxDecoration(color: Color(0xFF6a4423)),
-                  ),
-                  SizedBox(height: 15.h),
-                  Container(
-                    width: 10.w,
-                    height: 2.h,
-                    decoration: BoxDecoration(color: Color(0xFF6a4423)),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
+        expTitle('주간 컨텐츠'),
         SizedBox(height: 10.h),
         Column(
           children: [
@@ -93,8 +36,8 @@ class _WeektapState extends State<WeekTap> {
       width: double.infinity,
       height: 200.h,
       decoration: BoxDecoration(
-        color: Color(0xFFfdecbe),
-        border: Border.all(color: Color(0xFF6a4423), width: 3.w),
+        color: Typicalcolor.bg,
+        border: Border.all(color: Typicalcolor.border, width: 3.w),
         borderRadius: BorderRadius.circular(12.r),
       ),
       child: Column(
@@ -104,15 +47,16 @@ class _WeektapState extends State<WeekTap> {
             width: double.infinity,
             height: 30.h,
             decoration: BoxDecoration(
-              color: Color(0xFFfdecbe),
-              border: Border.all(color: Color(0xFF6a4423), width: 3.w),
-              borderRadius: BorderRadius.circular(8.r),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Typicalcolor.title, Typicalcolor.border],
+              ),
+              borderRadius: BorderRadius.circular(9),
             ),
-            child: Text(
-              '아케인 리버&몬스터 파크',
-              style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold),
-            ),
+            child: twoTitle('아케인 리버&몬스터 파크', 15),
           ),
+
           SizedBox(height: 10.h),
 
           Expanded(
@@ -138,17 +82,28 @@ class _WeektapState extends State<WeekTap> {
 
           SizedBox(width: 10.w),
 
-          Expanded(
-            child: Text(
-              '$week (Lv: ${weeklevellimit[week]})',
-              style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
-            ),
-          ),
+          Expanded(child: twoText('$week (Lv: ${weeklevellimit[week]})', 14)),
           SizedBox(width: 10.w),
 
           (widget.b.characterlevel >= weeklevellimit[week]!)
               ? Checkbox(
                   value: weekquest[week],
+                  checkColor: Colors.white, // 체크 표시 색
+                  // 선택/비활성 등 상태별 채움색
+                  fillColor: WidgetStateProperty.resolveWith<Color?>((states) {
+                    if (states.contains(WidgetState.disabled)) {
+                      return Typicalcolor.bg;
+                    }
+                    if (states.contains(WidgetState.selected)) {
+                      return Typicalcolor.title; // 선택 시
+                    }
+                    return Typicalcolor.bg; // 평소
+                  }),
+                  side: BorderSide(
+                    // 테두리 색
+                    color: Typicalcolor.subborder,
+                    width: 2,
+                  ),
                   onChanged: (v) {
                     setState(() {
                       weekquest[week] = v ?? false;
@@ -161,7 +116,7 @@ class _WeektapState extends State<WeekTap> {
                   alignment: Alignment.center,
                   child: Icon(
                     Icons.disabled_by_default,
-                    color: Color(0xFF6750a4),
+                    color: Typicalcolor.title,
                     size: 22.sp,
                   ),
                 ),
@@ -175,8 +130,8 @@ class _WeektapState extends State<WeekTap> {
       width: double.infinity,
       height: 200.h,
       decoration: BoxDecoration(
-        color: Color(0xFFfdecbe),
-        border: Border.all(color: Color(0xFF6a4423), width: 3.w),
+        color: Typicalcolor.bg,
+        border: Border.all(color: Typicalcolor.border, width: 3.w),
         borderRadius: BorderRadius.circular(12.r),
       ),
       child: Column(
@@ -186,14 +141,14 @@ class _WeektapState extends State<WeekTap> {
             width: double.infinity,
             height: 30.h,
             decoration: BoxDecoration(
-              color: Color(0xFFfdecbe),
-              border: Border.all(color: Color(0xFF6a4423), width: 3.w),
-              borderRadius: BorderRadius.circular(8.r),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Typicalcolor.title, Typicalcolor.border],
+              ),
+              borderRadius: BorderRadius.circular(9),
             ),
-            child: Text(
-              '에픽 던전',
-              style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold),
-            ),
+            child: twoTitle('에픽 던전', 15),
           ),
           SizedBox(height: 5.h),
 
@@ -220,12 +175,7 @@ class _WeektapState extends State<WeekTap> {
 
           SizedBox(width: 10.w),
 
-          Expanded(
-            child: Text(
-              '$epic (Lv: ${weeklevellimit[epic]})',
-              style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
-            ),
-          ),
+          Expanded(child: twoText('$epic (Lv: ${weeklevellimit[epic]})', 14)),
           SizedBox(width: 10.w),
 
           (widget.b.characterlevel >= weeklevellimit[epic]!)
@@ -236,7 +186,7 @@ class _WeektapState extends State<WeekTap> {
                   alignment: Alignment.center,
                   child: Icon(
                     Icons.disabled_by_default,
-                    color: Color(0xFF6750a4),
+                    color: Typicalcolor.title,
                     size: 22.sp,
                   ),
                 ),
@@ -251,6 +201,22 @@ class _WeektapState extends State<WeekTap> {
     if (epic == kAz) {
       final v = epicweek[epic] ?? false;
       return Checkbox(
+        checkColor: Colors.white, // 체크 표시 색
+        // 선택/비활성 등 상태별 채움색
+        fillColor: WidgetStateProperty.resolveWith<Color?>((states) {
+          if (states.contains(WidgetState.disabled)) {
+            return Typicalcolor.bg;
+          }
+          if (states.contains(WidgetState.selected)) {
+            return Typicalcolor.title; // 선택 시
+          }
+          return Typicalcolor.bg; // 평소
+        }),
+        side: BorderSide(
+          // 테두리 색
+          color: Typicalcolor.subborder,
+          width: 2,
+        ),
         value: v,
         onChanged: (nv) {
           setState(() {
@@ -278,6 +244,22 @@ class _WeektapState extends State<WeekTap> {
       // 체크가 가능(보이는)한 경우
       return Checkbox(
         value: isSelectedMe,
+        checkColor: Colors.white, // 체크 표시 색
+        // 선택/비활성 등 상태별 채움색
+        fillColor: WidgetStateProperty.resolveWith<Color?>((states) {
+          if (states.contains(WidgetState.disabled)) {
+            return Typicalcolor.bg;
+          }
+          if (states.contains(WidgetState.selected)) {
+            return Typicalcolor.title; // 선택 시
+          }
+          return Typicalcolor.bg; // 평소
+        }),
+        side: BorderSide(
+          // 테두리 색
+          color: Typicalcolor.subborder,
+          width: 2,
+        ),
         onChanged: (nv) {
           setState(() {
             if (nv == true) {
@@ -300,7 +282,7 @@ class _WeektapState extends State<WeekTap> {
         alignment: Alignment.center,
         child: Icon(
           Icons.disabled_by_default,
-          color: const Color(0xFF6750a4),
+          color: Typicalcolor.title,
           size: 22.sp,
         ),
       );

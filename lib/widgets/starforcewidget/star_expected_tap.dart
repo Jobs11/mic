@@ -59,9 +59,12 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
                   width: double.infinity,
                   height: 30.h,
                   decoration: BoxDecoration(
-                    color: Typicalcolor.title,
-
-                    borderRadius: BorderRadius.circular(8.r),
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [Typicalcolor.title, Typicalcolor.border],
+                    ),
+                    borderRadius: BorderRadius.circular(9),
                   ),
                   child: twoTitle('스타포스 기댓값', 18),
                 ),
@@ -97,7 +100,7 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
                           StarforceBarChart(rows: rows),
                         ],
                       ),
-                      SizedBox(height: 10.h),
+                      SizedBox(height: 7.h),
                       resultbtn(),
                     ],
                   ),
@@ -121,7 +124,7 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
           border: Border.all(color: Color(0xFF000000)),
         ),
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 12.w),
+          padding: EdgeInsets.symmetric(horizontal: 8.w),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.centerLeft,
@@ -487,8 +490,8 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
             colors: [
-              Typicalcolor.bg, // 위쪽: 어두운 차콜
-              Typicalcolor.subbg, // 아래쪽: 연한 금색
+              Typicalcolor.title, // 위쪽: 어두운 차콜
+              Typicalcolor.subtitle, // 아래쪽: 연한 금색
             ],
           ),
           borderRadius: BorderRadius.circular(9.r),
@@ -521,15 +524,24 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
                 children: [
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 5.h),
-                    child: twoText('성', 10),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: twoText('성', 10),
+                    ),
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 5.h),
-                    child: twoText('성공률', 10),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: twoText('성공률', 10),
+                    ),
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 5.h),
-                    child: twoText('기대 메소', 10),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: twoText('기대 메소', 10),
+                    ),
                   ),
                 ],
               ),
@@ -542,25 +554,33 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
                       end: Alignment.centerRight,
                       colors: [
                         Typicalcolor.bg, // 위쪽: 어두운 차콜
-                        Typicalcolor.subborder, // 아래쪽: 연한 금색
+                        Typicalcolor.subbg, // 아래쪽: 연한 금색
                       ],
                     ),
                   ),
                   children: [
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: 5.h),
-                      child: twoText(r[0], 10),
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: twoText(r[0], 10),
+                      ),
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: 5.h),
-                      child: twoText(r[1], 10),
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: twoText(r[1], 10),
+                      ),
                     ),
                     Padding(
-                      padding: EdgeInsets.symmetric(vertical: 5.h),
-                      child: twoText(
-                        r[2].toString(),
-                        10,
-                        align: TextAlign.right,
+                      padding: EdgeInsets.symmetric(
+                        vertical: 5.h,
+                        horizontal: 2.w,
+                      ),
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: twoText(r[2].toString(), 10),
                       ),
                     ),
                   ],

@@ -132,8 +132,38 @@ class Typicalcolor {
   static Color font = Color(0xFF67462a);
   static Color subfont = Color(0xFF77644c);
 
-  static Color border = Color(0xFFc13e24);
+  static Color border = Color(0xFFcf690d);
   static Color subborder = Color(0xFFf59064);
+}
+
+Stack twoText(String title, double size) {
+  return Stack(
+    children: [
+      // 테두리
+      Text(
+        title,
+        style: TextStyle(
+          fontSize: size.sp,
+          fontWeight: FontWeight.bold,
+          foreground: Paint()
+            ..style = PaintingStyle.stroke
+            ..strokeWidth = 3
+            ..color = Color(0xFFFFFFFF),
+        ),
+        textAlign: TextAlign.center,
+      ),
+      // 안쪽 채우기
+      Text(
+        title,
+        style: TextStyle(
+          fontSize: size.sp,
+          fontWeight: FontWeight.bold,
+          color: Typicalcolor.subfont,
+        ),
+        textAlign: TextAlign.center,
+      ),
+    ],
+  );
 }
 
 Stack twoTitle(String title, double size) {
@@ -148,37 +178,9 @@ Stack twoTitle(String title, double size) {
           foreground: Paint()
             ..style = PaintingStyle.stroke
             ..strokeWidth = 3
-            ..color = Color(0xFFFFFFFF),
-        ),
-      ),
-      // 안쪽 채우기
-      Text(
-        title,
-        style: TextStyle(
-          fontSize: size.sp,
-          fontWeight: FontWeight.bold,
-          color: Typicalcolor.subfont,
-        ),
-      ),
-    ],
-  );
-}
-
-Stack twoText(String title, double size, {TextAlign align = TextAlign.center}) {
-  return Stack(
-    children: [
-      // 테두리
-      Text(
-        title,
-        style: TextStyle(
-          fontSize: size.sp,
-          fontWeight: FontWeight.bold,
-          foreground: Paint()
-            ..style = PaintingStyle.stroke
-            ..strokeWidth = 3
             ..color = Typicalcolor.subfont,
         ),
-        textAlign: align,
+        textAlign: TextAlign.center,
       ),
       // 안쪽 채우기
       Text(
@@ -188,8 +190,67 @@ Stack twoText(String title, double size, {TextAlign align = TextAlign.center}) {
           fontWeight: FontWeight.bold,
           color: Color(0xFFFFFFFF),
         ),
-        textAlign: align,
+        textAlign: TextAlign.center,
       ),
     ],
+  );
+}
+
+Container expTitle(String title) {
+  return Container(
+    width: double.infinity,
+    height: 40.h,
+    decoration: BoxDecoration(
+      gradient: LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [Typicalcolor.title, Typicalcolor.subbg],
+      ),
+      border: Border.all(color: Typicalcolor.border, width: 3.w),
+      borderRadius: BorderRadius.circular(12.r),
+    ),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 20.w,
+              height: 2.h,
+              decoration: BoxDecoration(color: Typicalcolor.border),
+            ),
+            SizedBox(height: 15.h),
+            Container(
+              width: 10.w,
+              height: 2.h,
+              decoration: BoxDecoration(color: Typicalcolor.border),
+            ),
+          ],
+        ),
+
+        twoTitle(title, 15),
+
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(height: 8.h),
+            Container(
+              width: 20.w,
+              height: 2.h,
+              decoration: BoxDecoration(color: Typicalcolor.border),
+            ),
+            SizedBox(height: 15.h),
+            Container(
+              width: 10.w,
+              height: 2.h,
+              decoration: BoxDecoration(color: Typicalcolor.border),
+            ),
+          ],
+        ),
+      ],
+    ),
   );
 }

@@ -19,30 +19,26 @@ class _SimulatorTapState extends State<SimulatorTap> {
       children: [
         Container(
           width: double.infinity,
-          height: 460.h,
+          height: 470.h,
           padding: EdgeInsets.all(3), // border 두께
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              colors: [
-                Color(0xFF232323), // 위쪽: 어두운 차콜
-                Color(0xFFb06f0e), // 아래쪽: 연한 금색
-              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Typicalcolor.border, Typicalcolor.subborder],
             ),
             borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: Typicalcolor.subfont),
           ),
           child: Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [
-                  Color(0xFF3B3B3B), // 위쪽: 어두운 차콜
-                  Color(0xFF000000), // 아래쪽: 연한 금색
-                ],
+                colors: [Typicalcolor.bg, Typicalcolor.subbg],
               ),
               borderRadius: BorderRadius.circular(9),
+              border: Border.all(color: Typicalcolor.subfont),
             ),
             child: Column(
               children: [
@@ -54,21 +50,11 @@ class _SimulatorTapState extends State<SimulatorTap> {
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
-                      colors: [
-                        Color(0xFF94590a), // 위쪽: 어두운 차콜
-                        Color(0xFFe7b822), // 아래쪽: 연한 금색
-                      ],
+                      colors: [Typicalcolor.title, Typicalcolor.border],
                     ),
                     borderRadius: BorderRadius.circular(9),
                   ),
-                  child: Text(
-                    '잠재능력 옵션',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF000000),
-                    ),
-                  ),
+                  child: twoTitle('잠재능력 옵션', 18),
                 ),
                 SizedBox(height: 10.h),
                 optionSet(),
@@ -105,12 +91,9 @@ class _SimulatorTapState extends State<SimulatorTap> {
         gradient: LinearGradient(
           begin: Alignment.centerLeft,
           end: Alignment.centerRight,
-          colors: [
-            Color(0xFF3b3b3b), // 위쪽: 어두운 차콜
-            Color(0xFF000000), // 아래쪽: 연한 금색
-          ],
+          colors: [Typicalcolor.bg, Typicalcolor.subbg],
         ),
-        border: Border.all(color: Color(0xFF999998), width: 2.w),
+        border: Border.all(color: Typicalcolor.subborder, width: 2.w),
         borderRadius: BorderRadius.circular(17.r),
       ),
       child: Column(
@@ -122,12 +105,12 @@ class _SimulatorTapState extends State<SimulatorTap> {
               height: 24.h,
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Typicalcolor.bg, // ✅ 흰색 → 배경색
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.grey.shade400),
+                border: Border.all(color: Typicalcolor.subborder),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.05),
+                    color: Typicalcolor.subfont.withOpacity(0.2), // ✅ 부드러운 그림자
                     blurRadius: 6,
                     offset: const Offset(0, 3),
                   ),
@@ -138,12 +121,18 @@ class _SimulatorTapState extends State<SimulatorTap> {
                   padding: EdgeInsets.only(left: 8.w), // ← 전체 아이템에 적용
                   child: DropdownButton<String>(
                     value: equipvalues,
-                    hint: const Text('아이템 설정'),
+                    hint: Text(
+                      '아이템 설정',
+                      style: TextStyle(
+                        color: Typicalcolor.subfont,
+                        fontSize: 14.sp,
+                      ),
+                    ),
                     isExpanded: true,
                     style: TextStyle(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                      color: Typicalcolor.font, // ✅ 검정 → 폰트색
                     ),
                     items: equiptype
                         .map((d) => DropdownMenuItem(value: d, child: Text(d)))
@@ -169,13 +158,12 @@ class _SimulatorTapState extends State<SimulatorTap> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: Container(
-              decoration: BoxDecoration(color: Color(0xFF999998)),
+              decoration: BoxDecoration(color: Typicalcolor.subborder),
               width: double.infinity,
               height: 2.w,
             ),
           ),
           SizedBox(height: 5.h),
-
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -197,26 +185,22 @@ class _SimulatorTapState extends State<SimulatorTap> {
       padding: EdgeInsets.all(3), // border 두께
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          begin: Alignment.centerLeft,
-          end: Alignment.centerRight,
-          colors: [
-            Color(0xFF232323), // 위쪽: 어두운 차콜
-            Color(0xFF3b3b3b), // 아래쪽: 연한 금색
-          ],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Typicalcolor.border, Typicalcolor.subborder],
         ),
         borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Typicalcolor.subfont),
       ),
       child: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFF3b3b3b), // 위쪽: 어두운 차콜
-              Color(0xFF000000), // 아래쪽: 연한 금색
-            ],
+            colors: [Typicalcolor.title, Typicalcolor.subtitle],
           ),
           borderRadius: BorderRadius.circular(9),
+          border: Border.all(color: Typicalcolor.subfont),
         ),
         child: Column(
           children: [
@@ -226,20 +210,7 @@ class _SimulatorTapState extends State<SimulatorTap> {
               height: 50.h,
             ),
             SizedBox(height: 10.h),
-            Text(
-              '재설정',
-              style: TextStyle(
-                color: Color(0xFFFFFFFF),
-                fontWeight: FontWeight.bold,
-                shadows: [
-                  Shadow(
-                    color: Color(0x80FFFFFF),
-                    blurRadius: 2,
-                    offset: Offset(0, 1),
-                  ),
-                ],
-              ),
-            ),
+            twoText('재설정', 14),
           ],
         ),
       ),
@@ -253,26 +224,22 @@ class _SimulatorTapState extends State<SimulatorTap> {
       padding: EdgeInsets.all(3), // border 두께
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          begin: Alignment.centerLeft,
-          end: Alignment.centerRight,
-          colors: [
-            Color(0xFF232323), // 위쪽: 어두운 차콜
-            Color(0xFF3b3b3b), // 아래쪽: 연한 금색
-          ],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Typicalcolor.border, Typicalcolor.subborder],
         ),
         borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Typicalcolor.subfont),
       ),
       child: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFF3B3B3B), // 위쪽: 어두운 차콜
-              Color(0xFF000000), // 아래쪽: 연한 금색
-            ],
+            colors: [Typicalcolor.title, Typicalcolor.subtitle],
           ),
           borderRadius: BorderRadius.circular(9),
+          border: Border.all(color: Typicalcolor.subfont),
         ),
         child: Row(
           children: [
@@ -282,21 +249,7 @@ class _SimulatorTapState extends State<SimulatorTap> {
               height: 20.h,
             ),
             SizedBox(width: 5.w),
-            Text(
-              '+1024 개',
-              style: TextStyle(
-                fontSize: 14.sp,
-                color: Color(0xFFFFFFFF),
-                fontWeight: FontWeight.bold,
-                shadows: [
-                  Shadow(
-                    color: Color(0x80FFFFFF),
-                    blurRadius: 2,
-                    offset: Offset(0, 1),
-                  ),
-                ],
-              ),
-            ),
+            twoText('+ 1024개', 14),
           ],
         ),
       ),
@@ -310,14 +263,12 @@ class _SimulatorTapState extends State<SimulatorTap> {
       padding: EdgeInsets.all(3), // border 두께
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          begin: Alignment.centerLeft,
-          end: Alignment.centerRight,
-          colors: [
-            Color(0xFF232323), // 위쪽: 어두운 차콜
-            Color(0xFF3b3b3b), // 아래쪽: 연한 금색
-          ],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Typicalcolor.border, Typicalcolor.subborder],
         ),
         borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Typicalcolor.subfont),
       ),
       child: Container(
         alignment: Alignment.center,
@@ -325,21 +276,12 @@ class _SimulatorTapState extends State<SimulatorTap> {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFF3B3B3B), // 위쪽: 어두운 차콜
-              Color(0xFF000000), // 아래쪽: 연한 금색
-            ],
+            colors: [Typicalcolor.title, Typicalcolor.subtitle],
           ),
           borderRadius: BorderRadius.circular(9),
+          border: Border.all(color: Typicalcolor.subfont),
         ),
-        child: Text(
-          title,
-          style: TextStyle(
-            fontSize: 16.sp,
-            color: Color(0xFFFFFFFF),
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        child: twoText(title, 16),
       ),
     );
   }
@@ -353,26 +295,23 @@ class _SimulatorTapState extends State<SimulatorTap> {
         padding: EdgeInsets.all(3), // border 두께
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-            colors: [
-              Color(0xFF232323), // 위쪽: 어두운 차콜
-              Color(0xFF3b3b3b), // 아래쪽: 연한 금색
-            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Typicalcolor.border, Typicalcolor.subborder],
           ),
           borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Typicalcolor.subfont),
         ),
         child: Container(
+          alignment: Alignment.center,
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [
-                Color(0xFF3B3B3B), // 위쪽: 어두운 차콜
-                Color(0xFF000000), // 아래쪽: 연한 금색
-              ],
+              colors: [Typicalcolor.title, Typicalcolor.subtitle],
             ),
             borderRadius: BorderRadius.circular(9),
+            border: Border.all(color: Typicalcolor.subfont),
           ),
           child: Row(
             children: [
@@ -381,16 +320,8 @@ class _SimulatorTapState extends State<SimulatorTap> {
                 width: 36.w,
                 height: 36.w,
               ),
-
               SizedBox(width: 50.w),
-              Text(
-                '4,000,000,000 메소',
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFFFFFFFF),
-                ),
-              ),
+              twoText('4,000,000,000 메소', 16),
             ],
           ),
         ),

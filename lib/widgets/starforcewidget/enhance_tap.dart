@@ -61,9 +61,12 @@ class _EnhanceTapState extends State<EnhanceTap> {
                   width: double.infinity,
                   height: 30.h,
                   decoration: BoxDecoration(
-                    color: Typicalcolor.title,
-
-                    borderRadius: BorderRadius.circular(8.r),
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [Typicalcolor.title, Typicalcolor.border],
+                    ),
+                    borderRadius: BorderRadius.circular(9),
                   ),
                   child: twoTitle('스타포스 강화 시뮬레이터', 18),
                 ),
@@ -276,7 +279,7 @@ class _EnhanceTapState extends State<EnhanceTap> {
                             '강화',
                             Color(0xFF000000),
                             Color(0xFF153d59),
-                            Color(0xFFf9d771),
+                            Typicalcolor.subtitle,
                             Typicalcolor.bg,
                           ),
                           SizedBox(width: 15.w),
@@ -284,7 +287,7 @@ class _EnhanceTapState extends State<EnhanceTap> {
                             '초기화',
                             Color(0xFF000000),
                             Color(0xFF16354f),
-                            Color(0xFF62b3cb),
+                            Typicalcolor.subborder,
                             Typicalcolor.bg,
                           ),
                         ],

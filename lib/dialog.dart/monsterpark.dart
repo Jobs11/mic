@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mic/function/datas.dart';
-import 'package:mic/function/day_contents.dart';
+import 'package:mic/function/expdata/day_contents.dart';
 
 Future<String?> monsterParkPick(BuildContext context) {
   return showDialog<String>(
@@ -29,7 +29,12 @@ class __MosterParkDialogState extends State<_MosterParkDialog> {
 
     return Container(
       decoration: BoxDecoration(
-        color: Color(0xFFf3d090),
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Typicalcolor.title, Typicalcolor.border],
+        ),
+
         borderRadius: BorderRadius.circular(24),
         boxShadow: const [
           BoxShadow(
@@ -45,15 +50,7 @@ class __MosterParkDialogState extends State<_MosterParkDialog> {
           mainAxisSize: MainAxisSize.min,
           children: [
             // 헤더 타이틀
-            Text(
-              '몬스터 파크 지역',
-              style: TextStyle(
-                fontSize: 26.sp,
-                fontWeight: FontWeight.w800,
-                color: Color(0xFF4b3f32),
-                letterSpacing: 1.0,
-              ),
-            ),
+            twoTitle('몬스터 파크 지역', 26),
             SizedBox(height: 16.h),
 
             // 본문 카드

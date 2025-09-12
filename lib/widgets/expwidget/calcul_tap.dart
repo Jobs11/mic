@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mic/api/model/basic.dart';
 import 'package:mic/function/datas.dart';
-import 'package:mic/function/exp_contents.dart';
+import 'package:mic/function/expdata/exp_contents.dart';
 import 'package:mic/widgets/pillwidget/exprate_bar.dart';
 
 class CalculTap extends StatefulWidget {
@@ -66,7 +66,11 @@ class _CalcultapState extends State<CalculTap> {
                       width: double.infinity,
                       height: 30.h,
                       decoration: BoxDecoration(
-                        color: Typicalcolor.title,
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [Typicalcolor.title, Typicalcolor.border],
+                        ),
                         borderRadius: BorderRadius.circular(9),
                       ),
                       child: twoTitle('경험치 게산기', 18),
@@ -232,7 +236,11 @@ class _CalcultapState extends State<CalculTap> {
                   width: double.infinity,
                   height: 30.h,
                   decoration: BoxDecoration(
-                    color: Typicalcolor.title,
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [Typicalcolor.title, Typicalcolor.border],
+                    ),
                     borderRadius: BorderRadius.circular(9),
                   ),
                   child: twoTitle('이벤트 및 더보기', 18),
@@ -315,6 +323,14 @@ class _CalcultapState extends State<CalculTap> {
                     enabledThumbRadius: 6,
                   ),
                   overlayShape: SliderComponentShape.noOverlay,
+                  // 🔵 값 말풍선 배경색
+                  valueIndicatorColor: Typicalcolor.bg,
+
+                  // 🔵 값 말풍선 텍스트 스타일
+                  valueIndicatorTextStyle: TextStyle(
+                    color: Typicalcolor.font,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 child: Slider(
                   value: index,

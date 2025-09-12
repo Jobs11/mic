@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mic/function/datas.dart';
 
 class StarforceBarChart extends StatelessWidget {
   const StarforceBarChart({super.key, required this.rows});
@@ -42,12 +43,12 @@ class StarforceBarChart extends StatelessWidget {
             barRods: [
               BarChartRodData(
                 toY: rate,
-                width: 8.w,
+                width: 6.w,
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(4),
                   topRight: Radius.circular(4),
                 ),
-                color: Color(0xFFd68318),
+                color: Typicalcolor.bg,
               ),
             ],
           ),
@@ -63,9 +64,16 @@ class StarforceBarChart extends StatelessWidget {
       height: 250.h,
       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
       decoration: BoxDecoration(
-        color: panel,
+        gradient: LinearGradient(
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+          colors: [
+            Typicalcolor.title, // 위쪽: 어두운 차콜
+            Typicalcolor.subtitle, // 아래쪽: 연한 금색
+          ],
+        ),
         borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(color: line, width: 2.w),
+        border: Border.all(color: Typicalcolor.subborder, width: 2.w),
         boxShadow: const [
           BoxShadow(
             offset: Offset(0, 2),
@@ -84,11 +92,11 @@ class StarforceBarChart extends StatelessWidget {
               show: true,
               drawVerticalLine: false,
               getDrawingHorizontalLine: (v) =>
-                  FlLine(color: line, strokeWidth: 1),
+                  FlLine(color: Typicalcolor.subborder, strokeWidth: 1),
             ),
             borderData: FlBorderData(
               show: true,
-              border: Border.all(color: line, width: 2.w),
+              border: Border.all(color: Typicalcolor.subborder, width: 2.w),
             ),
             barGroups: groups..sort((a, b) => a.x.compareTo(b.x)),
             titlesData: FlTitlesData(
@@ -107,8 +115,8 @@ class StarforceBarChart extends StatelessWidget {
                     padding: EdgeInsets.only(top: 6.h),
                     child: Text(
                       value.toInt().toString(),
-                      style: const TextStyle(
-                        color: gold,
+                      style: TextStyle(
+                        color: Typicalcolor.font,
                         fontWeight: FontWeight.w800,
                       ),
                     ),
@@ -125,8 +133,8 @@ class StarforceBarChart extends StatelessWidget {
                     value % 20 == 0
                         ? value.toStringAsFixed(value % 1 == 0 ? 0 : 1)
                         : '',
-                    style: const TextStyle(
-                      color: gold,
+                    style: TextStyle(
+                      color: Typicalcolor.font,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -136,11 +144,14 @@ class StarforceBarChart extends StatelessWidget {
             barTouchData: BarTouchData(
               enabled: true,
               touchTooltipData: BarTouchTooltipData(
-                getTooltipColor: (_) => const Color(0xFF0E2940), // ← 여기로 변경
+                getTooltipColor: (_) => Typicalcolor.bg, // ← 여기로 변경
                 getTooltipItem: (group, groupIndex, rod, rodIndex) =>
                     BarTooltipItem(
                       '성 ${group.x}\n성공률 ${rod.toY.toStringAsFixed(1)}%',
-                      const TextStyle(color: gold, fontWeight: FontWeight.w800),
+                      TextStyle(
+                        color: Typicalcolor.font,
+                        fontWeight: FontWeight.w800,
+                      ),
                     ),
               ),
             ),

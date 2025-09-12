@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mic/function/datas.dart';
 
 enum SimTab { arcane, grandis }
 
@@ -31,7 +32,7 @@ class DayPillTwo extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.transparent,
         borderRadius: BorderRadius.circular(8.r),
-        border: Border.all(color: _brown, width: 2),
+
         boxShadow: const [
           // 상단 박스와 비슷한 살짝의 입체감
           BoxShadow(offset: Offset(0, 1), blurRadius: 0, color: _brownSoft),
@@ -49,16 +50,16 @@ class DayPillTwo extends StatelessWidget {
                   duration: const Duration(milliseconds: 120),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: isLeft ? _creamHover : _cream,
-                  ),
-                  child: Text(
-                    '아케인 리버',
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w800,
-                      color: Colors.black,
+                    // color: isLeft ? _creamHover : _cream,
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: isLeft
+                          ? [Typicalcolor.title, Typicalcolor.border]
+                          : [Typicalcolor.title, Typicalcolor.subtitle],
                     ),
                   ),
+                  child: twoText('아케인 리버', 14),
                 ),
               ),
             ),
@@ -72,16 +73,16 @@ class DayPillTwo extends StatelessWidget {
                   duration: const Duration(milliseconds: 120),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: isRight ? _creamHover : _cream,
-                  ),
-                  child: Text(
-                    '그란디스',
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w800,
-                      color: Colors.black,
+                    // color: isRight ? _creamHover : _cream,
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: isRight
+                          ? [Typicalcolor.title, Typicalcolor.border]
+                          : [Typicalcolor.title, Typicalcolor.subtitle],
                     ),
                   ),
+                  child: twoText('그란디스', 14),
                 ),
               ),
             ),

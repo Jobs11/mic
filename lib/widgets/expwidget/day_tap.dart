@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mic/dialog.dart/monsterpark.dart';
-import 'package:mic/function/day_contents.dart';
+import 'package:mic/function/datas.dart';
+import 'package:mic/function/expdata/day_contents.dart';
 import 'package:mic/api/model/basic.dart';
 import 'package:mic/widgets/pillwidget/day_pill_two.dart';
 
@@ -21,72 +22,15 @@ class _DaytapState extends State<DayTap> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          width: double.infinity,
-          height: 40.h,
-          decoration: BoxDecoration(
-            color: Color(0xFFf3d090),
-            border: Border.all(color: Color(0xFF6a4423), width: 3.w),
-            borderRadius: BorderRadius.circular(12.r),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 20.w,
-                    height: 2.h,
-                    decoration: BoxDecoration(color: Color(0xFF6a4423)),
-                  ),
-                  SizedBox(height: 15.h),
-                  Container(
-                    width: 10.w,
-                    height: 2.h,
-                    decoration: BoxDecoration(color: Color(0xFF6a4423)),
-                  ),
-                ],
-              ),
+        expTitle('일일 컨텐츠 [아케인/그란디스]'),
 
-              Text(
-                '일일 컨텐츠 [아케인/그란디스]',
-                style: TextStyle(
-                  fontSize: 15.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF4b3f32),
-                ),
-              ),
-
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(height: 8.h),
-                  Container(
-                    width: 20.w,
-                    height: 2.h,
-                    decoration: BoxDecoration(color: Color(0xFF6a4423)),
-                  ),
-                  SizedBox(height: 15.h),
-                  Container(
-                    width: 10.w,
-                    height: 2.h,
-                    decoration: BoxDecoration(color: Color(0xFF6a4423)),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
         SizedBox(height: 10.h),
         Container(
           width: double.infinity,
           height: 300.h,
           decoration: BoxDecoration(
-            color: Color(0xFFfdecbe),
-            border: Border.all(color: Color(0xFF6a4423), width: 3.w),
+            color: Typicalcolor.bg,
+            border: Border.all(color: Typicalcolor.border, width: 3.w),
             borderRadius: BorderRadius.circular(12.r),
           ),
           child: Column(
@@ -132,8 +76,8 @@ class _DaytapState extends State<DayTap> {
       width: double.infinity,
       height: 120.h,
       decoration: BoxDecoration(
-        color: Color(0xFFfdecbe),
-        border: Border.all(color: Color(0xFF6a4423), width: 3.w),
+        color: Typicalcolor.bg,
+        border: Border.all(color: Typicalcolor.border, width: 3.w),
         borderRadius: BorderRadius.circular(12.r),
       ),
       child: Column(
@@ -143,29 +87,21 @@ class _DaytapState extends State<DayTap> {
             width: double.infinity,
             height: 30.h,
             decoration: BoxDecoration(
-              color: Color(0xFFfdecbe),
-              border: Border.all(color: Color(0xFF6a4423), width: 3.w),
-              borderRadius: BorderRadius.circular(8.r),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Typicalcolor.title, Typicalcolor.border],
+              ),
+              borderRadius: BorderRadius.circular(9),
             ),
-            child: Text(
-              '몬스터 파크',
-              style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold),
-            ),
+            child: twoTitle('몬스터 파크', 15),
           ),
 
           Padding(
             padding: EdgeInsets.fromLTRB(8.w, 8.h, 8.w, 0),
             child: Row(
               children: [
-                Expanded(
-                  child: Text(
-                    '몬스터파크 지역을 선택하세요 >>',
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
+                Expanded(child: twoText('몬스터파크 지역을 선택하세요 >>', 12)),
 
                 SizedBox(width: 5.w),
                 GestureDetector(
@@ -197,18 +133,26 @@ class _DaytapState extends State<DayTap> {
             padding: EdgeInsets.fromLTRB(8.w, 8.h, 8.w, 0),
             child: Row(
               children: [
-                Expanded(
-                  child: Text(
-                    '몬스터파크 [${monsterpark['지역']}]',
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
+                Expanded(child: twoText('몬스터파크 [${monsterpark['지역']}]', 12)),
 
                 Checkbox(
                   value: monsterpark['입장여부'],
+                  checkColor: Colors.white, // 체크 표시 색
+                  // 선택/비활성 등 상태별 채움색
+                  fillColor: WidgetStateProperty.resolveWith<Color?>((states) {
+                    if (states.contains(WidgetState.disabled)) {
+                      return Typicalcolor.bg;
+                    }
+                    if (states.contains(WidgetState.selected)) {
+                      return Typicalcolor.title; // 선택 시
+                    }
+                    return Typicalcolor.bg; // 평소
+                  }),
+                  side: BorderSide(
+                    // 테두리 색
+                    color: Typicalcolor.subborder,
+                    width: 2,
+                  ),
                   onChanged: (v) {
                     setState(() {
                       monsterpark['입장여부'] = v ?? false;
@@ -233,15 +177,28 @@ class _DaytapState extends State<DayTap> {
           SizedBox(width: 10.w),
 
           Expanded(
-            child: Text(
-              '$arcane (Lv: ${daylevellimit[arcane]})',
-              style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
-            ),
+            child: twoText('$arcane (Lv: ${daylevellimit[arcane]})', 14),
           ),
           SizedBox(width: 10.w),
           (widget.b.characterlevel >= daylevellimit[arcane]!)
               ? Checkbox(
                   value: dayquest[arcane],
+                  checkColor: Colors.white, // 체크 표시 색
+                  // 선택/비활성 등 상태별 채움색
+                  fillColor: WidgetStateProperty.resolveWith<Color?>((states) {
+                    if (states.contains(WidgetState.disabled)) {
+                      return Typicalcolor.bg;
+                    }
+                    if (states.contains(WidgetState.selected)) {
+                      return Typicalcolor.title; // 선택 시
+                    }
+                    return Typicalcolor.bg; // 평소
+                  }),
+                  side: BorderSide(
+                    // 테두리 색
+                    color: Typicalcolor.subborder,
+                    width: 2,
+                  ),
                   onChanged: (v) {
                     setState(() {
                       dayquest[arcane] = v ?? false;
@@ -252,7 +209,11 @@ class _DaytapState extends State<DayTap> {
                   width: 48.w,
                   height: 48.h,
                   alignment: Alignment.center,
-                  child: Icon(Icons.disabled_by_default, size: 20.sp),
+                  child: Icon(
+                    Icons.disabled_by_default,
+                    color: Typicalcolor.title,
+                    size: 20.sp,
+                  ),
                 ),
         ],
       ),
@@ -269,16 +230,29 @@ class _DaytapState extends State<DayTap> {
           SizedBox(width: 10.w),
 
           Expanded(
-            child: Text(
-              '$grandis (Lv: ${daylevellimit[grandis]})',
-              style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
-            ),
+            child: twoText('$grandis (Lv: ${daylevellimit[grandis]})', 14),
           ),
           SizedBox(width: 10.w),
 
           (widget.b.characterlevel >= daylevellimit[grandis]!)
               ? Checkbox(
                   value: dayquest[grandis],
+                  checkColor: Colors.white, // 체크 표시 색
+                  // 선택/비활성 등 상태별 채움색
+                  fillColor: WidgetStateProperty.resolveWith<Color?>((states) {
+                    if (states.contains(WidgetState.disabled)) {
+                      return Typicalcolor.bg;
+                    }
+                    if (states.contains(WidgetState.selected)) {
+                      return Typicalcolor.title; // 선택 시
+                    }
+                    return Typicalcolor.bg; // 평소
+                  }),
+                  side: BorderSide(
+                    // 테두리 색
+                    color: Typicalcolor.subborder,
+                    width: 2,
+                  ),
                   onChanged: (v) {
                     setState(() {
                       dayquest[grandis] = v ?? false;
@@ -291,7 +265,7 @@ class _DaytapState extends State<DayTap> {
                   alignment: Alignment.center,
                   child: Icon(
                     Icons.disabled_by_default,
-                    color: Color(0xFF6750a4),
+                    color: Typicalcolor.title,
                     size: 22.sp,
                   ),
                 ),
