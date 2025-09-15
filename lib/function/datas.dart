@@ -55,7 +55,7 @@ const List<String> equipimg = [
   "assets/images/items/face.png", // 얼장
   "assets/images/items/eye.png", // 눈장
   "assets/images/items/ring.png", // 반지
-  "assets/images/items/pendant.png", // 팬던트
+  "assets/images/items/pendant.png", // 펜던트
   "assets/images/items/heart.png", // 하트
   "assets/images/items/belt.png", // 벨트
   "assets/images/items/weapon.png", // 무기
@@ -75,7 +75,7 @@ const List<String> equiptype = [
   "얼굴장식",
   "눈장식",
   "반지",
-  "팬던트",
+  "펜던트",
   "하트",
   "벨트",
   "무기",
@@ -95,7 +95,7 @@ const List<String> forcetype = [
   "얼굴장식",
   "눈장식",
   "반지",
-  "팬던트",
+  "펜던트",
   "하트",
   "벨트",
   "무기",
@@ -254,3 +254,9 @@ Container expTitle(String title) {
     ),
   );
 }
+
+final Map<int, int> levelmeso = {200: 45000000, 250: 50000000};
+
+//할인비용: 강화비용 × { 1.0 - (MVP+PC방) }
+//썬데이: 강화비용 × { 1.0 - (MVP+PC방) } × 0.7
+//썬데이: enchantMeso * { 1.0 - (mvpTime+pcTime) } * payTime * destroyTime

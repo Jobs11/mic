@@ -29,11 +29,17 @@ String formatNumber(num value) {
 String formatPower(int number) {
   if (number == 0) return "0";
 
-  int eok = number ~/ 100000000; // 억 단위
+  int jo = number ~/ 1000000000000; // 조 단위 (10¹²)
+  int eok = (number % 1000000000000) ~/ 100000000; // 억 단위
   int man = (number % 100000000) ~/ 10000; // 만 단위
   int rest = number % 10000; // 나머지
 
   StringBuffer result = StringBuffer();
+
+  if (jo > 0) {
+    result.write("$jo조");
+    if (eok > 0 || man > 0 || rest > 0) result.write(" ");
+  }
 
   if (eok > 0) {
     result.write("$eok억");

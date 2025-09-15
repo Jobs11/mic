@@ -1,5 +1,10 @@
+import 'dart:convert';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mic/function/currentuser.dart';
 import 'package:mic/function/datas.dart';
 
 class SimulatorTap extends StatefulWidget {
@@ -12,6 +17,60 @@ class SimulatorTap extends StatefulWidget {
 class _SimulatorTapState extends State<SimulatorTap> {
   int equipindex = 0;
   String equipvalues = equiptype.first;
+  String firstOption = '';
+  String secondOption = '';
+  String thirdOption = '';
+  int counting = 0;
+  int summeso = 0;
+  final random = Random();
+
+  Map<String, dynamic> equipcube = {}; // = data['무기']
+  String selectedLevel = '200'; // "200" | "250"
+  Map<String, dynamic>? selectedPayload; // = weapon[selectedLevel]
+
+  @override
+  void initState() {
+    super.initState();
+    loadData(equipvalues);
+  }
+
+  Future<void> loadData(String equip) async {
+    final jsonStr = await rootBundle.loadString(
+      'assets/datas/cube_probabilities.json',
+    );
+    final data = jsonDecode(jsonStr);
+    equipcube = Map<String, dynamic>.from(data[equip]);
+    final levels = equipcube.keys.toList()..sort(); // ["200","250",...]
+    selectedLevel = levels.first;
+    selectedPayload = Map<String, dynamic>.from(equipcube[selectedLevel]!);
+    changeOption();
+    setState(() {});
+  }
+
+  void changeOption() {
+    firstOption = pickRandomOption('첫번째');
+    secondOption = pickRandomOption('두번째');
+    thirdOption = pickRandomOption('세번째');
+  }
+
+  String pickRandomOption(String step) {
+    List<Map<String, dynamic>> options = List<Map<String, dynamic>>.from(
+      selectedPayload![step],
+    );
+
+    double total = options.fold(
+      0,
+      (sum, e) => sum + (e['확률'] as num).toDouble(),
+    );
+    double r = Random().nextDouble() * total;
+
+    double cumulative = 0;
+    for (var opt in options) {
+      cumulative += (opt['확률'] as num).toDouble();
+      if (r <= cumulative) return opt['옵션'];
+    }
+    return options.last['옵션']; // fallback
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,8 +126,24 @@ class _SimulatorTapState extends State<SimulatorTap> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       countingCube(),
-                      btnChoice('계산하기'),
-                      btnChoice('초기화'),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            summeso =
+                                counting * levelmeso[int.parse(selectedLevel)]!;
+                          });
+                        },
+                        child: btnChoice('계산하기'),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            summeso = 0;
+                            counting = 0;
+                          });
+                        },
+                        child: btnChoice('초기화'),
+                      ),
                     ],
                   ),
                 ),
@@ -83,135 +158,169 @@ class _SimulatorTapState extends State<SimulatorTap> {
     );
   }
 
-  Container optionSet() {
-    return Container(
-      width: 200.w,
-      height: 200.h,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.centerLeft,
-          end: Alignment.centerRight,
-          colors: [Typicalcolor.bg, Typicalcolor.subbg],
+  Widget optionSet() {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 8.w),
+      child: Container(
+        width: double.infinity,
+        height: 200.h,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: [Typicalcolor.bg, Typicalcolor.subbg],
+          ),
+          border: Border.all(color: Typicalcolor.subborder, width: 2.w),
+          borderRadius: BorderRadius.circular(17.r),
         ),
-        border: Border.all(color: Typicalcolor.subborder, width: 2.w),
-        borderRadius: BorderRadius.circular(17.r),
-      ),
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Container(
-              width: 100.w,
-              height: 24.h,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: Typicalcolor.bg, // ✅ 흰색 → 배경색
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Typicalcolor.subborder),
-                boxShadow: [
-                  BoxShadow(
-                    color: Typicalcolor.subfont.withOpacity(0.2), // ✅ 부드러운 그림자
-                    blurRadius: 6,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: DropdownButtonHideUnderline(
-                child: Padding(
-                  padding: EdgeInsets.only(left: 8.w), // ← 전체 아이템에 적용
-                  child: DropdownButton<String>(
-                    value: equipvalues,
-                    hint: Text(
-                      '아이템 설정',
-                      style: TextStyle(
-                        color: Typicalcolor.subfont,
-                        fontSize: 14.sp,
-                      ),
-                    ),
-                    isExpanded: true,
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Typicalcolor.font, // ✅ 검정 → 폰트색
-                    ),
-                    items: equiptype
-                        .map((d) => DropdownMenuItem(value: d, child: Text(d)))
-                        .toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        equipindex = equiptype.indexOf(value!);
-                        equipvalues = value;
-                      });
-                    },
-                  ),
-                ),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                dropsCube('아이템 설정', equipvalues, equiptype, (value) {
+                  setState(() {
+                    equipindex = equiptype.indexOf(value!);
+                    equipvalues = value;
+                    loadData(equipvalues);
+                  });
+                }),
+                dropsCube('레벨 설정', selectedLevel, equipcube.keys.toList(), (
+                  lv,
+                ) {
+                  setState(() {
+                    selectedLevel = lv!;
+                    selectedPayload = Map<String, dynamic>.from(
+                      equipcube[lv]!,
+                    ); // ← 여기서 확률/옵션 접근 가능
+                    changeOption();
+                  });
+                }),
+              ],
+            ),
+            Image.asset(
+              equipimg[equipindex],
+              width: 70.w,
+              height: 70.h,
+              fit: BoxFit.fill,
+            ),
+            SizedBox(height: 5.h),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: Container(
+                decoration: BoxDecoration(color: Typicalcolor.subborder),
+                width: double.infinity,
+                height: 2.w,
               ),
             ),
-          ),
-          Image.asset(
-            equipimg[equipindex],
-            width: 70.w,
-            height: 70.h,
-            fit: BoxFit.fill,
-          ),
-          SizedBox(height: 5.h),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
-            child: Container(
-              decoration: BoxDecoration(color: Typicalcolor.subborder),
-              width: double.infinity,
-              height: 2.w,
+            SizedBox(height: 5.h),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                cubeOption('레전드리', gradeColor['레전드리']!),
+                cubeOption(firstOption, gradeColor['레전드리']!),
+                cubeOption(secondOption, gradeColor['레전드리']!),
+                cubeOption(thirdOption, gradeColor['레전드리']!),
+              ],
             ),
-          ),
-          SizedBox(height: 5.h),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              cubeOption('레전드리', gradeColor['레전드리']!),
-              cubeOption('보스 공격시 데미지 40%', gradeColor['레전드리']!),
-              cubeOption('공격력 9%', gradeColor['유니크']!),
-              cubeOption('공격력 12%', gradeColor['레전드리']!),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
-  Container resetingbtn() {
-    return Container(
-      width: 92.w,
-      height: 92.h,
-      padding: EdgeInsets.all(3), // border 두께
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [Typicalcolor.border, Typicalcolor.subborder],
-        ),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Typicalcolor.subfont),
-      ),
+  Padding dropsCube(
+    String title,
+    String value,
+    List<String> values,
+    ValueChanged<String?> onChanged,
+  ) {
+    return Padding(
+      padding: EdgeInsets.all(8.0),
       child: Container(
+        width: 80.w,
+        height: 24.h,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: Typicalcolor.bg, // ✅ 흰색 → 배경색
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Typicalcolor.subborder),
+          boxShadow: [
+            BoxShadow(
+              color: Typicalcolor.subfont.withValues(alpha: 0.2), // ✅ 부드러운 그림자
+              blurRadius: 6,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: DropdownButtonHideUnderline(
+          child: Padding(
+            padding: EdgeInsets.only(left: 8.w), // ← 전체 아이템에 적용
+            child: DropdownButton<String>(
+              value: value,
+              hint: Text(
+                title,
+                style: TextStyle(color: Typicalcolor.subfont, fontSize: 12.sp),
+              ),
+              isExpanded: true,
+              style: TextStyle(
+                fontSize: 12.sp,
+                fontWeight: FontWeight.bold,
+                color: Typicalcolor.font, // ✅ 검정 → 폰트색
+              ),
+              items: values
+                  .map((d) => DropdownMenuItem(value: d, child: Text(d)))
+                  .toList(),
+              onChanged: onChanged,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget resetingbtn() {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          changeOption();
+          counting += 1;
+        });
+      },
+      child: Container(
+        width: 92.w,
+        height: 92.h,
+        padding: EdgeInsets.all(3), // border 두께
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Typicalcolor.title, Typicalcolor.subtitle],
+            colors: [Typicalcolor.border, Typicalcolor.subborder],
           ),
-          borderRadius: BorderRadius.circular(9),
+          borderRadius: BorderRadius.circular(12),
           border: Border.all(color: Typicalcolor.subfont),
         ),
-        child: Column(
-          children: [
-            Image.asset(
-              'assets/images/items/blackcube.png',
-              width: 50.w,
-              height: 50.h,
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Typicalcolor.title, Typicalcolor.subtitle],
             ),
-            SizedBox(height: 10.h),
-            twoText('재설정', 14),
-          ],
+            borderRadius: BorderRadius.circular(9),
+            border: Border.all(color: Typicalcolor.subfont),
+          ),
+          child: Column(
+            children: [
+              Image.asset(
+                'assets/images/items/blackcube.png',
+                width: 50.w,
+                height: 50.h,
+              ),
+              SizedBox(height: 10.h),
+              twoText('재설정', 14),
+            ],
+          ),
         ),
       ),
     );
@@ -232,6 +341,7 @@ class _SimulatorTapState extends State<SimulatorTap> {
         border: Border.all(color: Typicalcolor.subfont),
       ),
       child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 8.w),
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
@@ -242,6 +352,7 @@ class _SimulatorTapState extends State<SimulatorTap> {
           border: Border.all(color: Typicalcolor.subfont),
         ),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Image.asset(
               'assets/images/items/blackcube.png',
@@ -249,7 +360,7 @@ class _SimulatorTapState extends State<SimulatorTap> {
               height: 20.h,
             ),
             SizedBox(width: 5.w),
-            twoText('+ 1024개', 14),
+            twoText('+ $counting개', 14),
           ],
         ),
       ),
@@ -303,6 +414,7 @@ class _SimulatorTapState extends State<SimulatorTap> {
           border: Border.all(color: Typicalcolor.subfont),
         ),
         child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 8.w),
           alignment: Alignment.center,
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -314,6 +426,7 @@ class _SimulatorTapState extends State<SimulatorTap> {
             border: Border.all(color: Typicalcolor.subfont),
           ),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Image.asset(
                 'assets/images/icons/coin.png',
@@ -321,7 +434,7 @@ class _SimulatorTapState extends State<SimulatorTap> {
                 height: 36.w,
               ),
               SizedBox(width: 50.w),
-              twoText('4,000,000,000 메소', 16),
+              twoText('${formatPower(summeso)} 메소', 16),
             ],
           ),
         ),
@@ -329,10 +442,17 @@ class _SimulatorTapState extends State<SimulatorTap> {
     );
   }
 
-  Text cubeOption(String title, Color colors) {
-    return Text(
-      title,
-      style: TextStyle(color: colors, fontWeight: FontWeight.bold),
+  Widget cubeOption(String title, Color colors) {
+    return SizedBox(
+      width: 220.w,
+      child: Text(
+        title,
+        style: TextStyle(
+          color: colors,
+          fontWeight: FontWeight.bold,
+          fontSize: 12.sp,
+        ),
+      ),
     );
   }
 }

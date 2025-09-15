@@ -34,6 +34,7 @@ flutter:
     - assets/images/areas/
     - assets/images/weeks/
     - assets/images/consumes/
+    - assets/datas/
 
   fonts:
     - family: MaplestoryOTF

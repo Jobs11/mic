@@ -1,0 +1,914 @@
+{
+  "130": [
+    {
+      "from": 0,
+      "to": 1,
+      "base_meso": 62000
+    },
+    {
+      "from": 1,
+      "to": 2,
+      "base_meso": 123100
+    },
+    {
+      "from": 2,
+      "to": 3,
+      "base_meso": 184100
+    },
+    {
+      "from": 3,
+      "to": 4,
+      "base_meso": 245100
+    },
+    {
+      "from": 4,
+      "to": 5,
+      "base_meso": 306100
+    },
+    {
+      "from": 5,
+      "to": 6,
+      "base_meso": 367200
+    },
+    {
+      "from": 6,
+      "to": 7,
+      "base_meso": 428200
+    },
+    {
+      "from": 7,
+      "to": 8,
+      "base_meso": 489200
+    },
+    {
+      "from": 8,
+      "to": 9,
+      "base_meso": 550200
+    },
+    {
+      "from": 9,
+      "to": 10,
+      "base_meso": 611300
+    },
+    {
+      "from": 10,
+      "to": 11,
+      "base_meso": 2495300
+    },
+    {
+      "from": 11,
+      "to": 12,
+      "base_meso": 5738100
+    },
+    {
+      "from": 12,
+      "to": 13,
+      "base_meso": 10449700
+    },
+    {
+      "from": 13,
+      "to": 14,
+      "base_meso": 17398100
+    },
+    {
+      "from": 14,
+      "to": 15,
+      "base_meso": 30754400
+    },
+    {
+      "from": 15,
+      "to": 16,
+      "base_meso": 19586000
+    },
+    {
+      "from": 16,
+      "to": 17,
+      "base_meso": 23069100
+    },
+    {
+      "from": 17,
+      "to": 18,
+      "base_meso": 26918600
+    },
+    {
+      "from": 18,
+      "to": 19,
+      "base_meso": 31149300
+    },
+    {
+      "from": 19,
+      "to": 20,
+      "base_meso": 35776100
+    },
+    {
+      "from": 20,
+      "to": 21,
+      "base_meso": 40813400
+    },
+    {
+      "from": 21,
+      "to": 22,
+      "base_meso": 46275500
+    },
+    {
+      "from": 22,
+      "to": 23,
+      "base_meso": 52176300
+    },
+    {
+      "from": 23,
+      "to": 24,
+      "base_meso": 58529900
+    },
+    {
+      "from": 24,
+      "to": 25,
+      "base_meso": 65349900
+    },
+    {
+      "from": 25,
+      "to": 26,
+      "base_meso": 72649700
+    },
+    {
+      "from": 26,
+      "to": 27,
+      "base_meso": 80442900
+    },
+    {
+      "from": 27,
+      "to": 28,
+      "base_meso": 88742500
+    },
+    {
+      "from": 28,
+      "to": 29,
+      "base_meso": 97561600
+    },
+    {
+      "from": 29,
+      "to": 30,
+      "base_meso": 106913200
+    }
+  ],
+  "140": [
+    {
+      "from": 0,
+      "to": 1,
+      "base_meso": 77200
+    },
+    {
+      "from": 1,
+      "to": 2,
+      "base_meso": 153400
+    },
+    {
+      "from": 2,
+      "to": 3,
+      "base_meso": 229700
+    },
+    {
+      "from": 3,
+      "to": 4,
+      "base_meso": 305900
+    },
+    {
+      "from": 4,
+      "to": 5,
+      "base_meso": 382100
+    },
+    {
+      "from": 5,
+      "to": 6,
+      "base_meso": 458300
+    },
+    {
+      "from": 6,
+      "to": 7,
+      "base_meso": 534600
+    },
+    {
+      "from": 7,
+      "to": 8,
+      "base_meso": 610800
+    },
+    {
+      "from": 8,
+      "to": 9,
+      "base_meso": 687000
+    },
+    {
+      "from": 9,
+      "to": 10,
+      "base_meso": 763200
+    },
+    {
+      "from": 10,
+      "to": 11,
+      "base_meso": 3116400
+    },
+    {
+      "from": 11,
+      "to": 12,
+      "base_meso": 7166500
+    },
+    {
+      "from": 12,
+      "to": 13,
+      "base_meso": 13051200
+    },
+    {
+      "from": 13,
+      "to": 14,
+      "base_meso": 21729500
+    },
+    {
+      "from": 14,
+      "to": 15,
+      "base_meso": 38411200
+    },
+    {
+      "from": 15,
+      "to": 16,
+      "base_meso": 24462200
+    },
+    {
+      "from": 16,
+      "to": 17,
+      "base_meso": 28812500
+    },
+    {
+      "from": 17,
+      "to": 18,
+      "base_meso": 33620400
+    },
+    {
+      "from": 18,
+      "to": 19,
+      "base_meso": 38904500
+    },
+    {
+      "from": 19,
+      "to": 20,
+      "base_meso": 44683300
+    },
+    {
+      "from": 20,
+      "to": 21,
+      "base_meso": 50974700
+    },
+    {
+      "from": 21,
+      "to": 22,
+      "base_meso": 57796700
+    },
+    {
+      "from": 22,
+      "to": 23,
+      "base_meso": 65166700
+    },
+    {
+      "from": 23,
+      "to": 24,
+      "base_meso": 73102200
+    },
+    {
+      "from": 24,
+      "to": 25,
+      "base_meso": 81620200
+    },
+    {
+      "from": 25,
+      "to": 26,
+      "base_meso": 90737500
+    },
+    {
+      "from": 26,
+      "to": 27,
+      "base_meso": 100471000
+    },
+    {
+      "from": 27,
+      "to": 28,
+      "base_meso": 110837000
+    },
+    {
+      "from": 28,
+      "to": 29,
+      "base_meso": 121851900
+    },
+    {
+      "from": 29,
+      "to": 30,
+      "base_meso": 133531800
+    }
+  ],
+  "150": [
+    {
+      "from": 0,
+      "to": 1,
+      "base_meso": 94800
+    },
+    {
+      "from": 1,
+      "to": 2,
+      "base_meso": 188500
+    },
+    {
+      "from": 2,
+      "to": 3,
+      "base_meso": 282200
+    },
+    {
+      "from": 3,
+      "to": 4,
+      "base_meso": 376000
+    },
+    {
+      "from": 4,
+      "to": 5,
+      "base_meso": 469800
+    },
+    {
+      "from": 5,
+      "to": 6,
+      "base_meso": 563500
+    },
+    {
+      "from": 6,
+      "to": 7,
+      "base_meso": 657200
+    },
+    {
+      "from": 7,
+      "to": 8,
+      "base_meso": 751000
+    },
+    {
+      "from": 8,
+      "to": 9,
+      "base_meso": 844800
+    },
+    {
+      "from": 9,
+      "to": 10,
+      "base_meso": 938500
+    },
+    {
+      "from": 10,
+      "to": 11,
+      "base_meso": 3832800
+    },
+    {
+      "from": 11,
+      "to": 12,
+      "base_meso": 8814200
+    },
+    {
+      "from": 12,
+      "to": 13,
+      "base_meso": 16052200
+    },
+    {
+      "from": 13,
+      "to": 14,
+      "base_meso": 26726100
+    },
+    {
+      "from": 14,
+      "to": 15,
+      "base_meso": 47243900
+    },
+    {
+      "from": 15,
+      "to": 16,
+      "base_meso": 30087200
+    },
+    {
+      "from": 16,
+      "to": 17,
+      "base_meso": 35437900
+    },
+    {
+      "from": 17,
+      "to": 18,
+      "base_meso": 41351400
+    },
+    {
+      "from": 18,
+      "to": 19,
+      "base_meso": 47850600
+    },
+    {
+      "from": 19,
+      "to": 20,
+      "base_meso": 54958200
+    },
+    {
+      "from": 20,
+      "to": 21,
+      "base_meso": 62696400
+    },
+    {
+      "from": 21,
+      "to": 22,
+      "base_meso": 71087200
+    },
+    {
+      "from": 22,
+      "to": 23,
+      "base_meso": 80152000
+    },
+    {
+      "from": 23,
+      "to": 24,
+      "base_meso": 89912300
+    },
+    {
+      "from": 24,
+      "to": 25,
+      "base_meso": 100389000
+    },
+    {
+      "from": 25,
+      "to": 26,
+      "base_meso": 111603000
+    },
+    {
+      "from": 26,
+      "to": 27,
+      "base_meso": 123574700
+    },
+    {
+      "from": 27,
+      "to": 28,
+      "base_meso": 136324400
+    },
+    {
+      "from": 28,
+      "to": 29,
+      "base_meso": 149872300
+    },
+    {
+      "from": 29,
+      "to": 30,
+      "base_meso": 164238100
+    }
+  ],
+  "160": [
+    {
+      "from": 0,
+      "to": 1,
+      "base_meso": 114800
+    },
+    {
+      "from": 1,
+      "to": 2,
+      "base_meso": 228600
+    },
+    {
+      "from": 2,
+      "to": 3,
+      "base_meso": 342300
+    },
+    {
+      "from": 3,
+      "to": 4,
+      "base_meso": 456100
+    },
+    {
+      "from": 4,
+      "to": 5,
+      "base_meso": 569900
+    },
+    {
+      "from": 5,
+      "to": 6,
+      "base_meso": 683700
+    },
+    {
+      "from": 6,
+      "to": 7,
+      "base_meso": 797400
+    },
+    {
+      "from": 7,
+      "to": 8,
+      "base_meso": 911200
+    },
+    {
+      "from": 8,
+      "to": 9,
+      "base_meso": 1025000
+    },
+    {
+      "from": 9,
+      "to": 10,
+      "base_meso": 1138800
+    },
+    {
+      "from": 10,
+      "to": 11,
+      "base_meso": 4651300
+    },
+    {
+      "from": 11,
+      "to": 12,
+      "base_meso": 10697000
+    },
+    {
+      "from": 12,
+      "to": 13,
+      "base_meso": 19481200
+    },
+    {
+      "from": 13,
+      "to": 14,
+      "base_meso": 32435400
+    },
+    {
+      "from": 14,
+      "to": 15,
+      "base_meso": 57336400
+    },
+    {
+      "from": 15,
+      "to": 16,
+      "base_meso": 36514500
+    },
+    {
+      "from": 16,
+      "to": 17,
+      "base_meso": 43008300
+    },
+    {
+      "from": 17,
+      "to": 18,
+      "base_meso": 50185100
+    },
+    {
+      "from": 18,
+      "to": 19,
+      "base_meso": 58072700
+    },
+    {
+      "from": 19,
+      "to": 20,
+      "base_meso": 66698700
+    },
+    {
+      "from": 20,
+      "to": 21,
+      "base_meso": 76090000
+    },
+    {
+      "from": 21,
+      "to": 22,
+      "base_meso": 86273300
+    },
+    {
+      "from": 22,
+      "to": 23,
+      "base_meso": 97274600
+    },
+    {
+      "from": 23,
+      "to": 24,
+      "base_meso": 109120000
+    },
+    {
+      "from": 24,
+      "to": 25,
+      "base_meso": 121834900
+    },
+    {
+      "from": 25,
+      "to": 26,
+      "base_meso": 135444400
+    },
+    {
+      "from": 26,
+      "to": 27,
+      "base_meso": 149973700
+    },
+    {
+      "from": 27,
+      "to": 28,
+      "base_meso": 165447100
+    },
+    {
+      "from": 28,
+      "to": 29,
+      "base_meso": 181889200
+    },
+    {
+      "from": 29,
+      "to": 30,
+      "base_meso": 199324000
+    }
+  ],
+  "200": [
+    {
+      "from": 0,
+      "to": 1,
+      "base_meso": 223200
+    },
+    {
+      "from": 1,
+      "to": 2,
+      "base_meso": 445400
+    },
+    {
+      "from": 2,
+      "to": 3,
+      "base_meso": 667700
+    },
+    {
+      "from": 3,
+      "to": 4,
+      "base_meso": 889900
+    },
+    {
+      "from": 4,
+      "to": 5,
+      "base_meso": 1112100
+    },
+    {
+      "from": 5,
+      "to": 6,
+      "base_meso": 1334300
+    },
+    {
+      "from": 6,
+      "to": 7,
+      "base_meso": 1556600
+    },
+    {
+      "from": 7,
+      "to": 8,
+      "base_meso": 1778800
+    },
+    {
+      "from": 8,
+      "to": 9,
+      "base_meso": 2001000
+    },
+    {
+      "from": 9,
+      "to": 10,
+      "base_meso": 2223200
+    },
+    {
+      "from": 10,
+      "to": 11,
+      "base_meso": 9083700
+    },
+    {
+      "from": 11,
+      "to": 12,
+      "base_meso": 20891500
+    },
+    {
+      "from": 12,
+      "to": 13,
+      "base_meso": 38048200
+    },
+    {
+      "from": 13,
+      "to": 14,
+      "base_meso": 63349500
+    },
+    {
+      "from": 14,
+      "to": 15,
+      "base_meso": 111984100
+    },
+    {
+      "from": 15,
+      "to": 16,
+      "base_meso": 71316500
+    },
+    {
+      "from": 16,
+      "to": 17,
+      "base_meso": 83999600
+    },
+    {
+      "from": 17,
+      "to": 18,
+      "base_meso": 98016700
+    },
+    {
+      "from": 18,
+      "to": 19,
+      "base_meso": 113422300
+    },
+    {
+      "from": 19,
+      "to": 20,
+      "base_meso": 130270000
+    },
+    {
+      "from": 20,
+      "to": 21,
+      "base_meso": 148612400
+    },
+    {
+      "from": 21,
+      "to": 22,
+      "base_meso": 168501500
+    },
+    {
+      "from": 22,
+      "to": 23,
+      "base_meso": 189988600
+    },
+    {
+      "from": 23,
+      "to": 24,
+      "base_meso": 213124000
+    },
+    {
+      "from": 24,
+      "to": 25,
+      "base_meso": 237957700
+    },
+    {
+      "from": 25,
+      "to": 26,
+      "base_meso": 264539000
+    },
+    {
+      "from": 26,
+      "to": 27,
+      "base_meso": 292916400
+    },
+    {
+      "from": 27,
+      "to": 28,
+      "base_meso": 323138000
+    },
+    {
+      "from": 28,
+      "to": 29,
+      "base_meso": 355251400
+    },
+    {
+      "from": 29,
+      "to": 30,
+      "base_meso": 389303700
+    }
+  ],
+  "250": [
+    {
+      "from": 0,
+      "to": 1,
+      "base_meso": 435000
+    },
+    {
+      "from": 1,
+      "to": 2,
+      "base_meso": 869100
+    },
+    {
+      "from": 2,
+      "to": 3,
+      "base_meso": 1303100
+    },
+    {
+      "from": 3,
+      "to": 4,
+      "base_meso": 1737100
+    },
+    {
+      "from": 4,
+      "to": 5,
+      "base_meso": 2171100
+    },
+    {
+      "from": 5,
+      "to": 6,
+      "base_meso": 2605200
+    },
+    {
+      "from": 6,
+      "to": 7,
+      "base_meso": 3039200
+    },
+    {
+      "from": 7,
+      "to": 8,
+      "base_meso": 3473200
+    },
+    {
+      "from": 8,
+      "to": 9,
+      "base_meso": 3907200
+    },
+    {
+      "from": 9,
+      "to": 10,
+      "base_meso": 4341300
+    },
+    {
+      "from": 10,
+      "to": 11,
+      "base_meso": 17740600
+    },
+    {
+      "from": 11,
+      "to": 12,
+      "base_meso": 40802800
+    },
+    {
+      "from": 12,
+      "to": 13,
+      "base_meso": 74312000
+    },
+    {
+      "from": 13,
+      "to": 14,
+      "base_meso": 123728500
+    },
+    {
+      "from": 14,
+      "to": 15,
+      "base_meso": 218718100
+    },
+    {
+      "from": 15,
+      "to": 16,
+      "base_meso": 139289100
+    },
+    {
+      "from": 16,
+      "to": 17,
+      "base_meso": 164060800
+    },
+    {
+      "from": 17,
+      "to": 18,
+      "base_meso": 191438000
+    },
+    {
+      "from": 18,
+      "to": 19,
+      "base_meso": 221527000
+    },
+    {
+      "from": 19,
+      "to": 20,
+      "base_meso": 254432600
+    },
+    {
+      "from": 20,
+      "to": 21,
+      "base_meso": 290257600
+    },
+    {
+      "from": 21,
+      "to": 22,
+      "base_meso": 329103600
+    },
+    {
+      "from": 22,
+      "to": 23,
+      "base_meso": 371070400
+    },
+    {
+      "from": 23,
+      "to": 24,
+      "base_meso": 416256900
+    },
+    {
+      "from": 24,
+      "to": 25,
+      "base_meso": 464760300
+    },
+    {
+      "from": 25,
+      "to": 26,
+      "base_meso": 516676700
+    },
+    {
+      "from": 26,
+      "to": 27,
+      "base_meso": 572101300
+    },
+    {
+      "from": 27,
+      "to": 28,
+      "base_meso": 631127900
+    },
+    {
+      "from": 28,
+      "to": 29,
+      "base_meso": 693849500
+    },
+    {
+      "from": 29,
+      "to": 30,
+      "base_meso": 760357800
+    }
+  ]
+}

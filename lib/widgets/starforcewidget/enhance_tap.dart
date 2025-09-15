@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mic/function/datas.dart';
 
@@ -13,12 +16,89 @@ class _EnhanceTapState extends State<EnhanceTap> {
   int equipindex = 0;
   String equipvalues = forcetype.first;
 
-  int levelindex = 0;
-  String levelvalues = equiplevel.first;
+  Map<String, dynamic> starforceLevels = {};
+  List<int> levels = [];
 
+  int selectedlevel = 140;
+
+  // 체크박스 확인 변수
   bool isChance = false;
   bool isPay = false;
+  bool isMvp = false;
+  bool isPc = false;
   bool isDestroy = false;
+  bool isCatch = false;
+
+  // 할인 메소 적용 변수
+  double payTime = 1.0;
+  double mvpTime = 0.0;
+  double pcTime = 0.0;
+  double destroyTime = 1.0;
+
+  // 텍스트 출력 변수
+  int startLevel = 0;
+  int sumMeso = 0;
+  int enchantMeso = 0;
+  double successRate = 0.0;
+  double destroyRate = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    loadLevels(equipvalues);
+    loadmeso(selectedlevel, startLevel);
+  }
+
+  void resetEnhance() {
+    isChance = false;
+    isPay = false;
+    isMvp = false;
+    isPc = false;
+    isDestroy = false;
+    isCatch = false;
+    payTime = 1.0;
+    mvpTime = 0.0;
+    pcTime = 0.0;
+    destroyTime = 1.0;
+    startLevel = 0;
+    sumMeso = 0;
+  }
+
+  Future<void> loadLevels(String equip) async {
+    final jsonStr = await rootBundle.loadString(
+      'assets/datas/starforce_levels.json',
+    );
+    final data = jsonDecode(jsonStr);
+    setState(() {
+      starforceLevels = Map<String, dynamic>.from(data);
+      levels = List<int>.from(starforceLevels[equip]);
+    });
+  }
+
+  Future<void> loadmeso(int level, int stage) async {
+    final jsonStr = await rootBundle.loadString(
+      'assets/datas/starforce_meso.json',
+    );
+    final data = jsonDecode(jsonStr);
+
+    if (data == null) {
+      throw StateError("먼저 load()를 호출해서 JSON을 로드해야 합니다.");
+    }
+
+    final list = data![level.toString()];
+    if (list == null) {
+      throw ArgumentError("레벨 $level 데이터가 없습니다.");
+    }
+
+    final attempt = (list as List).firstWhere(
+      (e) => e["from"] == stage,
+      orElse: () => throw ArgumentError("레벨 $level 에 from=$stage 데이터가 없습니다."),
+    );
+
+    setState(() {
+      enchantMeso = attempt["base_meso"] as int;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,155 +155,26 @@ class _EnhanceTapState extends State<EnhanceTap> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Container(
-                        width: 80.w,
-                        height: 20.h,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.grey.shade400),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.05),
-                              blurRadius: 6,
-                              offset: const Offset(0, 3),
-                            ),
-                          ],
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: Center(
-                            // 1) 드롭다운 버튼 자체를 부모 안에서 중앙 배치
-                            child: SizedBox(
-                              width: 160.w, // 원하는 너비로 세팅 (없으면 꽉 참)
-                              child: DropdownButton<String>(
-                                value: levelvalues,
-                                isExpanded: true, // 가로로 꽉 채우기
-                                alignment:
-                                    Alignment.center, // 2) 버튼 안의 선택 텍스트 중앙 정렬
-                                hint: const Center(
-                                  // 힌트도 중앙 정렬
-                                  child: Text(
-                                    '아이템 설정',
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                ),
-                                items: equiplevel.map((d) {
-                                  return DropdownMenuItem<String>(
-                                    value: d,
-                                    alignment:
-                                        Alignment.center, // 3) 메뉴 아이템 중앙 정렬
-                                    child: Center(
-                                      child: Text(
-                                        '$d 레벨',
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                  );
-                                }).toList(),
-
-                                // 선택된 아이템이 버튼에 표시될 때도 확실히 중앙 정렬시키고 싶다면:
-                                selectedItemBuilder: (context) =>
-                                    equiplevel.map((d) {
-                                      return Center(
-                                        child: Text(
-                                          '$d 레벨',
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      );
-                                    }).toList(),
-
-                                onChanged: (value) {
-                                  setState(() {
-                                    levelindex = equiplevel.indexOf(value!);
-                                    levelvalues = value;
-                                  });
-                                },
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+                      listData<int>('레벨 설정', selectedlevel, levels, (value) {
+                        setState(() {
+                          selectedlevel = value!;
+                          resetEnhance();
+                          loadmeso(selectedlevel, startLevel);
+                        });
+                      }),
                       SizedBox(width: 5.w),
-                      Container(
-                        width: 80.w,
-                        height: 20.h,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.grey.shade400),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.05),
-                              blurRadius: 6,
-                              offset: const Offset(0, 3),
-                            ),
-                          ],
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: Center(
-                            // 1) 드롭다운 버튼 자체를 부모 안에서 중앙 배치
-                            child: SizedBox(
-                              width: 160.w, // 원하는 너비로 세팅 (없으면 꽉 참)
-                              child: DropdownButton<String>(
-                                value: equipvalues,
-                                isExpanded: true, // 가로로 꽉 채우기
-                                alignment:
-                                    Alignment.center, // 2) 버튼 안의 선택 텍스트 중앙 정렬
-                                hint: const Center(
-                                  // 힌트도 중앙 정렬
-                                  child: Text(
-                                    '아이템 설정',
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                ),
-                                items: forcetype.map((d) {
-                                  return DropdownMenuItem<String>(
-                                    value: d,
-                                    alignment:
-                                        Alignment.center, // 3) 메뉴 아이템 중앙 정렬
-                                    child: Center(
-                                      child: Text(
-                                        d,
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                  );
-                                }).toList(),
-
-                                // 선택된 아이템이 버튼에 표시될 때도 확실히 중앙 정렬시키고 싶다면:
-                                selectedItemBuilder: (context) =>
-                                    forcetype.map((d) {
-                                      return Center(
-                                        child: Text(
-                                          d,
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      );
-                                    }).toList(),
-
-                                onChanged: (value) {
-                                  setState(() {
-                                    equipindex = forcetype.indexOf(value!);
-                                    equipvalues = value;
-                                  });
-                                },
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+                      listData<String>('아이템 설정', equipvalues, forcetype, (
+                        value,
+                      ) {
+                        setState(() {
+                          equipindex = forcetype.indexOf(value!);
+                          equipvalues = value;
+                          loadLevels(equipvalues);
+                          selectedlevel = levels.first;
+                          resetEnhance();
+                          loadmeso(selectedlevel, startLevel);
+                        });
+                      }),
                     ],
                   ),
                 ),
@@ -256,19 +207,19 @@ class _EnhanceTapState extends State<EnhanceTap> {
                       isimgText(
                         '현재 단계:',
                         'assets/images/icons/starstage.png',
-                        '21',
+                        '$startLevel성',
                       ),
-                      onlyText('성공 확률:', '15%'),
-                      onlyText('파괴 확률:', '10.8%'),
+                      onlyText('성공 확률:', '$successRate%'),
+                      onlyText('파괴 확률:', '$destroyRate%'),
                       isimgText(
                         '강화 비용:',
                         'assets/images/icons/coin.png',
-                        '578,000,000',
+                        '${(enchantMeso * (1.0 - (mvpTime + pcTime)) * payTime * destroyTime).round()} 메소',
                       ),
                       isimgText(
                         '총 비용:',
                         'assets/images/icons/coin.png',
-                        '23,700,000,000',
+                        '$sumMeso 메소',
                       ),
                       SizedBox(height: 20.h),
 
@@ -283,12 +234,20 @@ class _EnhanceTapState extends State<EnhanceTap> {
                             Typicalcolor.bg,
                           ),
                           SizedBox(width: 15.w),
-                          btntype(
-                            '초기화',
-                            Color(0xFF000000),
-                            Color(0xFF16354f),
-                            Typicalcolor.subborder,
-                            Typicalcolor.bg,
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                resetEnhance();
+                                loadmeso(selectedlevel, startLevel);
+                              });
+                            },
+                            child: btntype(
+                              '초기화',
+                              Color(0xFF000000),
+                              Color(0xFF16354f),
+                              Typicalcolor.subborder,
+                              Typicalcolor.bg,
+                            ),
                           ),
                         ],
                       ),
@@ -303,12 +262,86 @@ class _EnhanceTapState extends State<EnhanceTap> {
     );
   }
 
+  Container listData<T>(
+    String title,
+    T value,
+    List<T> values,
+    ValueChanged<T?> onChanged,
+  ) {
+    return Container(
+      width: 80.w,
+      height: 24.h,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: Typicalcolor.bg, // ✅ 흰색 → 배경색
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Typicalcolor.subborder),
+        boxShadow: [
+          BoxShadow(
+            color: Typicalcolor.subfont.withValues(alpha: 0.2), // ✅ 부드러운 그림자
+            blurRadius: 6,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: DropdownButtonHideUnderline(
+        child: Center(
+          // 1) 드롭다운 버튼 자체를 부모 안에서 중앙 배치
+          child: SizedBox(
+            width: 160.w, // 원하는 너비로 세팅 (없으면 꽉 참)
+            child: DropdownButton<T>(
+              value: value,
+              isExpanded: true, // 가로로 꽉 채우기
+              alignment: Alignment.center, // 2) 버튼 안의 선택 텍스트 중앙 정렬
+              hint: Center(
+                // 힌트도 중앙 정렬
+                child: Text(title, textAlign: TextAlign.center),
+              ),
+              style: TextStyle(
+                fontSize: 12.sp,
+                fontWeight: FontWeight.bold,
+                color: Typicalcolor.subfont,
+              ),
+              items: values.map((d) {
+                return DropdownMenuItem<T>(
+                  value: d,
+                  alignment: Alignment.center, // 3) 메뉴 아이템 중앙 정렬
+                  child: Center(
+                    child: Text(d.toString(), textAlign: TextAlign.center),
+                  ),
+                );
+              }).toList(),
+
+              // 선택된 아이템이 버튼에 표시될 때도 확실히 중앙 정렬시키고 싶다면:
+              selectedItemBuilder: (context) => values.map((d) {
+                return Center(
+                  child: Text(d.toString(), textAlign: TextAlign.center),
+                );
+              }).toList(),
+
+              onChanged: onChanged,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget checkEvent() {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.w),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          pieceEvent(
+            '스타캐치 여부',
+            isCatch,
+            (v) => setState(() {
+              // 콜백으로 부모 상태 업데이트
+              isCatch = v ?? false;
+            }),
+          ),
+
           pieceEvent(
             '파괴확률 감소',
             isChance,
@@ -319,11 +352,32 @@ class _EnhanceTapState extends State<EnhanceTap> {
           ),
 
           pieceEvent(
-            '강화비용 감소',
+            '샤타포스 할인',
             isPay,
             (v) => setState(() {
               // 콜백으로 부모 상태 업데이트
               isPay = v ?? false;
+              isPay ? payTime = 0.7 : payTime = 1.0;
+            }),
+          ),
+
+          pieceEvent(
+            'PC방용 할인',
+            isPc,
+            (v) => setState(() {
+              // 콜백으로 부모 상태 업데이트
+              isPc = v ?? false;
+              isPc ? pcTime = 0.05 : pcTime = 0.0;
+            }),
+          ),
+
+          pieceEvent(
+            'MVP용 할인',
+            isMvp,
+            (v) => setState(() {
+              // 콜백으로 부모 상태 업데이트
+              isMvp = v ?? false;
+              isMvp ? mvpTime = 0.1 : mvpTime = 0.0;
             }),
           ),
 
@@ -333,6 +387,7 @@ class _EnhanceTapState extends State<EnhanceTap> {
             (v) => setState(() {
               // 콜백으로 부모 상태 업데이트
               isDestroy = v ?? false;
+              isDestroy ? destroyTime = 2.0 : destroyTime = 1.0;
             }),
           ),
         ],
@@ -342,37 +397,76 @@ class _EnhanceTapState extends State<EnhanceTap> {
 
   Widget pieceEvent(String title, bool value, ValueChanged<bool?> onChanged) {
     return Container(
-      width: 80.w,
+      width: 35.w,
       alignment: Alignment.center,
       child: Column(
         children: [
-          twoText(title, 10),
+          twoText(title, 9),
 
-          Checkbox(
-            value: value,
-            onChanged: onChanged,
-            shape: RoundedRectangleBorder(
-              // 모양 변경
-              borderRadius: BorderRadius.circular(18),
-            ),
+          (title.contains('강화파괴'))
+              ? (startLevel == 15 || startLevel == 16 || startLevel == 17)
+                    ? Checkbox(
+                        value: value,
+                        onChanged: onChanged,
+                        shape: RoundedRectangleBorder(
+                          // 모양 변경
+                          borderRadius: BorderRadius.circular(18),
+                        ),
 
-            checkColor: Colors.white, // 체크 표시 색
-            // 선택/비활성 등 상태별 채움색
-            fillColor: WidgetStateProperty.resolveWith<Color?>((states) {
-              if (states.contains(WidgetState.disabled)) {
-                return Typicalcolor.bg;
-              }
-              if (states.contains(WidgetState.selected)) {
-                return Typicalcolor.title; // 선택 시
-              }
-              return Typicalcolor.bg; // 평소
-            }),
-            side: BorderSide(
-              // 테두리 색
-              color: Typicalcolor.subborder,
-              width: 2,
-            ),
-          ),
+                        checkColor: Colors.white, // 체크 표시 색
+                        // 선택/비활성 등 상태별 채움색
+                        fillColor: WidgetStateProperty.resolveWith<Color?>((
+                          states,
+                        ) {
+                          if (states.contains(WidgetState.disabled)) {
+                            return Typicalcolor.bg;
+                          }
+                          if (states.contains(WidgetState.selected)) {
+                            return Typicalcolor.title; // 선택 시
+                          }
+                          return Typicalcolor.bg; // 평소
+                        }),
+                        side: BorderSide(
+                          // 테두리 색
+                          color: Typicalcolor.subborder,
+                          width: 2,
+                        ),
+                      )
+                    : Container(
+                        width: 40.w,
+                        height: 40.h,
+                        alignment: Alignment.center,
+                        child: Icon(
+                          Icons.disabled_by_default,
+                          color: Typicalcolor.title,
+                          size: 20.sp,
+                        ),
+                      )
+              : Checkbox(
+                  value: value,
+                  onChanged: onChanged,
+                  shape: RoundedRectangleBorder(
+                    // 모양 변경
+                    borderRadius: BorderRadius.circular(18),
+                  ),
+
+                  checkColor: Colors.white, // 체크 표시 색
+                  // 선택/비활성 등 상태별 채움색
+                  fillColor: WidgetStateProperty.resolveWith<Color?>((states) {
+                    if (states.contains(WidgetState.disabled)) {
+                      return Typicalcolor.bg;
+                    }
+                    if (states.contains(WidgetState.selected)) {
+                      return Typicalcolor.title; // 선택 시
+                    }
+                    return Typicalcolor.bg; // 평소
+                  }),
+                  side: BorderSide(
+                    // 테두리 색
+                    color: Typicalcolor.subborder,
+                    width: 2,
+                  ),
+                ),
         ],
       ),
     );

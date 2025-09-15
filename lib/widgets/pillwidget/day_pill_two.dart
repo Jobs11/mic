@@ -17,8 +17,8 @@ class DayPillTwo extends StatelessWidget {
   final double height;
 
   // 테마 컬러 (이미지 톤과 매칭)
-  static const _cream = Color(0xFFF3DFAC); // 내부 배경
-  static const _creamHover = Color(0xFFF9E8BF); // 선택 시 약간 진하게
+  // static const _cream = Color(0xFFF3DFAC); // 내부 배경
+  // static const _creamHover = Color(0xFFF9E8BF); // 선택 시 약간 진하게
   static const _brown = Color(0xFF6E4A2B); // 외곽/구분선
   static const _brownSoft = Color(0xFF8B5E3C); // 살짝 밝은 브라운
 

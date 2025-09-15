@@ -1,5 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mic/function/cube_contents.dart';
+import 'package:mic/function/currentuser.dart';
 import 'package:mic/function/datas.dart';
 
 class ExpectedTap extends StatefulWidget {
@@ -10,9 +15,72 @@ class ExpectedTap extends StatefulWidget {
 }
 
 class _ExpectedTapState extends State<ExpectedTap> {
-  final onecubecontroller = TextEditingController();
-  final twocubecontroller = TextEditingController();
-  final thrcubecontroller = TextEditingController();
+  int equipindex = 0;
+  String equipvalues = equiptype.first;
+
+  Map<String, dynamic> equipcube = {}; // = data['무기']
+  String selectedLevel = '200'; // "200" | "250"
+  Map<String, dynamic>? selectedPayload; // = weapon[selectedLevel]
+  List<String> firstOptions = [];
+  List<String> secondOptions = [];
+  List<String> thirdOptions = [];
+
+  String? selectFirst;
+  String? selectSecond;
+  String? selectThird;
+
+  double firstchance = 0.0;
+  double secondchance = 0.0;
+  double thirdchance = 0.0;
+
+  int summeso = 0;
+  int sumcube = 0;
+
+  Future<void> loadData(String equip) async {
+    final jsonStr = await rootBundle.loadString(
+      'assets/datas/cube_probabilities.json',
+    );
+    final data = jsonDecode(jsonStr);
+    equipcube = Map<String, dynamic>.from(data[equip]);
+    final levels = equipcube.keys.toList()..sort(); // ["200","250",...]
+    selectedLevel = levels.first;
+    selectedPayload = Map<String, dynamic>.from(equipcube[selectedLevel]!);
+
+    firstOptions = (selectedPayload?['첫번째'] as List<dynamic>)
+        .map((e) => e['옵션'] as String)
+        .toList();
+
+    secondOptions = (selectedPayload?['두번째'] as List<dynamic>)
+        .map((e) => e['옵션'] as String)
+        .toList();
+    thirdOptions = (selectedPayload?['세번째'] as List<dynamic>)
+        .map((e) => e['옵션'] as String)
+        .toList();
+
+    setState(() {});
+  }
+
+  void changeAll() {
+    firstchance = 0.0;
+    secondchance = 0.0;
+    thirdchance = 0.0;
+    selectFirst = null;
+    selectSecond = null;
+    selectThird = null;
+  }
+
+  double _chanceData(String title, String value) {
+    final options = selectedPayload?[title] as List<dynamic>;
+    final index = options.indexWhere((e) => e['옵션'] == value);
+
+    return options[index]['확률'];
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadData(equipvalues);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +88,7 @@ class _ExpectedTapState extends State<ExpectedTap> {
       children: [
         Container(
           width: double.infinity,
-          height: 440.h,
+          height: 450.h,
           padding: EdgeInsets.all(3), // border 두께
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -57,52 +125,124 @@ class _ExpectedTapState extends State<ExpectedTap> {
                 ),
                 SizedBox(height: 10.h),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center, // 가로축 가운데
-                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    chooseOption('레전드리'),
-                    SizedBox(width: 10.w),
-                    chooseOption('방어구'),
+                    dropsCube('아이템 설정', equipvalues, equiptype, (value) {
+                      setState(() {
+                        equipindex = equiptype.indexOf(value!);
+                        equipvalues = value;
+                        loadData(equipvalues);
+                        changeAll();
+                      });
+                    }),
+                    dropsCube('레벨 설정', selectedLevel, equipcube.keys.toList(), (
+                      lv,
+                    ) {
+                      setState(() {
+                        selectedLevel = lv!;
+                        selectedPayload = Map<String, dynamic>.from(
+                          equipcube[lv]!,
+                        ); // ← 여기서 확률/옵션 접근 가능
+
+                        changeAll();
+
+                        firstOptions =
+                            (selectedPayload?['첫번째'] as List<dynamic>)
+                                .map((e) => e['옵션'] as String)
+                                .toList();
+
+                        secondOptions =
+                            (selectedPayload?['두번째'] as List<dynamic>)
+                                .map((e) => e['옵션'] as String)
+                                .toList();
+                        thirdOptions =
+                            (selectedPayload?['세번째'] as List<dynamic>)
+                                .map((e) => e['옵션'] as String)
+                                .toList();
+                      });
+                    }),
                   ],
                 ),
                 SizedBox(height: 10.h),
 
-                inputOption('보스 공격시 데미지', onecubecontroller),
+                optionCube(selectFirst, '첫번째 옵션', firstOptions, (v) {
+                  setState(() {
+                    selectFirst = v;
+                    firstchance = _chanceData('첫번째', selectFirst!);
+                  });
+                }),
                 SizedBox(height: 10.h),
-                inputOption('보스 공격시 데미지', twocubecontroller),
+                optionCube(selectSecond, '두번째 옵션', secondOptions, (v) {
+                  setState(() {
+                    selectSecond = v;
+                    secondchance = _chanceData('두번째', selectSecond!);
+                  });
+                }),
                 SizedBox(height: 10.h),
-                inputOption('보스 공격시 데미지', thrcubecontroller),
+                optionCube(selectThird, '세번째 옵션', thirdOptions, (v) {
+                  setState(() {
+                    selectThird = v;
+
+                    thirdchance = _chanceData('세번째', selectThird!);
+                  });
+                }),
                 SizedBox(height: 10.h),
-                Container(
-                  width: 150.w,
-                  height: 32.h,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [Typicalcolor.title, Typicalcolor.subtitle],
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      sumcube = cubesForTriple99(
+                        selectedPayload!,
+                        first: selectFirst!,
+                        second: selectSecond!,
+                        third: selectThird!,
+                      );
+                      summeso = mesoForTriple99(
+                        selectedPayload!,
+                        first: selectFirst!,
+                        second: selectSecond!,
+                        third: selectThird!,
+                        mesoPerRoll: levelmeso[int.parse(selectedLevel)]!,
+                      );
+                    });
+                  },
+                  child: Container(
+                    width: 150.w,
+                    height: 32.h,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [Typicalcolor.title, Typicalcolor.subtitle],
+                      ),
+                      borderRadius: BorderRadius.circular(9),
+                      border: Border.all(
+                        color: Typicalcolor.border,
+                        width: 2.w,
+                      ),
                     ),
-                    borderRadius: BorderRadius.circular(9),
-                    border: Border.all(color: Typicalcolor.border, width: 2.w),
+                    child: twoText('계산하기', 20),
                   ),
-                  child: twoText('계산하기', 20),
                 ),
 
                 SizedBox(height: 60.h),
                 expectedList(
                   '명장의 큐브',
                   'assets/images/items/commandercube.png',
-                  '24 개',
+                  '-미정-',
                 ),
                 SizedBox(height: 10.h),
                 expectedList(
                   '블랙 큐브',
                   'assets/images/items/blackcube.png',
-                  '24 개',
+                  '$sumcube 개',
                 ),
                 SizedBox(height: 10.h),
-                expectedList('메소 재설정', 'assets/images/icons/coin1.png', '24 개'),
+                expectedList(
+                  '메소 재설정',
+                  'assets/images/icons/coin1.png',
+                  '${formatPower(summeso)} 메소',
+                ),
               ],
             ),
           ),
@@ -129,15 +269,18 @@ class _ExpectedTapState extends State<ExpectedTap> {
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 12.w),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Image.asset(img, width: 20.w, height: 20.h),
+              Row(
+                children: [
+                  Image.asset(img, width: 20.w, height: 20.h),
 
-              SizedBox(width: 10.w),
-              twoText(title, 20),
-              SizedBox(width: 10.w),
-              twoText(value, 20),
+                  SizedBox(width: 10.w),
+                  twoText(title, 13),
+                ],
+              ),
+              twoText(value, 13),
             ],
           ),
         ),
@@ -250,6 +393,106 @@ class _ExpectedTapState extends State<ExpectedTap> {
           ),
         ),
       ],
+    );
+  }
+
+  Container optionCube(
+    String? value,
+    String title,
+    List<String> values,
+    ValueChanged<String?> onChanged,
+  ) {
+    return Container(
+      width: 250.w,
+      height: 28.h,
+      padding: EdgeInsets.all(3), // border 두께
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Typicalcolor.border, Typicalcolor.subborder],
+        ),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Container(
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: Typicalcolor.bg,
+          borderRadius: BorderRadius.circular(9),
+        ),
+        child: DropdownButtonHideUnderline(
+          child: Padding(
+            padding: EdgeInsets.only(left: 8.w), // ← 전체 아이템에 적용
+            child: DropdownButton<String>(
+              value: value,
+              hint: Text(
+                title,
+                style: TextStyle(color: Typicalcolor.subfont, fontSize: 12.sp),
+              ),
+              isExpanded: true,
+              style: TextStyle(
+                fontSize: 12.sp,
+                fontWeight: FontWeight.bold,
+                color: Typicalcolor.font, // ✅ 검정 → 폰트색
+              ),
+              items: values
+                  .map((d) => DropdownMenuItem(value: d, child: Text(d)))
+                  .toList(),
+              onChanged: onChanged,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Padding dropsCube(
+    String title,
+    String value,
+    List<String> values,
+    ValueChanged<String?> onChanged,
+  ) {
+    return Padding(
+      padding: EdgeInsets.all(8.0),
+      child: Container(
+        width: 80.w,
+        height: 24.h,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: Typicalcolor.bg, // ✅ 흰색 → 배경색
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Typicalcolor.subborder),
+          boxShadow: [
+            BoxShadow(
+              color: Typicalcolor.subfont.withValues(alpha: 0.2), // ✅ 부드러운 그림자
+              blurRadius: 6,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: DropdownButtonHideUnderline(
+          child: Padding(
+            padding: EdgeInsets.only(left: 8.w), // ← 전체 아이템에 적용
+            child: DropdownButton<String>(
+              value: value,
+              hint: Text(
+                title,
+                style: TextStyle(color: Typicalcolor.subfont, fontSize: 12.sp),
+              ),
+              isExpanded: true,
+              style: TextStyle(
+                fontSize: 12.sp,
+                fontWeight: FontWeight.bold,
+                color: Typicalcolor.font, // ✅ 검정 → 폰트색
+              ),
+              items: values
+                  .map((d) => DropdownMenuItem(value: d, child: Text(d)))
+                  .toList(),
+              onChanged: onChanged,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
