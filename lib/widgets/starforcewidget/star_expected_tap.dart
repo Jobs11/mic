@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mic/function/currentuser.dart';
 import 'package:mic/function/datas.dart';
+import 'package:mic/function/starforce_expected_fn.dart';
 import 'package:mic/widgets/starforcewidget/starforce_bar_chart.dart';
 
 class StarExpectedTap extends StatefulWidget {
@@ -17,6 +18,26 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
   final goalController = TextEditingController(); // 목표 스타포스 성
   bool isDestroy = false; // 파괴방지 여부
   bool eventOn = false; // 이벤트 여부 체크
+  bool reduceDestroy30 = false;
+  bool starCatch = false;
+
+  double mvpDiscount = 0.0;
+  double pcDiscount = 0.0;
+  double starforceDiscount = 0.0;
+
+  int totalTry = 0;
+  int totalMeso = 0;
+  String totalDestroy = "0.0";
+
+  int avgTry = 0;
+  int avgMeso = 0;
+  String avgDestroy = "0.0";
+
+  @override
+  void initState() {
+    super.initState();
+    goalController.text = "1";
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,42 +90,72 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
                   child: twoTitle('스타포스 기댓값', 18),
                 ),
                 SizedBox(height: 5.h),
-                startStage(),
-                SizedBox(height: 5.h),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 6.w),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          goalwidget(),
-                          SizedBox(width: 4.w),
-                          destroywidget(),
-                        ],
-                      ),
-                      SizedBox(height: 5.h),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          avgtimes('평균 시도 \n횟수', '55.6', 14),
-                          avgtimes('평균 시도 \n메소', formatPower(15800000000), 14),
-                          destroytime('파괴확률', '41%', 14),
-                          eventbtn(),
-                        ],
-                      ),
-                      SizedBox(height: 5.h),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          starTable(),
-                          StarforceBarChart(rows: rows),
-                        ],
-                      ),
-                      SizedBox(height: 7.h),
-                      resultbtn(),
-                    ],
+                SizedBox(
+                  height: 430.h,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        startStage(),
+                        SizedBox(height: 5.h),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 6.w),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  goalwidget(),
+                                  SizedBox(width: 4.w),
+                                  destroywidget(),
+                                ],
+                              ),
+                              SizedBox(height: 5.h),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  avgtimes('시도 횟수', "$totalTry회", 14),
+                                  avgtimes(
+                                    '시도 메소',
+                                    '${formatPower(totalMeso)} 메소',
+                                    9,
+                                  ),
+                                  destroytime('파괴확률', '$totalDestroy%', 12),
+                                  eventbtn(),
+                                ],
+                              ),
+                              SizedBox(height: 5.h),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  avgtimes('평균 횟수', "$avgTry회", 14),
+                                  avgtimes(
+                                    '평균 메소',
+                                    '${formatPower(avgMeso)} 메소',
+                                    9,
+                                  ),
+                                  destroytime('평균파괴', '$avgDestroy%', 12),
+                                  eventbtn(),
+                                ],
+                              ),
+                              SizedBox(height: 5.h),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  starTable(),
+                                  StarforceBarChart(rows: rows),
+                                ],
+                              ),
+                              SizedBox(height: 7.h),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
+                resultbtn(),
               ],
             ),
           ),
@@ -424,7 +475,24 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
             twoText('이벤트', 9),
             // 토글 캡슐 + 노란 점
             GestureDetector(
-              onTap: () => setState(() => eventOn = !eventOn),
+              onTap: () {
+                setState(() {
+                  eventOn = !eventOn;
+                  if (eventOn) {
+                    starCatch = true;
+                    reduceDestroy30 = true;
+                    mvpDiscount = 0.1;
+                    pcDiscount = 0.05;
+                    starforceDiscount = 0.3;
+                  } else {
+                    starCatch = false;
+                    reduceDestroy30 = false;
+                    mvpDiscount = 0.0;
+                    pcDiscount = 0.0;
+                    starforceDiscount = 0.0;
+                  }
+                });
+              },
               child: Container(
                 width: 45,
                 height: 18,
@@ -594,30 +662,76 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
   }
 
   Widget resultbtn() {
-    return Container(
-      width: 135.w,
-      padding: EdgeInsets.all(3), // border 두께
-      decoration: BoxDecoration(
-        color: Typicalcolor.subborder,
-        borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(color: Typicalcolor.font),
-      ),
+    return GestureDetector(
+      onTap: () async {
+        final prob = StarforceProbTable();
+        final meso = StarforceMesoTable();
+        await prob.load('assets/datas/starforce_probabilities.json');
+        await meso.load('assets/datas/starforce_meso.json');
+
+        final sim = StarforceSimulator(prob, meso);
+
+        final cfg = EventConfig(
+          eventOn: eventOn,
+          starCatch: starCatch,
+          reduceDestroy30: reduceDestroy30,
+          safeguard: isDestroy,
+          mvpDiscount: mvpDiscount,
+          pcDiscount: pcDiscount,
+          starforceDiscount: starforceDiscount,
+        );
+
+        final target = int.parse(goalController.text.trim());
+
+        final once = await sim.simulateOnce(
+          equipLevel: 250,
+          start: _value.toInt(),
+          target: target,
+          cfg: cfg,
+        );
+
+        final stats = await sim.simulateMany(
+          equipLevel: 250,
+          start: _value.toInt(),
+          target: target,
+          cfg: cfg,
+          runs: 1000,
+        );
+        setState(() {
+          totalTry = once.tries;
+          totalMeso = once.totalMeso;
+          totalDestroy = (once.destroyCount / once.tries).toStringAsFixed(2);
+
+          totalTry = stats['tries']['avg'];
+          totalMeso = stats['meso']['avg'];
+          totalDestroy = stats['destroy']['avg'];
+        });
+      },
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 8.w),
-        alignment: Alignment.center,
+        width: 135.w,
+        padding: EdgeInsets.all(3), // border 두께
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-            colors: [
-              Typicalcolor.title, // 위쪽: 어두운 차콜
-              Typicalcolor.subtitle, // 아래쪽: 연한 금색
-            ],
-          ),
-          borderRadius: BorderRadius.circular(9.r),
+          color: Typicalcolor.subborder,
+          borderRadius: BorderRadius.circular(12.r),
           border: Border.all(color: Typicalcolor.font),
         ),
-        child: twoText('결과 확인', 20),
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 8.w),
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+              colors: [
+                Typicalcolor.title, // 위쪽: 어두운 차콜
+                Typicalcolor.subtitle, // 아래쪽: 연한 금색
+              ],
+            ),
+            borderRadius: BorderRadius.circular(9.r),
+            border: Border.all(color: Typicalcolor.font),
+          ),
+          child: twoText('결과 확인', 20),
+        ),
       ),
     );
   }
