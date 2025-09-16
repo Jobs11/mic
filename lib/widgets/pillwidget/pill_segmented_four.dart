@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mic/function/datas.dart';
 
 class PillSegmentedFour extends StatelessWidget {
   const PillSegmentedFour({
@@ -12,8 +13,8 @@ class PillSegmentedFour extends StatelessWidget {
     this.radius = 22,
     this.selectedColor = const Color(0xFFFFE8A3),
     this.unselectedColor = const Color(0xFFFFFDF6),
-    this.selectedTextColor = const Color(0xFF5C3B09),
-    this.unselectedTextColor = const Color(0xFF7A5C2D),
+    required this.selectedTextColor,
+    required this.unselectedTextColor,
     this.borderColor = Colors.black,
     this.textStyle = const TextStyle(
       fontSize: 14,
@@ -78,8 +79,8 @@ class PillSegmentedFour extends StatelessWidget {
                             ..style = PaintingStyle.stroke
                             ..strokeWidth = 2
                             ..color = isSelected
-                                ? Color(0xFFB1751A)
-                                : Color(0xFFD4C6A2),
+                                ? Typicalcolor.textborder
+                                : Typicalcolor.subfont,
                         ),
                       ),
                       // 안쪽 채우기

@@ -67,10 +67,7 @@ class StarforceBarChart extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.centerLeft,
           end: Alignment.centerRight,
-          colors: [
-            Typicalcolor.title, // 위쪽: 어두운 차콜
-            Typicalcolor.subtitle, // 아래쪽: 연한 금색
-          ],
+          colors: [Typicalcolor.title, Typicalcolor.subtitle],
         ),
         borderRadius: BorderRadius.circular(16.r),
         border: Border.all(color: Typicalcolor.subborder, width: 2.w),

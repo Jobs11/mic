@@ -89,6 +89,8 @@ class _ExpScreenState extends State<ExpScreen> {
                           value: selected,
                           onChanged: (i) => setState(() => selected = i),
                           labels: ["계산기", "일일", "주간", "쿠폰"],
+                          selectedTextColor: Typicalcolor.subfont,
+                          unselectedTextColor: Typicalcolor.bg,
                         ),
 
                         SizedBox(height: 30.h),

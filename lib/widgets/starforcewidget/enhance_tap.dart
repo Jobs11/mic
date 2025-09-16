@@ -220,10 +220,7 @@ class _EnhanceTapState extends State<EnhanceTap> {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [
-                Typicalcolor.subborder, // 위쪽: 어두운 차콜z
-                Typicalcolor.border, // 아래쪽: 연한 금색
-              ],
+              colors: [Typicalcolor.border, Typicalcolor.subborder],
             ),
             border: Border.all(color: Typicalcolor.font),
             borderRadius: BorderRadius.circular(12),
@@ -234,10 +231,7 @@ class _EnhanceTapState extends State<EnhanceTap> {
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [
-                  Typicalcolor.bg, // 위쪽: 어두운 차콜
-                  Typicalcolor.subbg, // 아래쪽: 연한 금색
-                ],
+                colors: [Typicalcolor.bg, Typicalcolor.subbg],
               ),
               border: Border.all(color: Typicalcolor.font),
               borderRadius: BorderRadius.circular(9),

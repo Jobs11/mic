@@ -16,10 +16,13 @@ class StarExpectedTap extends StatefulWidget {
 class _StarExpectedTapState extends State<StarExpectedTap> {
   double _value = 0; // 시작 스타포스 성
   final goalController = TextEditingController(); // 목표 스타포스 성
+  final tryController = TextEditingController(); // 시뮬 횟수
   bool isDestroy = false; // 파괴방지 여부
   bool eventOn = false; // 이벤트 여부 체크
   bool reduceDestroy30 = false;
   bool starCatch = false;
+
+  int equips = equiplevel.first;
 
   double mvpDiscount = 0.0;
   double pcDiscount = 0.0;
@@ -37,6 +40,7 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
   void initState() {
     super.initState();
     goalController.text = "1";
+    tryController.text = "1";
   }
 
   @override
@@ -51,10 +55,7 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [
-                Typicalcolor.subborder, // 위쪽: 어두운 차콜
-                Typicalcolor.border, // 아래쪽: 연한 금색
-              ],
+              colors: [Typicalcolor.border, Typicalcolor.subborder],
             ),
             border: Border.all(color: Typicalcolor.font),
             borderRadius: BorderRadius.circular(12),
@@ -65,10 +66,7 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [
-                  Typicalcolor.bg, // 위쪽: 어두운 차콜
-                  Typicalcolor.subbg, // 아래쪽: 연한 금색
-                ],
+                colors: [Typicalcolor.bg, Typicalcolor.subbg],
               ),
               border: Border.all(color: Typicalcolor.font),
               borderRadius: BorderRadius.circular(9),
@@ -97,70 +95,175 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
                       children: [
                         startStage(),
                         SizedBox(height: 5.h),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 6.w),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  goalwidget(),
-                                  SizedBox(width: 4.w),
-                                  destroywidget(),
-                                ],
-                              ),
-                              SizedBox(height: 5.h),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  avgtimes('시도 횟수', "$totalTry회", 14),
-                                  avgtimes(
-                                    '시도 메소',
-                                    '${formatPower(totalMeso)} 메소',
-                                    9,
-                                  ),
-                                  destroytime('파괴확률', '$totalDestroy%', 12),
-                                  eventbtn(),
-                                ],
-                              ),
-                              SizedBox(height: 5.h),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  avgtimes('평균 횟수', "$avgTry회", 14),
-                                  avgtimes(
-                                    '평균 메소',
-                                    '${formatPower(avgMeso)} 메소',
-                                    9,
-                                  ),
-                                  destroytime('평균파괴', '$avgDestroy%', 12),
-                                  eventbtn(),
-                                ],
-                              ),
-                              SizedBox(height: 5.h),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  starTable(),
-                                  StarforceBarChart(rows: rows),
-                                ],
-                              ),
-                              SizedBox(height: 7.h),
-                            ],
-                          ),
-                        ),
+                        contentList(),
                       ],
                     ),
                   ),
                 ),
+                SizedBox(height: 2.5.h),
                 resultbtn(),
               ],
             ),
           ),
         ),
       ],
+    );
+  }
+
+  Padding contentList() {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 6.w),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              inputwidget("목표★", goalController, 30),
+              SizedBox(width: 4.w),
+              destroywidget(),
+            ],
+          ),
+          SizedBox(height: 5.h),
+          Row(
+            children: [
+              inputwidget("횟수★", tryController, 10),
+              SizedBox(width: 4.w),
+              equipLevelwidget(),
+            ],
+          ),
+          SizedBox(height: 5.h),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              avgtimes('시도 횟수', "$totalTry회", 14),
+              avgtimes('시도 메소', '${formatPower(totalMeso)} 메소', 9),
+              destroytime('파괴확률', '$totalDestroy%', 12),
+              eventbtn(),
+            ],
+          ),
+
+          SizedBox(height: 5.h),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              starTable(),
+              StarforceBarChart(rows: rows),
+            ],
+          ),
+          SizedBox(height: 7.h),
+        ],
+      ),
+    );
+  }
+
+  Container equipLevelwidget() {
+    return Container(
+      width: 135.w,
+      padding: EdgeInsets.all(3), // border 두께
+      decoration: BoxDecoration(
+        color: Typicalcolor.subborder,
+        borderRadius: BorderRadius.circular(12.r),
+        border: Border.all(color: Color(0xFF000000)),
+      ),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 8.w),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: [Typicalcolor.title, Typicalcolor.subtitle],
+          ),
+          borderRadius: BorderRadius.circular(9.r),
+          border: Border.all(color: Color(0xFF000000)),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                twoText('장비레벨', 14),
+                SizedBox(width: 5.w),
+                Container(
+                  width: 2.w,
+                  height: 30.h,
+                  decoration: BoxDecoration(color: Typicalcolor.subfont),
+                ),
+                SizedBox(width: 5.w),
+                listData<int>("레벨 설정", equips, equiplevel, (value) {
+                  setState(() {
+                    equips = value!;
+                  });
+                }),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Container listData<T>(
+    String title,
+    T value,
+    List<T> values,
+    ValueChanged<T?> onChanged,
+  ) {
+    return Container(
+      width: 45.w,
+      height: 20.h,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: Typicalcolor.bg, // ✅ 흰색 → 배경색
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Typicalcolor.subborder),
+        boxShadow: [
+          BoxShadow(
+            color: Typicalcolor.subfont.withValues(alpha: 0.2), // ✅ 부드러운 그림자
+            blurRadius: 6,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: DropdownButtonHideUnderline(
+        child: Center(
+          // 1) 드롭다운 버튼 자체를 부모 안에서 중앙 배치
+          child: SizedBox(
+            // 원하는 너비로 세팅 (없으면 꽉 참)
+            child: DropdownButton<T>(
+              value: value,
+              isExpanded: true, // 가로로 꽉 채우기
+              alignment: Alignment.center, // 2) 버튼 안의 선택 텍스트 중앙 정렬
+              hint: Center(
+                // 힌트도 중앙 정렬
+                child: Text(title, textAlign: TextAlign.center),
+              ),
+              style: TextStyle(
+                fontSize: 10.sp,
+                fontWeight: FontWeight.bold,
+                color: Typicalcolor.subfont,
+              ),
+              items: values.map((d) {
+                return DropdownMenuItem<T>(
+                  value: d,
+                  alignment: Alignment.center, // 3) 메뉴 아이템 중앙 정렬
+                  child: Center(
+                    child: Text(d.toString(), textAlign: TextAlign.center),
+                  ),
+                );
+              }).toList(),
+
+              // 선택된 아이템이 버튼에 표시될 때도 확실히 중앙 정렬시키고 싶다면:
+              selectedItemBuilder: (context) => values.map((d) {
+                return Center(
+                  child: Text(d.toString(), textAlign: TextAlign.center),
+                );
+              }).toList(),
+
+              onChanged: onChanged,
+            ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -180,10 +283,7 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
             gradient: LinearGradient(
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
-              colors: [
-                Typicalcolor.title, // 위쪽: 어두운 차콜
-                Typicalcolor.subtitle, // 아래쪽: 연한 금색
-              ],
+              colors: [Typicalcolor.title, Typicalcolor.subtitle],
             ),
             borderRadius: BorderRadius.circular(9.r),
             border: Border.all(color: Color(0xFF000000)),
@@ -226,7 +326,7 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
                 ),
               ),
               SizedBox(width: 12.w),
-              twoText(_value.toInt().toString(), 14),
+              twoText("${_value.toInt()}성", 14),
             ],
           ),
         ),
@@ -234,7 +334,7 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
     );
   }
 
-  Widget goalwidget() {
+  Widget inputwidget(String title, TextEditingController controller, int max) {
     return Container(
       width: 135.w,
       padding: EdgeInsets.all(3), // border 두께
@@ -249,10 +349,7 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
           gradient: LinearGradient(
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
-            colors: [
-              Typicalcolor.title, // 위쪽: 어두운 차콜
-              Typicalcolor.subtitle, // 아래쪽: 연한 금색
-            ],
+            colors: [Typicalcolor.title, Typicalcolor.subtitle],
           ),
           borderRadius: BorderRadius.circular(9.r),
           border: Border.all(color: Color(0xFF000000)),
@@ -262,7 +359,7 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
           children: [
             Row(
               children: [
-                twoText("목표★", 14),
+                twoText(title, 14),
 
                 SizedBox(width: 5.w),
                 Container(
@@ -281,11 +378,12 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
                 border: Border.all(color: Typicalcolor.subborder, width: 2.w),
               ),
               child: TextField(
-                controller: goalController,
+                controller: controller,
                 maxLength: 2,
                 keyboardType: TextInputType.number, // 숫자 키패드
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly, // 숫자만 허용
+                  RangeInputFormatter(max),
                 ],
                 textAlign: TextAlign.center, // 👈 중앙 정렬
                 style: TextStyle(
@@ -322,10 +420,7 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
           gradient: LinearGradient(
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
-            colors: [
-              Typicalcolor.title, // 위쪽: 어두운 차콜
-              Typicalcolor.subtitle, // 아래쪽: 연한 금색
-            ],
+            colors: [Typicalcolor.title, Typicalcolor.subtitle],
           ),
           borderRadius: BorderRadius.circular(9.r),
           border: Border.all(color: Color(0xFF000000)),
@@ -397,10 +492,7 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
           gradient: LinearGradient(
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
-            colors: [
-              Typicalcolor.title, // 위쪽: 어두운 차콜
-              Typicalcolor.subtitle, // 아래쪽: 연한 금색
-            ],
+            colors: [Typicalcolor.title, Typicalcolor.subtitle],
           ),
           borderRadius: BorderRadius.circular(9.r),
           border: Border.all(color: Typicalcolor.font),
@@ -429,10 +521,7 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
           gradient: LinearGradient(
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
-            colors: [
-              Typicalcolor.title, // 위쪽: 어두운 차콜
-              Typicalcolor.subtitle, // 아래쪽: 연한 금색
-            ],
+            colors: [Typicalcolor.title, Typicalcolor.subtitle],
           ),
           borderRadius: BorderRadius.circular(9.r),
           border: Border.all(color: Typicalcolor.font),
@@ -461,10 +550,7 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
           gradient: LinearGradient(
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
-            colors: [
-              Typicalcolor.title, // 위쪽: 어두운 차콜
-              Typicalcolor.subtitle, // 아래쪽: 연한 금색
-            ],
+            colors: [Typicalcolor.title, Typicalcolor.subtitle],
           ),
           borderRadius: BorderRadius.circular(9.r),
           border: Border.all(color: Typicalcolor.font),
@@ -557,10 +643,7 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
           gradient: LinearGradient(
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
-            colors: [
-              Typicalcolor.title, // 위쪽: 어두운 차콜
-              Typicalcolor.subtitle, // 아래쪽: 연한 금색
-            ],
+            colors: [Typicalcolor.title, Typicalcolor.subtitle],
           ),
           borderRadius: BorderRadius.circular(9.r),
           border: Border.all(color: Typicalcolor.font),
@@ -620,10 +703,7 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
                     gradient: LinearGradient(
                       begin: Alignment.centerLeft,
                       end: Alignment.centerRight,
-                      colors: [
-                        Typicalcolor.bg, // 위쪽: 어두운 차콜
-                        Typicalcolor.subbg, // 아래쪽: 연한 금색
-                      ],
+                      colors: [Typicalcolor.bg, Typicalcolor.subbg],
                     ),
                   ),
                   children: [
@@ -681,30 +761,36 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
           starforceDiscount: starforceDiscount,
         );
 
-        final target = int.parse(goalController.text.trim());
+        final target = (goalController.text.isEmpty)
+            ? _value.toInt() + 1
+            : (int.parse(goalController.text.trim()) <= _value.toInt())
+            ? _value.toInt() + 1
+            : int.parse(goalController.text.trim());
 
         final once = await sim.simulateOnce(
-          equipLevel: 250,
+          equipLevel: equips,
           start: _value.toInt(),
           target: target,
           cfg: cfg,
         );
 
-        final stats = await sim.simulateMany(
-          equipLevel: 250,
-          start: _value.toInt(),
-          target: target,
-          cfg: cfg,
-          runs: 1000,
-        );
+        // final stats = await sim.simulateMany(
+        //   equipLevel: 250,
+        //   start: _value.toInt(),
+        //   target: target,
+        //   cfg: cfg,
+        //   runs: 3,
+        // );
         setState(() {
           totalTry = once.tries;
           totalMeso = once.totalMeso;
           totalDestroy = (once.destroyCount / once.tries).toStringAsFixed(2);
 
-          totalTry = stats['tries']['avg'];
-          totalMeso = stats['meso']['avg'];
-          totalDestroy = stats['destroy']['avg'];
+          goalController.text = target.toString();
+
+          // totalTry = int.parse(stats['tries']['avg'].toString());
+          // totalMeso = int.parse(stats['meso']['avg'].toString());
+          // totalDestroy = stats['destroy']['avg'].toString();
         });
       },
       child: Container(
@@ -722,10 +808,7 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
             gradient: LinearGradient(
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
-              colors: [
-                Typicalcolor.title, // 위쪽: 어두운 차콜
-                Typicalcolor.subtitle, // 아래쪽: 연한 금색
-              ],
+              colors: [Typicalcolor.title, Typicalcolor.subtitle],
             ),
             borderRadius: BorderRadius.circular(9.r),
             border: Border.all(color: Typicalcolor.font),

@@ -34,10 +34,7 @@ class _CalcultapState extends State<CalculTap> {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [
-                Typicalcolor.subborder, // 위쪽: 어두운 차콜
-                Typicalcolor.border, // 아래쪽: 연한 금색
-              ],
+              colors: [Typicalcolor.subborder, Typicalcolor.border],
             ),
             border: Border.all(color: Typicalcolor.font),
             borderRadius: BorderRadius.circular(12.r),
@@ -48,10 +45,7 @@ class _CalcultapState extends State<CalculTap> {
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [
-                  Typicalcolor.bg, // 위쪽: 어두운 차콜
-                  Typicalcolor.subbg, // 아래쪽: 연한 금색
-                ],
+                colors: [Typicalcolor.bg, Typicalcolor.subbg],
               ),
               border: Border.all(color: Typicalcolor.font),
               borderRadius: BorderRadius.circular(9),
@@ -207,10 +201,7 @@ class _CalcultapState extends State<CalculTap> {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [
-                Typicalcolor.subborder, // 위쪽: 어두운 차콜
-                Typicalcolor.border, // 아래쪽: 연한 금색
-              ],
+              colors: [Typicalcolor.subborder, Typicalcolor.border],
             ),
             border: Border.all(color: Typicalcolor.font),
             borderRadius: BorderRadius.circular(12.r),
@@ -221,10 +212,7 @@ class _CalcultapState extends State<CalculTap> {
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [
-                  Typicalcolor.bg, // 위쪽: 어두운 차콜
-                  Typicalcolor.subbg, // 아래쪽: 연한 금색
-                ],
+                colors: [Typicalcolor.bg, Typicalcolor.subbg],
               ),
               border: Border.all(color: Typicalcolor.font),
               borderRadius: BorderRadius.circular(9),

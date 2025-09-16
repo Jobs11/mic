@@ -206,7 +206,7 @@ class _SimulatorTapState extends State<SimulatorTap> {
             ),
             SizedBox(height: 5.h),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              padding: EdgeInsets.symmetric(horizontal: 8.w),
               child: Container(
                 decoration: BoxDecoration(color: Typicalcolor.subborder),
                 width: double.infinity,
@@ -217,10 +217,10 @@ class _SimulatorTapState extends State<SimulatorTap> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                cubeOption('레전드리', gradeColor['레전드리']!),
-                cubeOption(firstOption, gradeColor['레전드리']!),
-                cubeOption(secondOption, gradeColor['레전드리']!),
-                cubeOption(thirdOption, gradeColor['레전드리']!),
+                cubeOption('레전드리', gradeColor['레전드리']!, 13),
+                cubeOption(firstOption, gradeColor['레전드리']!, 12),
+                cubeOption(secondOption, gradeColor['레전드리']!, 12),
+                cubeOption(thirdOption, gradeColor['레전드리']!, 12),
               ],
             ),
           ],
@@ -442,16 +442,35 @@ class _SimulatorTapState extends State<SimulatorTap> {
     );
   }
 
-  Widget cubeOption(String title, Color colors) {
+  Widget cubeOption(String title, Color colors, double size) {
     return SizedBox(
-      width: 220.w,
-      child: Text(
-        title,
-        style: TextStyle(
-          color: colors,
-          fontWeight: FontWeight.bold,
-          fontSize: 12.sp,
-        ),
+      width: 230.w,
+      child: Stack(
+        children: [
+          // 테두리
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: size.sp,
+              fontWeight: FontWeight.bold,
+              foreground: Paint()
+                ..style = PaintingStyle.stroke
+                ..strokeWidth = 4
+                ..color = colors,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          // 안쪽 채우기
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: size.sp,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFFFFFFFF),
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 const List<String> backgroundsimg = [
@@ -101,7 +102,7 @@ const List<String> forcetype = [
   "무기",
 ];
 
-const List<String> equiplevel = ["250", "200", "160", "150", "140"];
+const List<int> equiplevel = [140, 150, 160, 200, 250];
 
 final Map<String, Color> gradeColor = {
   '레어': Color(0xFF2EABC6),
@@ -130,13 +131,42 @@ class Typicalcolor {
   static Color subbg = Color(0xFFffdcca);
 
   static Color font = Color(0xFF67462a);
-  static Color subfont = Color(0xFF77644c);
+  static Color subfont = Color(0xFF3d2b36);
 
   static Color border = Color(0xFFcf690d);
   static Color subborder = Color(0xFFf59064);
+
+  static Color textborder = Color(0xFFDDDDDD);
 }
 
 Stack twoText(String title, double size) {
+  // return Stack(
+  //   children: [
+  //     // 테두리
+  //     Text(
+  //       title,
+  //       style: TextStyle(
+  //         fontSize: size.sp,
+  //         fontWeight: FontWeight.bold,
+  //         foreground: Paint()
+  //           ..style = PaintingStyle.stroke
+  //           ..strokeWidth = 3
+  //           ..color = Typicalcolor.subfont,
+  //       ),
+  //       textAlign: TextAlign.center,
+  //     ),
+  //     // 안쪽 채우기
+  //     Text(
+  //       title,
+  //       style: TextStyle(
+  //         fontSize: size.sp,
+  //         fontWeight: FontWeight.bold,
+  //         color: Color(0xFFFFFFFF),
+  //       ),
+  //       textAlign: TextAlign.center,
+  //     ),
+  //   ],
+  // );
   return Stack(
     children: [
       // 테두리
@@ -148,7 +178,7 @@ Stack twoText(String title, double size) {
           foreground: Paint()
             ..style = PaintingStyle.stroke
             ..strokeWidth = 3
-            ..color = Color(0xFFFFFFFF),
+            ..color = Typicalcolor.textborder,
         ),
         textAlign: TextAlign.center,
       ),
@@ -188,7 +218,7 @@ Stack twoTitle(String title, double size) {
         style: TextStyle(
           fontSize: size.sp,
           fontWeight: FontWeight.bold,
-          color: Color(0xFFFFFFFF),
+          color: Typicalcolor.bg,
         ),
         textAlign: TextAlign.center,
       ),
@@ -260,3 +290,27 @@ final Map<int, int> levelmeso = {200: 45000000, 250: 50000000};
 //할인비용: 강화비용 × { 1.0 - (MVP+PC방) }
 //썬데이: 강화비용 × { 1.0 - (MVP+PC방) } × 0.7
 //썬데이: enchantMeso * { 1.0 - (mvpTime+pcTime) } * payTime * destroyTime
+
+class RangeInputFormatter extends TextInputFormatter {
+  final int max;
+
+  RangeInputFormatter(this.max);
+
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    if (newValue.text.isEmpty) return newValue;
+
+    final int? value = int.tryParse(newValue.text);
+    if (value == null) return oldValue;
+
+    // 1 이상 max 이하만 허용
+    if (value < 1 || value > max) {
+      return oldValue;
+    }
+
+    return newValue;
+  }
+}
