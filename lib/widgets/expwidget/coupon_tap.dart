@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mic/function/datas.dart';
 import 'package:mic/function/expdata/coupon_contents.dart';
 import 'package:mic/api/model/basic.dart';
+import 'package:mic/function/expdata/exp_contents.dart';
 
 class CouponTap extends StatefulWidget {
   const CouponTap({super.key, required this.b});
@@ -109,7 +110,7 @@ class _CoupontapState extends State<CouponTap> {
       padding: EdgeInsets.only(left: 8.w),
       child: Row(
         children: [
-          Image.asset(couponimg[index], width: 30.w, height: 30.h),
+          Image.asset(couponimg[useitem]!, width: 30.w, height: 30.h),
 
           SizedBox(width: 10.w),
 
@@ -204,7 +205,7 @@ class _CoupontapState extends State<CouponTap> {
       padding: EdgeInsets.only(left: 8.w),
       child: Row(
         children: [
-          Image.asset(couponimg[index + 5], width: 30.w, height: 30.h),
+          Image.asset(couponimg[timeitem]!, width: 30.w, height: 30.h),
 
           SizedBox(width: 10.w),
 

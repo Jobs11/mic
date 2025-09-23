@@ -620,7 +620,7 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [twoText('ON', 9), twoText('OFF', 9)],
+              children: [twoText('OFF', 9), twoText('ON', 9)],
             ),
           ],
         ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mic/function/datas.dart';
 import 'package:mic/function/expdata/day_contents.dart';
+import 'package:mic/function/expdata/exp_contents.dart';
 
 Future<String?> monsterParkPick(BuildContext context) {
   return showDialog<String>(
@@ -123,19 +124,20 @@ class __MosterParkDialogState extends State<_MosterParkDialog> {
                                 children: [
                                   arcaneProifle(8),
                                   SizedBox(width: 20.w),
-                                  grandisProifle(0),
+                                  arcaneProifle(9),
                                 ],
                               ),
                               SizedBox(height: 20.h),
 
                               Row(
                                 children: [
-                                  grandisProifle(1),
+                                  grandisProifle(0),
                                   SizedBox(width: 20.w),
-                                  grandisProifle(2),
+                                  grandisProifle(1),
                                 ],
                               ),
                               SizedBox(height: 20.h),
+                              Row(children: [grandisProifle(2)]),
                             ],
                           ),
                         ),
@@ -157,10 +159,14 @@ class __MosterParkDialogState extends State<_MosterParkDialog> {
     return GestureDetector(
       onTap: () {
         monsterpark['지역'] = arcane[index];
-        monsterpark['이미지'] = arcaneimg[index];
+        monsterpark['이미지'] = areaImages[arcane[index]];
         Navigator.pop(context, arcane[index]);
       },
-      child: Image.asset(arcaneimg[index], width: 100.w, height: 100.h),
+      child: Image.asset(
+        areaImages[arcane[index]]!,
+        width: 100.w,
+        height: 100.h,
+      ),
     );
   }
 
@@ -168,10 +174,14 @@ class __MosterParkDialogState extends State<_MosterParkDialog> {
     return GestureDetector(
       onTap: () {
         monsterpark['지역'] = grandis[index];
-        monsterpark['이미지'] = grandisimg[index];
+        monsterpark['이미지'] = areaImages[grandis[index]];
         Navigator.pop(context, grandis[index]);
       },
-      child: Image.asset(grandisimg[index], width: 100.w, height: 100.h),
+      child: Image.asset(
+        areaImages[grandis[index]]!,
+        width: 100.w,
+        height: 100.h,
+      ),
     );
   }
 }

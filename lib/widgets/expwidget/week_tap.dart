@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mic/function/datas.dart';
+import 'package:mic/function/expdata/exp_contents.dart';
 import 'package:mic/function/expdata/week_contents.dart';
 import 'package:mic/api/model/basic.dart';
 
@@ -64,7 +65,7 @@ class _WeektapState extends State<WeekTap> {
               itemCount: weekquest.length,
               itemBuilder: (context, index) {
                 String week = weekquest.keys.elementAt(index);
-                return weekwidget(index, week);
+                return weekwidget(week);
               },
             ),
           ),
@@ -73,12 +74,12 @@ class _WeektapState extends State<WeekTap> {
     );
   }
 
-  Widget weekwidget(int index, String week) {
+  Widget weekwidget(String week) {
     return Padding(
       padding: EdgeInsets.only(left: 8.w),
       child: Row(
         children: [
-          Image.asset(weekimg[index], width: 30.w, height: 30.h),
+          Image.asset(weekimg[week]!, width: 30.w, height: 30.h),
 
           SizedBox(width: 10.w),
 
@@ -157,7 +158,7 @@ class _WeektapState extends State<WeekTap> {
               itemCount: epicweek.length,
               itemBuilder: (context, index) {
                 String week = epicweek.keys.elementAt(index);
-                return epicwidget(index + 7, week);
+                return epicwidget(week);
               },
             ),
           ),
@@ -166,12 +167,12 @@ class _WeektapState extends State<WeekTap> {
     );
   }
 
-  Widget epicwidget(int index, String epic) {
+  Widget epicwidget(String epic) {
     return Padding(
       padding: EdgeInsets.only(left: 8.w),
       child: Row(
         children: [
-          Image.asset(weekimg[index], width: 30.w, height: 30.h),
+          Image.asset(weekimg[epic]!, width: 30.w, height: 30.h),
 
           SizedBox(width: 10.w),
 

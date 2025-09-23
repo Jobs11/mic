@@ -199,7 +199,7 @@ class _SimulatorTapState extends State<SimulatorTap> {
               ],
             ),
             Image.asset(
-              equipimg[equipindex],
+              equipImages[equipvalues]!,
               width: 70.w,
               height: 70.h,
               fit: BoxFit.fill,

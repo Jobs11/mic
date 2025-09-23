@@ -4,6 +4,7 @@ import 'package:mic/dialog.dart/monsterpark.dart';
 import 'package:mic/function/datas.dart';
 import 'package:mic/function/expdata/day_contents.dart';
 import 'package:mic/api/model/basic.dart';
+import 'package:mic/function/expdata/exp_contents.dart';
 import 'package:mic/widgets/pillwidget/day_pill_two.dart';
 
 class DayTap extends StatefulWidget {
@@ -49,16 +50,20 @@ class _DaytapState extends State<DayTap> {
                         itemCount: grandis.length,
                         itemBuilder: (context, index) {
                           String key = grandis[index];
-                          return grandisday(index, key);
+                          return areaday(key);
                         },
                       ),
                     )
                   : Expanded(
                       child: ListView.builder(
-                        itemCount: arcane.length,
+                        itemCount: arcane
+                            .where((e) => e != "셀라스, 별이 잠긴 곳")
+                            .length,
                         itemBuilder: (context, index) {
-                          String key = arcane[index];
-                          return arcaneday(index, key);
+                          String key = arcane
+                              .where((e) => e != "셀라스, 별이 잠긴 곳")
+                              .toList()[index];
+                          return areaday(key);
                         },
                       ),
                     ),
@@ -167,22 +172,20 @@ class _DaytapState extends State<DayTap> {
     );
   }
 
-  Widget arcaneday(int index, String arcane) {
+  Widget areaday(String area) {
     return Padding(
       padding: EdgeInsets.only(left: 8.w),
       child: Row(
         children: [
-          Image.asset(arcaneimg[index], width: 30.w, height: 30.h),
+          Image.asset(areaImages[area]!, width: 30.w, height: 30.h),
 
           SizedBox(width: 10.w),
 
-          Expanded(
-            child: twoText('$arcane (Lv: ${daylevellimit[arcane]})', 14),
-          ),
+          Expanded(child: twoText('$area (Lv: ${daylevellimit[area]})', 14)),
           SizedBox(width: 10.w),
-          (widget.b.characterlevel >= daylevellimit[arcane]!)
+          (widget.b.characterlevel >= daylevellimit[area]!)
               ? Checkbox(
-                  value: dayquest[arcane],
+                  value: dayquest[area],
                   checkColor: Colors.white, // 체크 표시 색
                   // 선택/비활성 등 상태별 채움색
                   fillColor: WidgetStateProperty.resolveWith<Color?>((states) {
@@ -201,7 +204,7 @@ class _DaytapState extends State<DayTap> {
                   ),
                   onChanged: (v) {
                     setState(() {
-                      dayquest[arcane] = v ?? false;
+                      dayquest[area] = v ?? false;
                     });
                   },
                 )
@@ -213,60 +216,6 @@ class _DaytapState extends State<DayTap> {
                     Icons.disabled_by_default,
                     color: Typicalcolor.title,
                     size: 20.sp,
-                  ),
-                ),
-        ],
-      ),
-    );
-  }
-
-  Widget grandisday(int index, String grandis) {
-    return Padding(
-      padding: EdgeInsets.only(left: 8.w),
-      child: Row(
-        children: [
-          Image.asset(grandisimg[index], width: 30.w, height: 30.h),
-
-          SizedBox(width: 10.w),
-
-          Expanded(
-            child: twoText('$grandis (Lv: ${daylevellimit[grandis]})', 14),
-          ),
-          SizedBox(width: 10.w),
-
-          (widget.b.characterlevel >= daylevellimit[grandis]!)
-              ? Checkbox(
-                  value: dayquest[grandis],
-                  checkColor: Colors.white, // 체크 표시 색
-                  // 선택/비활성 등 상태별 채움색
-                  fillColor: WidgetStateProperty.resolveWith<Color?>((states) {
-                    if (states.contains(WidgetState.disabled)) {
-                      return Typicalcolor.bg;
-                    }
-                    if (states.contains(WidgetState.selected)) {
-                      return Typicalcolor.title; // 선택 시
-                    }
-                    return Typicalcolor.bg; // 평소
-                  }),
-                  side: BorderSide(
-                    // 테두리 색
-                    color: Typicalcolor.subborder,
-                    width: 2,
-                  ),
-                  onChanged: (v) {
-                    setState(() {
-                      dayquest[grandis] = v ?? false;
-                    });
-                  },
-                )
-              : Container(
-                  width: 42.w,
-                  height: 42.h,
-                  alignment: Alignment.center,
-                  child: Icon(
-                    Icons.disabled_by_default,
-                    color: Typicalcolor.title,
-                    size: 22.sp,
                   ),
                 ),
         ],

@@ -535,7 +535,7 @@ class _EnhanceTapState extends State<EnhanceTap> {
               ),
 
               Image.asset(
-                equipimg[equipindex],
+                equipImages[equipvalues]!,
                 width: 70.w,
                 height: 70.h,
                 fit: BoxFit.fill,

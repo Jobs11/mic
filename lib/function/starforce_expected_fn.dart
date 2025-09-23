@@ -320,7 +320,7 @@ class StarforceSimulator {
       final pS = r.success;
       final pSt = r.failStay;
       final pDn = r.failDown;
-      final pX = r.destroy;
+      // final pX = r.destroy;
 
       if (roll < pS) {
         cS++;
@@ -397,7 +397,9 @@ class StarforceSimulator {
     double std(List<int> a) {
       final m = avg(a);
       var v = 0.0;
-      for (final x in a) v += (x - m) * (x - m);
+      for (final x in a) {
+        v += (x - m) * (x - m);
+      }
       return (v / a.length).sqrt();
     }
 

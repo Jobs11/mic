@@ -6,6 +6,7 @@ import 'package:mic/bar/mic_underbar.dart';
 import 'package:mic/function/currentuser.dart';
 import 'package:mic/function/datas.dart';
 import 'package:mic/api/model/basic.dart';
+import 'package:mic/function/expdata/exp_contents.dart';
 import 'package:mic/screens/boss_screen.dart';
 import 'package:mic/screens/cube_screen.dart';
 import 'package:mic/screens/exp_screen.dart';
@@ -39,26 +40,32 @@ class _MainhomeScreenState extends State<MainhomeScreen> {
     super.initState();
     if (CurrentUser.instance.ocid != null) {
       ischecked = true;
-      basic = Basicservice.getOcidByCharacterName(
-        CurrentUser.instance.ocid!.ocid,
-      );
+      _loadBasic(CurrentUser.instance.ocid!.ocid);
     }
+  }
+
+  Future<void> _loadBasic(String ocid) async {
+    // 1) Future 저장 (FutureBuilder 등에 사용)
+    basic = Basicservice.getOcidByCharacterName(ocid);
+
+    // 2) 실제 Basic 객체를 받아 전역 싱글턴에 저장
+    final result = await basic; // <- 여기서 Future<Basic>을 Basic으로
+    CurrentCharacter.instance.basic = result;
+
+    if (mounted) setState(() {}); // 필요 시 리빌드
   }
 
   Future<void> _login() async {
     final nick = nickController.text.trim();
-
     try {
-      final ocid = await Ocidservice.getOcidByCharacterName(nick); // GET 요청
-
-      // 로그인 성공 시 전역 상태나 Provider 등에 저장
+      final ocid = await Ocidservice.getOcidByCharacterName(nick);
       CurrentUser.instance.ocid = ocid;
 
-      basic = Basicservice.getOcidByCharacterName(ocid.ocid);
+      await _loadBasic(ocid.ocid); // Future<Basic>도 세팅되고, 싱글턴에도 Basic 주입됨
 
-      setState(() {
-        ischecked = true;
-      });
+      if (mounted) {
+        setState(() => ischecked = true);
+      }
 
       Fluttertoast.showToast(
         msg: "닉네임($nick) 적용 확인되었습니다.",
@@ -68,9 +75,6 @@ class _MainhomeScreenState extends State<MainhomeScreen> {
         textColor: Colors.white,
         fontSize: 16.0.sp,
       );
-
-      // 메인 페이지 이동
-      if (!mounted) return;
     } catch (e) {
       Fluttertoast.showToast(
         msg: "닉네임 입력 실패! $e",
@@ -80,7 +84,16 @@ class _MainhomeScreenState extends State<MainhomeScreen> {
         textColor: Colors.white,
         fontSize: 16.0.sp,
       );
-    } finally {}
+    }
+  }
+
+  void _resetData() {
+    epicweek.updateAll((key, value) => false);
+    weekquest.updateAll((key, value) => false);
+    dayquest.updateAll((key, value) => false);
+    usecoupon.updateAll((key, value) => 0);
+    timecoupon.updateAll((key, value) => 0.0);
+    monsterpark["입장여부"] = false;
   }
 
   @override
@@ -266,6 +279,14 @@ class _MainhomeScreenState extends State<MainhomeScreen> {
               CurrentUser.instance.ocid = null;
               ischecked = false;
               Bossdata.bossList.clear();
+              _resetData();
+              eventtitle = {
+                "아케인리버": 0,
+                "그란디스": 0,
+                "몬스터파크": 0,
+                "아즈모스 협곡": 500,
+                "에픽던전": 1,
+              };
             });
           },
           child: Container(
