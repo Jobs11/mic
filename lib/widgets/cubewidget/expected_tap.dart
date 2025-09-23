@@ -189,20 +189,16 @@ class _ExpectedTapState extends State<ExpectedTap> {
                 SizedBox(height: 10.h),
                 GestureDetector(
                   onTap: () {
+                    final stats = cubesForThreeOptions(
+                      selectedPayload!,
+                      first: selectFirst, // 예: 'STR +12%'  (null/''이면 상관없음)
+                      second: selectSecond, // 예: 'STR +12%'
+                      third: selectThird, // 예: 'STR +9%'
+                      mesoPerRoll: levelmeso[int.parse(selectedLevel)]!,
+                    );
                     setState(() {
-                      sumcube = cubesForTriple99(
-                        selectedPayload!,
-                        first: selectFirst!,
-                        second: selectSecond!,
-                        third: selectThird!,
-                      );
-                      summeso = mesoForTriple99(
-                        selectedPayload!,
-                        first: selectFirst!,
-                        second: selectSecond!,
-                        third: selectThird!,
-                        mesoPerRoll: levelmeso[int.parse(selectedLevel)]!,
-                      );
+                      sumcube = stats.expected!.toInt();
+                      summeso = stats.expectedMeso!.toInt();
                     });
                   },
                   child: Container(

@@ -110,6 +110,7 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
     );
   }
 
+  // 결과물 출력 목록
   Padding contentList() {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 6.w),
@@ -156,52 +157,7 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
     );
   }
 
-  Container equipLevelwidget() {
-    return Container(
-      width: 135.w,
-      padding: EdgeInsets.all(3), // border 두께
-      decoration: BoxDecoration(
-        color: Typicalcolor.subborder,
-        borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(color: Color(0xFF000000)),
-      ),
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 8.w),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-            colors: [Typicalcolor.title, Typicalcolor.subtitle],
-          ),
-          borderRadius: BorderRadius.circular(9.r),
-          border: Border.all(color: Color(0xFF000000)),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                twoText('장비레벨', 14),
-                SizedBox(width: 5.w),
-                Container(
-                  width: 2.w,
-                  height: 30.h,
-                  decoration: BoxDecoration(color: Typicalcolor.subfont),
-                ),
-                SizedBox(width: 5.w),
-                listData<int>("레벨 설정", equips, equiplevel, (value) {
-                  setState(() {
-                    equips = value!;
-                  });
-                }),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
+  //시작 설정 슬라이드
   Container listData<T>(
     String title,
     T value,
@@ -267,6 +223,7 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
     );
   }
 
+  //스타포스 시작 성
   Widget startStage() {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 6.w),
@@ -334,6 +291,7 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
     );
   }
 
+  //입력하는 위젯
   Widget inputwidget(String title, TextEditingController controller, int max) {
     return Container(
       width: 135.w,
@@ -405,6 +363,7 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
     );
   }
 
+  //파괴방지 버튼
   Widget destroywidget() {
     return Container(
       width: 135.w,
@@ -476,6 +435,54 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
     );
   }
 
+  //장비 레벨 설정칸
+  Container equipLevelwidget() {
+    return Container(
+      width: 135.w,
+      padding: EdgeInsets.all(3), // border 두께
+      decoration: BoxDecoration(
+        color: Typicalcolor.subborder,
+        borderRadius: BorderRadius.circular(12.r),
+        border: Border.all(color: Color(0xFF000000)),
+      ),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 8.w),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: [Typicalcolor.title, Typicalcolor.subtitle],
+          ),
+          borderRadius: BorderRadius.circular(9.r),
+          border: Border.all(color: Color(0xFF000000)),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                twoText('장비레벨', 14),
+                SizedBox(width: 5.w),
+                Container(
+                  width: 2.w,
+                  height: 30.h,
+                  decoration: BoxDecoration(color: Typicalcolor.subfont),
+                ),
+                SizedBox(width: 5.w),
+                listData<int>("레벨 설정", equips, equiplevel, (value) {
+                  setState(() {
+                    equips = value!;
+                  });
+                }),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  //평균 출력 위젯
   Widget avgtimes(String title, String data, double size) {
     return Container(
       width: 80.w,
@@ -505,6 +512,7 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
     );
   }
 
+  //파괴 확률 위젯
   Widget destroytime(String title, String data, double size) {
     return Container(
       width: 60.w,
@@ -534,6 +542,7 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
     );
   }
 
+  //이벤트 여부 버튼
   Widget eventbtn() {
     return Container(
       width: 50.w,
@@ -628,6 +637,7 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
     );
   }
 
+  //각 성마다 성공률&메소사용량
   Widget starTable() {
     return Container(
       width: 160,
@@ -741,6 +751,7 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
     );
   }
 
+  //성 그래프
   Widget resultbtn() {
     return GestureDetector(
       onTap: () async {

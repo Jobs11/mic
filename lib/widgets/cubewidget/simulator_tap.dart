@@ -34,6 +34,7 @@ class _SimulatorTapState extends State<SimulatorTap> {
     loadData(equipvalues);
   }
 
+  // 잠재옵션 아이템에 따른 로드
   Future<void> loadData(String equip) async {
     final jsonStr = await rootBundle.loadString(
       'assets/datas/cube_probabilities.json',
@@ -47,12 +48,14 @@ class _SimulatorTapState extends State<SimulatorTap> {
     setState(() {});
   }
 
+  // 잠재옵션 변경
   void changeOption() {
     firstOption = pickRandomOption('첫번째');
     secondOption = pickRandomOption('두번째');
     thirdOption = pickRandomOption('세번째');
   }
 
+  // 가져온 잠재옵션 데이터를 확률에 따라서 3가지 출력
   String pickRandomOption(String step) {
     List<Map<String, dynamic>> options = List<Map<String, dynamic>>.from(
       selectedPayload![step],
@@ -158,6 +161,7 @@ class _SimulatorTapState extends State<SimulatorTap> {
     );
   }
 
+  // 잠재옵션 구간
   Widget optionSet() {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 8.w),
@@ -229,6 +233,7 @@ class _SimulatorTapState extends State<SimulatorTap> {
     );
   }
 
+  // 레벨 및 아이템 설정 구간
   Padding dropsCube(
     String title,
     String value,
@@ -279,6 +284,41 @@ class _SimulatorTapState extends State<SimulatorTap> {
     );
   }
 
+  // 출력된 잠재옵션 내역
+  Widget cubeOption(String title, Color colors, double size) {
+    return SizedBox(
+      width: 230.w,
+      child: Stack(
+        children: [
+          // 테두리
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: size.sp,
+              fontWeight: FontWeight.bold,
+              foreground: Paint()
+                ..style = PaintingStyle.stroke
+                ..strokeWidth = 4
+                ..color = colors,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          // 안쪽 채우기
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: size.sp,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFFFFFFFF),
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
+  // 잠재옵션 변경 버튼
   Widget resetingbtn() {
     return GestureDetector(
       onTap: () {
@@ -326,6 +366,7 @@ class _SimulatorTapState extends State<SimulatorTap> {
     );
   }
 
+  // 변경에 사용되는 큐브 개수
   Container countingCube() {
     return Container(
       width: 100.w,
@@ -367,6 +408,7 @@ class _SimulatorTapState extends State<SimulatorTap> {
     );
   }
 
+  // 버튼 설정 구간
   Container btnChoice(String title) {
     return Container(
       width: 80.w,
@@ -397,6 +439,7 @@ class _SimulatorTapState extends State<SimulatorTap> {
     );
   }
 
+  // 큐브에 사용된 재화
   Widget sumMeso() {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 6.w),
@@ -438,39 +481,6 @@ class _SimulatorTapState extends State<SimulatorTap> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget cubeOption(String title, Color colors, double size) {
-    return SizedBox(
-      width: 230.w,
-      child: Stack(
-        children: [
-          // 테두리
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: size.sp,
-              fontWeight: FontWeight.bold,
-              foreground: Paint()
-                ..style = PaintingStyle.stroke
-                ..strokeWidth = 4
-                ..color = colors,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          // 안쪽 채우기
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: size.sp,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFFFFFFFF),
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ],
       ),
     );
   }

@@ -32,6 +32,7 @@ class _WeektapState extends State<WeekTap> {
     );
   }
 
+  // 아케인리버 및 몬파 주간 컨텐츠 목록
   Container weekquests() {
     return Container(
       width: double.infinity,
@@ -74,6 +75,7 @@ class _WeektapState extends State<WeekTap> {
     );
   }
 
+  // 주간컨텐츠 설정 구간
   Widget weekwidget(String week) {
     return Padding(
       padding: EdgeInsets.only(left: 8.w),
@@ -126,6 +128,7 @@ class _WeektapState extends State<WeekTap> {
     );
   }
 
+  // 에픽던전 목록
   Container epicdungeon() {
     return Container(
       width: double.infinity,
@@ -167,6 +170,7 @@ class _WeektapState extends State<WeekTap> {
     );
   }
 
+  // 에픽던전 설정 구간
   Widget epicwidget(String epic) {
     return Padding(
       padding: EdgeInsets.only(left: 8.w),
@@ -196,6 +200,7 @@ class _WeektapState extends State<WeekTap> {
     );
   }
 
+  // 에픽던전 아즈모스 제외 체크여부
   Widget buildEpicTile(String epic) {
     const String kAz = "아즈모스 협곡";
     // 항상 체크박스 유지 대상

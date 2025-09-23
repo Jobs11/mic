@@ -64,6 +64,7 @@ class _CoupontapState extends State<CouponTap> {
     );
   }
 
+  // 사용아이템 목록
   Container useitems() {
     return Container(
       width: double.infinity,
@@ -105,6 +106,7 @@ class _CoupontapState extends State<CouponTap> {
     );
   }
 
+  // 사용아이템 설정 구간
   Widget usewidget(int index, String useitem) {
     return Padding(
       padding: EdgeInsets.only(left: 8.w),
@@ -159,6 +161,7 @@ class _CoupontapState extends State<CouponTap> {
     );
   }
 
+  // 기간아이템 목록
   Container timeitems() {
     return Container(
       width: double.infinity,
@@ -200,6 +203,7 @@ class _CoupontapState extends State<CouponTap> {
     );
   }
 
+  // 기간아이템 설정 구간
   Widget timewidget(int index, String timeitem) {
     return Padding(
       padding: EdgeInsets.only(left: 8.w),

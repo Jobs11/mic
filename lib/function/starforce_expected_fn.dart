@@ -250,7 +250,7 @@ int applyMesoFormula({
   }
 
   if (cfg.eventOn && cfg.safeguard && fromStar >= 12 && fromStar <= 16) {
-    cost *= 2.0; // 세이프가드 비용 2배
+    cost *= 3.0; // 세이프가드 비용 2배
   }
 
   // 반올림 (게임은 정수 메소)

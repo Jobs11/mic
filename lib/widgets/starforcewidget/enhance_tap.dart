@@ -433,7 +433,7 @@ class _EnhanceTapState extends State<EnhanceTap> {
             (v) => setState(() {
               // 콜백으로 부모 상태 업데이트
               isDestroy = v ?? false;
-              isDestroy ? destroyTime = 2.0 : destroyTime = 1.0;
+              isDestroy ? destroyTime = 3.0 : destroyTime = 1.0;
             }),
           ),
         ],
