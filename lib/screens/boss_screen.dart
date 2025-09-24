@@ -51,171 +51,174 @@ class _BossScreenState extends State<BossScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: MicAppbarone(
-        title: "보스 결정석",
-        scolor: Color(0xFF141415),
-        ecolor: Color(0xFF999998),
-        barimg: 'assets/images/icons/bossbar.png',
-      ),
-      body: Stack(
-        children: [
-          // 배경 이미지 (맨 아래)
-          Positioned.fill(
-            child: Image.asset(
-              backgroundsimg[Backgroundnum.bn],
-              fit: BoxFit.cover,
+    return SafeArea(
+      child: Scaffold(
+        appBar: MicAppbarone(
+          title: "보스 결정석",
+          scolor: Color(0xFF141415),
+          ecolor: Color(0xFF999998),
+          barimg: 'assets/images/icons/bossbar.png',
+        ),
+        body: Stack(
+          children: [
+            // 배경 이미지 (맨 아래)
+            Positioned.fill(
+              child: Image.asset(
+                backgroundsimg[Backgroundnum.bn],
+                fit: BoxFit.cover,
+              ),
             ),
-          ),
-          Center(
-            child: Column(
-              children: [
-                Expanded(
-                  child: Container(
-                    margin: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 16.h),
-                    padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 16.h),
-                    decoration: BoxDecoration(
-                      color: Color(0x8CFFFFFF),
-                      borderRadius: BorderRadius.circular(12.r),
-                    ),
-                    child: Column(
-                      children: [
-                        characterInfo(),
-                        SizedBox(height: 6.h),
-                        Container(
-                          width: 400.w,
-                          height: 110.h,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(17.r),
-                            border: Border.all(
-                              color: Typicalcolor.border,
-                              width: 2.w,
-                            ),
-                            gradient: LinearGradient(
-                              begin: Alignment.topCenter, // 시작점 (위쪽)
-                              end: Alignment.bottomCenter, // 끝점 (아래쪽)
-                              colors: [Typicalcolor.bg, Typicalcolor.subbg],
-                            ),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  bossIcon(
-                                    bossData[0]["이미지"],
-                                    bossData[0]["이름"],
-                                    bossData[0]["메소"],
-                                    bossData[0]["난이도"],
-                                    bossData[0]["인원수"],
-                                  ),
-                                ],
+            Center(
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Container(
+                      margin: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 16.h),
+                      padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 16.h),
+                      decoration: BoxDecoration(
+                        color: Color(0x8CFFFFFF),
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
+                      child: Column(
+                        children: [
+                          characterInfo(),
+                          SizedBox(height: 6.h),
+                          Container(
+                            width: 400.w,
+                            height: 110.h,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(17.r),
+                              border: Border.all(
+                                color: Typicalcolor.border,
+                                width: 2.w,
                               ),
-                              SizedBox(height: 5.h), // 간격 주기
-                              // 행 단위 보스 출력
-                              ...buildBossRows(),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 6.h),
-                        SingleChildScrollView(
-                          child: SizedBox(
-                            height: 160.h,
-                            width: double.infinity,
-
-                            child: ListView.builder(
-                              itemCount: Bossdata.bossList.length,
-                              itemBuilder: (context, index) {
-                                final item = Bossdata.bossList[index];
-
-                                return bossbar(item);
-                              },
-                            ),
-                          ),
-                        ),
-                        Container(
-                          alignment: Alignment.center,
-                          height: 28.h,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(17.r),
-                            gradient: LinearGradient(
-                              begin: Alignment.topCenter, // 시작점 (위쪽)
-                              end: Alignment.bottomCenter, // 끝점 (아래쪽)
-                              colors: [Typicalcolor.bg, Typicalcolor.subbg],
-                            ),
-                            border: Border.all(
-                              color: Typicalcolor.border,
-                              width: 4.w,
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                'assets/images/icons/coin1.png',
-                                width: 15.w,
-                                height: 15.h,
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter, // 시작점 (위쪽)
+                                end: Alignment.bottomCenter, // 끝점 (아래쪽)
+                                colors: [Typicalcolor.bg, Typicalcolor.subbg],
                               ),
-                              SizedBox(width: 5.w),
-                              twoText('${formatNumber(sumprice)} 메소', 12),
-                            ],
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    bossIcon(
+                                      bossData[0]["이미지"],
+                                      bossData[0]["이름"],
+                                      bossData[0]["메소"],
+                                      bossData[0]["난이도"],
+                                      bossData[0]["인원수"],
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 5.h), // 간격 주기
+                                // 행 단위 보스 출력
+                                ...buildBossRows(),
+                              ],
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 9.h),
+                          SizedBox(height: 6.h),
+                          SingleChildScrollView(
+                            child: SizedBox(
+                              height: 160.h,
+                              width: double.infinity,
 
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 32.w),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    sumprice = Bossdata.bossList.fold<int>(
-                                      0, // 초기값
-                                      (previousValue, element) {
-                                        final value = element['sumP'];
-                                        if (value is num) {
-                                          return previousValue + value.toInt();
-                                        }
-                                        return previousValue;
-                                      },
-                                    );
-                                  });
+                              child: ListView.builder(
+                                itemCount: Bossdata.bossList.length,
+                                itemBuilder: (context, index) {
+                                  final item = Bossdata.bossList[index];
+
+                                  return bossbar(item);
                                 },
-                                child: btncontainer('계산하기'),
                               ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    Bossdata.bossList.clear();
-                                    sumprice = 0;
-                                  });
-                                },
-                                child: btncontainer('리셋하기'),
-                              ),
-                            ],
+                            ),
                           ),
-                        ),
-                      ],
+                          Container(
+                            alignment: Alignment.center,
+                            height: 28.h,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(17.r),
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter, // 시작점 (위쪽)
+                                end: Alignment.bottomCenter, // 끝점 (아래쪽)
+                                colors: [Typicalcolor.bg, Typicalcolor.subbg],
+                              ),
+                              border: Border.all(
+                                color: Typicalcolor.border,
+                                width: 4.w,
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  'assets/images/icons/coin1.png',
+                                  width: 15.w,
+                                  height: 15.h,
+                                ),
+                                SizedBox(width: 5.w),
+                                twoText('${formatNumber(sumprice)} 메소', 12),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 9.h),
+
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 32.w),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      sumprice = Bossdata.bossList.fold<int>(
+                                        0, // 초기값
+                                        (previousValue, element) {
+                                          final value = element['sumP'];
+                                          if (value is num) {
+                                            return previousValue +
+                                                value.toInt();
+                                          }
+                                          return previousValue;
+                                        },
+                                      );
+                                    });
+                                  },
+                                  child: btncontainer('계산하기'),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      Bossdata.bossList.clear();
+                                      sumprice = 0;
+                                    });
+                                  },
+                                  child: btncontainer('리셋하기'),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: MicUnderbar(
-        currentIndex: _index,
-        onTap: (i) {
-          setState(() => _index = i);
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => _pages[_index]),
-          );
-        }, // ✅ 눌렀을 때 화면 전환
+          ],
+        ),
+        bottomNavigationBar: MicUnderbar(
+          currentIndex: _index,
+          onTap: (i) {
+            setState(() => _index = i);
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => _pages[_index]),
+            );
+          }, // ✅ 눌렀을 때 화면 전환
+        ),
       ),
     );
   }

@@ -31,70 +31,73 @@ class _StarScreenState extends State<StarScreen> {
   ];
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: MicAppbarone(
-        title: "스타포스 비용",
-        scolor: Color(0xFFe28224),
-        ecolor: Color(0xFFf0aa3b),
-        barimg: 'assets/images/icons/starbar.png',
-      ),
-      body: Stack(
-        children: [
-          // 배경 이미지 (맨 아래)
-          Positioned.fill(
-            child: Image.asset(
-              backgroundsimg[Backgroundnum.bn],
-              fit: BoxFit.cover,
+    return SafeArea(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: MicAppbarone(
+          title: "스타포스 비용",
+          scolor: Color(0xFFe28224),
+          ecolor: Color(0xFFf0aa3b),
+          barimg: 'assets/images/icons/starbar.png',
+        ),
+        body: Stack(
+          children: [
+            // 배경 이미지 (맨 아래)
+            Positioned.fill(
+              child: Image.asset(
+                backgroundsimg[Backgroundnum.bn],
+                fit: BoxFit.cover,
+              ),
             ),
-          ),
-          Center(
-            child: Column(
-              children: [
-                Expanded(
-                  child: Container(
-                    margin: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 16.h),
-                    padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 16.h),
-                    decoration: BoxDecoration(
-                      color: Color(0x8CFFFFFF),
-                      borderRadius: BorderRadius.circular(12.r),
-                    ),
-                    child: Column(
-                      children: [
-                        StarforcePillTwo(
-                          value: isChecked
-                              ? SimTab.starexpected
-                              : SimTab.enhance,
-                          onChanged: (v) {
-                            setState(() {
-                              if (v == SimTab.starexpected) {
-                                isChecked = true;
-                              } else {
-                                isChecked = false;
-                              }
-                            });
-                          },
-                        ),
+            Center(
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Container(
+                      margin: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 16.h),
+                      padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 16.h),
+                      decoration: BoxDecoration(
+                        color: Color(0x8CFFFFFF),
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
+                      child: Column(
+                        children: [
+                          StarforcePillTwo(
+                            value: isChecked
+                                ? SimTab.starexpected
+                                : SimTab.enhance,
+                            onChanged: (v) {
+                              setState(() {
+                                if (v == SimTab.starexpected) {
+                                  isChecked = true;
+                                } else {
+                                  isChecked = false;
+                                }
+                              });
+                            },
+                          ),
 
-                        SizedBox(height: 10.h),
-                        (isChecked) ? StarExpectedTap() : EnhanceTap(),
-                      ],
+                          SizedBox(height: 10.h),
+                          (isChecked) ? StarExpectedTap() : EnhanceTap(),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: MicUnderbar(
-        currentIndex: _index,
-        onTap: (i) {
-          setState(() => _index = i);
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => _pages[_index]),
-          );
-        }, // ✅ 눌렀을 때 화면 전환
+          ],
+        ),
+        bottomNavigationBar: MicUnderbar(
+          currentIndex: _index,
+          onTap: (i) {
+            setState(() => _index = i);
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => _pages[_index]),
+            );
+          }, // ✅ 눌렀을 때 화면 전환
+        ),
       ),
     );
   }

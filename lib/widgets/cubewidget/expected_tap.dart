@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mic/function/cube_contents.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+import 'package:mic/function/cube/cube_data.dart';
 import 'package:mic/function/currentuser.dart';
 import 'package:mic/function/datas.dart';
 
@@ -35,6 +37,26 @@ class _ExpectedTapState extends State<ExpectedTap> {
 
   int summeso = 0;
   int sumcube = 0;
+
+  bool isLoading = false;
+
+  Future<void> runSimulation() async {
+    setState(() => isLoading = true);
+
+    final avgCeil = await cubeAverageCountCeil(
+      selectedPayload: selectedPayload!,
+      firstOpt: selectFirst!,
+      secondOpt: selectSecond!,
+      thirdOpt: selectThird!,
+      runs: 10000,
+    );
+
+    setState(() {
+      isLoading = false;
+      sumcube = avgCeil;
+      summeso = sumcube * levelmeso[int.parse(selectedLevel)]!;
+    });
+  }
 
   Future<void> loadData(String equip) async {
     final jsonStr = await rootBundle.loadString(
@@ -124,82 +146,25 @@ class _ExpectedTapState extends State<ExpectedTap> {
                   child: twoTitle('잠재능력 옵션 입력칸', 18),
                 ),
                 SizedBox(height: 10.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    dropsCube('아이템 설정', equipvalues, equiptype, (value) {
-                      setState(() {
-                        equipindex = equiptype.indexOf(value!);
-                        equipvalues = value;
-                        loadData(equipvalues);
-                        changeAll();
-                      });
-                    }),
-                    dropsCube('레벨 설정', selectedLevel, equipcube.keys.toList(), (
-                      lv,
-                    ) {
-                      setState(() {
-                        selectedLevel = lv!;
-                        selectedPayload = Map<String, dynamic>.from(
-                          equipcube[lv]!,
-                        ); // ← 여기서 확률/옵션 접근 가능
-
-                        changeAll();
-
-                        firstOptions =
-                            (selectedPayload?['첫번째'] as List<dynamic>)
-                                .map((e) => e['옵션'] as String)
-                                .toList();
-
-                        secondOptions =
-                            (selectedPayload?['두번째'] as List<dynamic>)
-                                .map((e) => e['옵션'] as String)
-                                .toList();
-                        thirdOptions =
-                            (selectedPayload?['세번째'] as List<dynamic>)
-                                .map((e) => e['옵션'] as String)
-                                .toList();
-                      });
-                    }),
-                  ],
-                ),
+                optionEquip(),
                 SizedBox(height: 10.h),
 
-                optionCube(selectFirst, '첫번째 옵션', firstOptions, (v) {
-                  setState(() {
-                    selectFirst = v;
-                    firstchance = _chanceData('첫번째', selectFirst!);
-                  });
-                }),
-                SizedBox(height: 10.h),
-                optionCube(selectSecond, '두번째 옵션', secondOptions, (v) {
-                  setState(() {
-                    selectSecond = v;
-                    secondchance = _chanceData('두번째', selectSecond!);
-                  });
-                }),
-                SizedBox(height: 10.h),
-                optionCube(selectThird, '세번째 옵션', thirdOptions, (v) {
-                  setState(() {
-                    selectThird = v;
-
-                    thirdchance = _chanceData('세번째', selectThird!);
-                  });
-                }),
+                optaionList(),
                 SizedBox(height: 10.h),
                 GestureDetector(
                   onTap: () {
-                    final stats = cubesForThreeOptions(
-                      selectedPayload!,
-                      first: selectFirst, // 예: 'STR +12%'  (null/''이면 상관없음)
-                      second: selectSecond, // 예: 'STR +12%'
-                      third: selectThird, // 예: 'STR +9%'
-                      mesoPerRoll: levelmeso[int.parse(selectedLevel)]!,
-                    );
-                    setState(() {
-                      sumcube = stats.expected!.toInt();
-                      summeso = stats.expectedMeso!.toInt();
-                    });
+                    if (isLoading == false) {
+                      runSimulation();
+                    } else {
+                      Fluttertoast.showToast(
+                        msg: "기댓값 계산중...",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        backgroundColor: const Color(0xAA000000),
+                        textColor: Colors.white,
+                        fontSize: 16.0.sp,
+                      );
+                    }
                   },
                   child: Container(
                     width: 150.w,
@@ -217,28 +182,12 @@ class _ExpectedTapState extends State<ExpectedTap> {
                         width: 2.w,
                       ),
                     ),
-                    child: twoText('계산하기', 20),
+                    child: twoText((isLoading) ? '계산 중...' : '계산하기', 20),
                   ),
                 ),
 
                 SizedBox(height: 60.h),
-                expectedList(
-                  '명장의 큐브',
-                  'assets/images/items/commandercube.png',
-                  '-미정-',
-                ),
-                SizedBox(height: 10.h),
-                expectedList(
-                  '블랙 큐브',
-                  'assets/images/items/blackcube.png',
-                  '$sumcube 개',
-                ),
-                SizedBox(height: 10.h),
-                expectedList(
-                  '메소 재설정',
-                  'assets/images/icons/coin1.png',
-                  '${formatPower(summeso)} 메소',
-                ),
+                finalResult(),
               ],
             ),
           ),
@@ -247,6 +196,196 @@ class _ExpectedTapState extends State<ExpectedTap> {
     );
   }
 
+  // 장비 옵션 설정 리스트
+  Row optionEquip() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        dropsCube('아이템 설정', equipvalues, equiptype, (value) {
+          setState(() {
+            equipindex = equiptype.indexOf(value!);
+            equipvalues = value;
+            loadData(equipvalues);
+            changeAll();
+          });
+        }),
+        dropsCube('레벨 설정', selectedLevel, equipcube.keys.toList(), (lv) {
+          setState(() {
+            selectedLevel = lv!;
+            selectedPayload = Map<String, dynamic>.from(
+              equipcube[lv]!,
+            ); // ← 여기서 확률/옵션 접근 가능
+
+            changeAll();
+
+            firstOptions = (selectedPayload?['첫번째'] as List<dynamic>)
+                .map((e) => e['옵션'] as String)
+                .toList();
+
+            secondOptions = (selectedPayload?['두번째'] as List<dynamic>)
+                .map((e) => e['옵션'] as String)
+                .toList();
+            thirdOptions = (selectedPayload?['세번째'] as List<dynamic>)
+                .map((e) => e['옵션'] as String)
+                .toList();
+          });
+        }),
+      ],
+    );
+  }
+
+  // 드롭박스 설정
+  Padding dropsCube(
+    String title,
+    String value,
+    List<String> values,
+    ValueChanged<String?> onChanged,
+  ) {
+    return Padding(
+      padding: EdgeInsets.all(8.0),
+      child: Container(
+        width: 80.w,
+        height: 24.h,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: Typicalcolor.bg, // ✅ 흰색 → 배경색
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Typicalcolor.subborder),
+          boxShadow: [
+            BoxShadow(
+              color: Typicalcolor.subfont.withValues(alpha: 0.2), // ✅ 부드러운 그림자
+              blurRadius: 6,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: DropdownButtonHideUnderline(
+          child: Padding(
+            padding: EdgeInsets.only(left: 8.w), // ← 전체 아이템에 적용
+            child: DropdownButton<String>(
+              value: value,
+              hint: Text(
+                title,
+                style: TextStyle(color: Typicalcolor.subfont, fontSize: 12.sp),
+              ),
+              isExpanded: true,
+              style: TextStyle(
+                fontSize: 12.sp,
+                fontWeight: FontWeight.bold,
+                color: Typicalcolor.font, // ✅ 검정 → 폰트색
+              ),
+              items: values
+                  .map((d) => DropdownMenuItem(value: d, child: Text(d)))
+                  .toList(),
+              onChanged: onChanged,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // 큐브 옵션 설정 리스트
+  Column optaionList() {
+    return Column(
+      children: [
+        optionCube(selectFirst, '첫번째 옵션', firstOptions, (v) {
+          setState(() {
+            selectFirst = v;
+            firstchance = _chanceData('첫번째', selectFirst!);
+          });
+        }),
+        SizedBox(height: 10.h),
+        optionCube(selectSecond, '두번째 옵션', secondOptions, (v) {
+          setState(() {
+            selectSecond = v;
+            secondchance = _chanceData('두번째', selectSecond!);
+          });
+        }),
+        SizedBox(height: 10.h),
+        optionCube(selectThird, '세번째 옵션', thirdOptions, (v) {
+          setState(() {
+            selectThird = v;
+            thirdchance = _chanceData('세번째', selectThird!);
+          });
+        }),
+      ],
+    );
+  }
+
+  //큐브 옵션 설정
+  Container optionCube(
+    String? value,
+    String title,
+    List<String> values,
+    ValueChanged<String?> onChanged,
+  ) {
+    return Container(
+      width: 250.w,
+      height: 28.h,
+      padding: EdgeInsets.all(3), // border 두께
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Typicalcolor.border, Typicalcolor.subborder],
+        ),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Container(
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: Typicalcolor.bg,
+          borderRadius: BorderRadius.circular(9),
+        ),
+        child: DropdownButtonHideUnderline(
+          child: Padding(
+            padding: EdgeInsets.only(left: 8.w), // ← 전체 아이템에 적용
+            child: DropdownButton<String>(
+              value: value,
+              hint: Text(
+                title,
+                style: TextStyle(color: Typicalcolor.subfont, fontSize: 12.sp),
+              ),
+              isExpanded: true,
+              style: TextStyle(
+                fontSize: 12.sp,
+                fontWeight: FontWeight.bold,
+                color: Typicalcolor.font, // ✅ 검정 → 폰트색
+              ),
+              items: values
+                  .map((d) => DropdownMenuItem(value: d, child: Text(d)))
+                  .toList(),
+              onChanged: onChanged,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // 결과 도출 상자
+  Column finalResult() {
+    return Column(
+      children: [
+        expectedList('명장의 큐브', 'assets/images/items/commandercube.png', '-미정-'),
+        SizedBox(height: 10.h),
+        expectedList(
+          '블랙 큐브',
+          'assets/images/items/blackcube.png',
+          '$sumcube 개',
+        ),
+        SizedBox(height: 10.h),
+        expectedList(
+          '메소 재설정',
+          'assets/images/icons/coin1.png',
+          '${formatPower(summeso)} 메소',
+        ),
+      ],
+    );
+  }
+
+  // 결과창 설정
   Widget expectedList(String title, String img, String value) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 8.w),
@@ -284,6 +423,7 @@ class _ExpectedTapState extends State<ExpectedTap> {
     );
   }
 
+  // 안씀
   Container chooseOption(String title) {
     return Container(
       width: 90.w,
@@ -327,6 +467,7 @@ class _ExpectedTapState extends State<ExpectedTap> {
     );
   }
 
+  // 안씀
   Row inputOption(String title, TextEditingController controller) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center, // 가로축 가운데
@@ -389,106 +530,6 @@ class _ExpectedTapState extends State<ExpectedTap> {
           ),
         ),
       ],
-    );
-  }
-
-  Container optionCube(
-    String? value,
-    String title,
-    List<String> values,
-    ValueChanged<String?> onChanged,
-  ) {
-    return Container(
-      width: 250.w,
-      height: 28.h,
-      padding: EdgeInsets.all(3), // border 두께
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [Typicalcolor.border, Typicalcolor.subborder],
-        ),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Container(
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: Typicalcolor.bg,
-          borderRadius: BorderRadius.circular(9),
-        ),
-        child: DropdownButtonHideUnderline(
-          child: Padding(
-            padding: EdgeInsets.only(left: 8.w), // ← 전체 아이템에 적용
-            child: DropdownButton<String>(
-              value: value,
-              hint: Text(
-                title,
-                style: TextStyle(color: Typicalcolor.subfont, fontSize: 12.sp),
-              ),
-              isExpanded: true,
-              style: TextStyle(
-                fontSize: 12.sp,
-                fontWeight: FontWeight.bold,
-                color: Typicalcolor.font, // ✅ 검정 → 폰트색
-              ),
-              items: values
-                  .map((d) => DropdownMenuItem(value: d, child: Text(d)))
-                  .toList(),
-              onChanged: onChanged,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Padding dropsCube(
-    String title,
-    String value,
-    List<String> values,
-    ValueChanged<String?> onChanged,
-  ) {
-    return Padding(
-      padding: EdgeInsets.all(8.0),
-      child: Container(
-        width: 80.w,
-        height: 24.h,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: Typicalcolor.bg, // ✅ 흰색 → 배경색
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Typicalcolor.subborder),
-          boxShadow: [
-            BoxShadow(
-              color: Typicalcolor.subfont.withValues(alpha: 0.2), // ✅ 부드러운 그림자
-              blurRadius: 6,
-              offset: const Offset(0, 3),
-            ),
-          ],
-        ),
-        child: DropdownButtonHideUnderline(
-          child: Padding(
-            padding: EdgeInsets.only(left: 8.w), // ← 전체 아이템에 적용
-            child: DropdownButton<String>(
-              value: value,
-              hint: Text(
-                title,
-                style: TextStyle(color: Typicalcolor.subfont, fontSize: 12.sp),
-              ),
-              isExpanded: true,
-              style: TextStyle(
-                fontSize: 12.sp,
-                fontWeight: FontWeight.bold,
-                color: Typicalcolor.font, // ✅ 검정 → 폰트색
-              ),
-              items: values
-                  .map((d) => DropdownMenuItem(value: d, child: Text(d)))
-                  .toList(),
-              onChanged: onChanged,
-            ),
-          ),
-        ),
-      ),
     );
   }
 }

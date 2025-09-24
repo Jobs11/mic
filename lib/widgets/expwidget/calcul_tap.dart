@@ -537,7 +537,7 @@ class _CalcultapState extends State<CalculTap> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 500.h,
+      height: 450.h,
       child: SingleChildScrollView(
         child: Column(
           children: [

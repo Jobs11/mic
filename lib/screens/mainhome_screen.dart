@@ -98,138 +98,140 @@ class _MainhomeScreenState extends State<MainhomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: MicAppbarone(
-        title: "메이플 계산기",
-        scolor: Color(0xFFf7e5c4),
-        ecolor: Color(0xFFfffaf0),
-        barimg: 'assets/images/icons/culbar.png',
-      ),
-      body: Stack(
-        children: [
-          // 배경 이미지 (맨 아래)
-          Positioned.fill(
-            child: Image.asset(
-              backgroundsimg[Backgroundnum.bn],
-              fit: BoxFit.cover,
+    return SafeArea(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: MicAppbarone(
+          title: "메이플 계산기",
+          scolor: Color(0xFFf7e5c4),
+          ecolor: Color(0xFFfffaf0),
+          barimg: 'assets/images/icons/culbar.png',
+        ),
+        body: Stack(
+          children: [
+            // 배경 이미지 (맨 아래)
+            Positioned.fill(
+              child: Image.asset(
+                backgroundsimg[Backgroundnum.bn],
+                fit: BoxFit.cover,
+              ),
             ),
-          ),
-          Center(
-            child: Column(
-              children: [
-                Expanded(
-                  child: Container(
-                    margin: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 16.h),
-                    padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 16.h),
-                    decoration: BoxDecoration(
-                      color: Color(0x8CFFFFFF),
-                      borderRadius: BorderRadius.circular(12.r),
-                    ),
+            Center(
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Container(
+                      margin: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 16.h),
+                      padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 16.h),
+                      decoration: BoxDecoration(
+                        color: Color(0x8CFFFFFF),
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
 
-                    child: Column(
-                      children: [
-                        // Stack(
-                        //   clipBehavior: Clip.none,
-                        //   alignment: Alignment.center,
-                        //   children: [
-                        Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Image.asset(
-                              'assets/images/icons/rope.png',
-                              width: 270.w,
-                              height: 240.h,
-                            ),
-                            Positioned(
-                              top: 160.h,
-                              child: Stack(
-                                children: [
-                                  // 테두리용 (검정)
-                                  Text(
-                                    textAlign: TextAlign.center,
-                                    "캐릭터 닉네임 \n입력",
-                                    style: TextStyle(
-                                      fontSize: 22.sp,
-                                      fontWeight: FontWeight.bold,
-                                      foreground: Paint()
-                                        ..style = PaintingStyle.stroke
-                                        ..strokeWidth = 6.w
-                                        ..color = Color(0xFF462406),
-                                    ),
-                                  ),
-                                  // 안쪽 텍스트 (흰색)
-                                  Text(
-                                    textAlign: TextAlign.center,
-                                    "캐릭터 닉네임 \n입력",
-                                    style: TextStyle(
-                                      fontSize: 22.sp,
-                                      fontWeight: FontWeight.bold,
-                                      color: Color(0xFFf2c568),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        // Positioned(
-                        //   top: 200.h,
-                        //   child:
-                        Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Transform.rotate(
-                              angle: -0.02,
-                              child: Image.asset(
-                                'assets/images/icons/pane.png',
+                      child: Column(
+                        children: [
+                          // Stack(
+                          //   clipBehavior: Clip.none,
+                          //   alignment: Alignment.center,
+                          //   children: [
+                          Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Image.asset(
+                                'assets/images/icons/rope.png',
                                 width: 270.w,
-                                height: 270.h,
+                                height: 240.h,
                               ),
-                            ),
+                              Positioned(
+                                top: 160.h,
+                                child: Stack(
+                                  children: [
+                                    // 테두리용 (검정)
+                                    Text(
+                                      textAlign: TextAlign.center,
+                                      "캐릭터 닉네임 \n입력",
+                                      style: TextStyle(
+                                        fontSize: 22.sp,
+                                        fontWeight: FontWeight.bold,
+                                        foreground: Paint()
+                                          ..style = PaintingStyle.stroke
+                                          ..strokeWidth = 6.w
+                                          ..color = Color(0xFF462406),
+                                      ),
+                                    ),
+                                    // 안쪽 텍스트 (흰색)
+                                    Text(
+                                      textAlign: TextAlign.center,
+                                      "캐릭터 닉네임 \n입력",
+                                      style: TextStyle(
+                                        fontSize: 22.sp,
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(0xFFf2c568),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
 
-                            Positioned(
-                              top: 65
-                                  .h, // 원하는 위치 지정 (필수: top/left/right/bottom 중 최소 하나)
-                              left: 0,
-                              right: 0,
-                              child: (ischecked) ? hasOcid() : nonOcid(),
-                            ),
-                          ],
-                        ),
-                        // ),
-                      ],
+                          // Positioned(
+                          //   top: 200.h,
+                          //   child:
+                          Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Transform.rotate(
+                                angle: -0.02,
+                                child: Image.asset(
+                                  'assets/images/icons/pane.png',
+                                  width: 270.w,
+                                  height: 270.h,
+                                ),
+                              ),
+
+                              Positioned(
+                                top: 65
+                                    .h, // 원하는 위치 지정 (필수: top/left/right/bottom 중 최소 하나)
+                                left: 0,
+                                right: 0,
+                                child: (ischecked) ? hasOcid() : nonOcid(),
+                              ),
+                            ],
+                          ),
+                          // ),
+                        ],
+                      ),
+                      // ],
                     ),
-                    // ],
                   ),
-                ),
-                // ),
-              ],
+                  // ),
+                ],
+              ),
             ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: MicUnderbar(
-        currentIndex: _index,
-        onTap: (i) {
-          (CurrentUser.instance.ocid != null)
-              ? {
-                  setState(() => _index = i),
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => _pages[_index]),
-                  ),
-                }
-              : (Fluttertoast.showToast(
-                  msg: "닉네임을 입력하고 넘어가주세요.",
-                  toastLength: Toast.LENGTH_SHORT,
-                  gravity: ToastGravity.BOTTOM,
-                  backgroundColor: const Color(0xAA000000),
-                  textColor: Colors.white,
-                  fontSize: 16.0.sp,
-                ));
-        }, // ✅ 눌렀을 때 화면 전환
+          ],
+        ),
+        bottomNavigationBar: MicUnderbar(
+          currentIndex: _index,
+          onTap: (i) {
+            (CurrentUser.instance.ocid != null)
+                ? {
+                    setState(() => _index = i),
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => _pages[_index]),
+                    ),
+                  }
+                : (Fluttertoast.showToast(
+                    msg: "닉네임을 입력하고 넘어가주세요.",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    backgroundColor: const Color(0xAA000000),
+                    textColor: Colors.white,
+                    fontSize: 16.0.sp,
+                  ));
+          }, // ✅ 눌렀을 때 화면 전환
+        ),
       ),
     );
   }

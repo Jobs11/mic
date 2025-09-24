@@ -49,7 +49,7 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
       children: [
         Container(
           width: double.infinity,
-          height: 520.h,
+          height: 460.h,
           padding: EdgeInsets.all(3), // border 두께
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -89,7 +89,7 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
                 ),
                 SizedBox(height: 5.h),
                 SizedBox(
-                  height: 430.h,
+                  height: 370.h,
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
@@ -751,7 +751,7 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
     );
   }
 
-  //성 그래프
+  //결과 버튼
   Widget resultbtn() {
     return GestureDetector(
       onTap: () async {

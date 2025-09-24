@@ -60,7 +60,7 @@ class StarforceBarChart extends StatelessWidget {
     maxY = (maxY == 0 ? 10 : maxY) * 1.15;
 
     return Container(
-      width: 130.w,
+      width: 120.w,
       height: 250.h,
       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
       decoration: BoxDecoration(

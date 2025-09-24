@@ -132,7 +132,7 @@ class _WeektapState extends State<WeekTap> {
   Container epicdungeon() {
     return Container(
       width: double.infinity,
-      height: 200.h,
+      height: 190.h,
       decoration: BoxDecoration(
         color: Typicalcolor.bg,
         border: Border.all(color: Typicalcolor.border, width: 3.w),

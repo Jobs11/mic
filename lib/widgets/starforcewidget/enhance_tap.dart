@@ -214,7 +214,7 @@ class _EnhanceTapState extends State<EnhanceTap> {
       children: [
         Container(
           width: double.infinity,
-          height: 520.h,
+          height: 460.h,
           padding: EdgeInsets.all(3), // border 두께
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -253,10 +253,73 @@ class _EnhanceTapState extends State<EnhanceTap> {
                   child: twoTitle('스타포스 강화 시뮬레이터', 18),
                 ),
 
-                subtitleList(),
+                SizedBox(
+                  height: 360.h,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        subtitleList(),
+                        SizedBox(height: 4.h),
+                        contentList(),
+                      ],
+                    ),
+                  ),
+                ),
 
-                SizedBox(height: 10.h),
-                contentList(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () async {
+                        final result = await simulateStarforce(
+                          startLevel,
+                          isChance,
+                          isCatch,
+                          isDestroy,
+                        );
+                        setState(() {
+                          startLevel = result;
+                          if (result == 18 || result == 0) {
+                            isDestroy = false;
+                          }
+                          loadstagerate(startLevel, isChance, isCatch);
+                          loadmeso(selectedlevel, startLevel);
+                          sumMeso =
+                              sumMeso +
+                              ((enchantMeso *
+                                      (1.0 - (mvpTime + pcTime)) *
+                                      payTime *
+                                      destroyTime)
+                                  .round());
+                        });
+                      },
+                      child: btntype(
+                        '강화',
+                        Color(0xFF000000),
+                        Color(0xFF153d59),
+                        Typicalcolor.subtitle,
+                        Typicalcolor.bg,
+                      ),
+                    ),
+                    SizedBox(width: 15.w),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          resetEnhance();
+                          loadmeso(selectedlevel, startLevel);
+                          loadstagerate(startLevel, isChance, isCatch);
+                        });
+                      },
+                      child: btntype(
+                        '초기화',
+                        Color(0xFF000000),
+                        Color(0xFF16354f),
+                        Typicalcolor.subborder,
+                        Typicalcolor.bg,
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
@@ -520,107 +583,50 @@ class _EnhanceTapState extends State<EnhanceTap> {
   }
 
   // 내용 리스트
-  Expanded contentList() {
-    return Expanded(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              Image.asset(
-                'assets/images/icons/starforce.png',
-                width: 150.w,
-                height: 150.h,
-              ),
+  Widget contentList() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Stack(
+          alignment: Alignment.center,
+          children: [
+            Image.asset(
+              'assets/images/icons/starforce.png',
+              width: 150.w,
+              height: 150.h,
+            ),
 
-              Image.asset(
-                equipImages[equipvalues]!,
-                width: 70.w,
-                height: 70.h,
-                fit: BoxFit.fill,
-              ),
-              XStrike(key: xKey, size: 180),
-            ],
-          ),
-          SizedBox(height: 10.h),
-          checkEvent(),
+            Image.asset(
+              equipImages[equipvalues]!,
+              width: 70.w,
+              height: 70.h,
+              fit: BoxFit.fill,
+            ),
+            XStrike(key: xKey, size: 180),
+          ],
+        ),
+        SizedBox(height: 10.h),
+        checkEvent(),
 
-          isimgText(
-            '현재 단계:',
-            'assets/images/icons/starstage.png',
-            '$startLevel성',
-          ),
-          onlyText('성공 확률:', '$successRate%'),
-          onlyText('파괴 확률:', '$destroyRate%'),
-          isimgText(
-            '강화 비용:',
-            'assets/images/icons/coin.png',
-            '${formatPower((enchantMeso * (1.0 - (mvpTime + pcTime)) * payTime * destroyTime).round())} 메소',
-          ),
-          isimgText(
-            '총 비용:',
-            'assets/images/icons/coin.png',
-            '${formatPower(sumMeso)} 메소',
-          ),
-          SizedBox(height: 20.h),
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              GestureDetector(
-                onTap: () async {
-                  final result = await simulateStarforce(
-                    startLevel,
-                    isChance,
-                    isCatch,
-                    isDestroy,
-                  );
-                  setState(() {
-                    startLevel = result;
-                    if (result == 18 || result == 0) {
-                      isDestroy = false;
-                    }
-                    loadstagerate(startLevel, isChance, isCatch);
-                    loadmeso(selectedlevel, startLevel);
-                    sumMeso =
-                        sumMeso +
-                        ((enchantMeso *
-                                (1.0 - (mvpTime + pcTime)) *
-                                payTime *
-                                destroyTime)
-                            .round());
-                  });
-                },
-                child: btntype(
-                  '강화',
-                  Color(0xFF000000),
-                  Color(0xFF153d59),
-                  Typicalcolor.subtitle,
-                  Typicalcolor.bg,
-                ),
-              ),
-              SizedBox(width: 15.w),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    resetEnhance();
-                    loadmeso(selectedlevel, startLevel);
-                    loadstagerate(startLevel, isChance, isCatch);
-                  });
-                },
-                child: btntype(
-                  '초기화',
-                  Color(0xFF000000),
-                  Color(0xFF16354f),
-                  Typicalcolor.subborder,
-                  Typicalcolor.bg,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
+        isimgText(
+          '현재 단계:',
+          'assets/images/icons/starstage.png',
+          '$startLevel성',
+        ),
+        onlyText('성공 확률:', '$successRate%'),
+        onlyText('파괴 확률:', '$destroyRate%'),
+        isimgText(
+          '강화 비용:',
+          'assets/images/icons/coin.png',
+          '${formatPower((enchantMeso * (1.0 - (mvpTime + pcTime)) * payTime * destroyTime).round())} 메소',
+        ),
+        isimgText(
+          '총 비용:',
+          'assets/images/icons/coin.png',
+          '${formatPower(sumMeso)} 메소',
+        ),
+        SizedBox(height: 20.h),
+      ],
     );
   }
 

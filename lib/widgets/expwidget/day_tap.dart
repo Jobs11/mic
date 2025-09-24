@@ -28,7 +28,7 @@ class _DaytapState extends State<DayTap> {
         SizedBox(height: 10.h),
         Container(
           width: double.infinity,
-          height: 300.h,
+          height: 260.h,
           decoration: BoxDecoration(
             color: Typicalcolor.bg,
             border: Border.all(color: Typicalcolor.border, width: 3.w),
@@ -132,7 +132,7 @@ class _DaytapState extends State<DayTap> {
   Container mosterpark() {
     return Container(
       width: double.infinity,
-      height: 120.h,
+      height: 130.h,
       decoration: BoxDecoration(
         color: Typicalcolor.bg,
         border: Border.all(color: Typicalcolor.border, width: 3.w),
