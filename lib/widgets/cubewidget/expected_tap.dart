@@ -26,6 +26,8 @@ class _ExpectedTapState extends State<ExpectedTap> {
   List<String> firstOptions = [];
   List<String> secondOptions = [];
   List<String> thirdOptions = [];
+  List<String> optionLines = ['기본 값', '한 줄', '두 줄', '세 줄'];
+  String? lines;
 
   String? selectFirst;
   String? selectSecond;
@@ -40,7 +42,8 @@ class _ExpectedTapState extends State<ExpectedTap> {
 
   bool isLoading = false;
 
-  Future<void> runSimulation() async {
+  // 3개 옵션의 기댓값
+  Future<void> runThreeSimulation() async {
     setState(() => isLoading = true);
 
     final avgCeil = await cubeAverageCountCeil(
@@ -48,6 +51,41 @@ class _ExpectedTapState extends State<ExpectedTap> {
       firstOpt: selectFirst!,
       secondOpt: selectSecond!,
       thirdOpt: selectThird!,
+      runs: 10000,
+    );
+
+    setState(() {
+      isLoading = false;
+      sumcube = avgCeil;
+      summeso = sumcube * levelmeso[int.parse(selectedLevel)]!;
+    });
+  }
+
+  // 2개 옵션의 기댓값
+  Future<void> runTwoSimulation() async {
+    setState(() => isLoading = true);
+
+    final avgCeil = await cubeAverageCountCeilTwo(
+      selectedPayload: selectedPayload!,
+      firstOpt: selectFirst!,
+      secondOpt: selectSecond!,
+      runs: 10000,
+    );
+
+    setState(() {
+      isLoading = false;
+      sumcube = avgCeil;
+      summeso = sumcube * levelmeso[int.parse(selectedLevel)]!;
+    });
+  }
+
+  // 1개 옵션의 기댓값
+  Future<void> runOneSimulation() async {
+    setState(() => isLoading = true);
+
+    final avgCeil = await cubeAverageCountCeilOne(
+      selectedPayload: selectedPayload!,
+      opt: selectFirst!,
       runs: 10000,
     );
 
@@ -68,16 +106,22 @@ class _ExpectedTapState extends State<ExpectedTap> {
     selectedLevel = levels.first;
     selectedPayload = Map<String, dynamic>.from(equipcube[selectedLevel]!);
 
-    firstOptions = (selectedPayload?['첫번째'] as List<dynamic>)
-        .map((e) => e['옵션'] as String)
-        .toList();
+    firstOptions =
+        (selectedPayload?['첫번째'] as List<dynamic>)
+            .map((e) => e['옵션'] as String)
+            .toList()
+          ..insert(0, "기본 값");
 
-    secondOptions = (selectedPayload?['두번째'] as List<dynamic>)
-        .map((e) => e['옵션'] as String)
-        .toList();
-    thirdOptions = (selectedPayload?['세번째'] as List<dynamic>)
-        .map((e) => e['옵션'] as String)
-        .toList();
+    secondOptions =
+        (selectedPayload?['두번째'] as List<dynamic>)
+            .map((e) => e['옵션'] as String)
+            .toList()
+          ..insert(0, "기본 값");
+    thirdOptions =
+        (selectedPayload?['세번째'] as List<dynamic>)
+            .map((e) => e['옵션'] as String)
+            .toList()
+          ..insert(0, "기본 값");
 
     setState(() {});
   }
@@ -151,42 +195,19 @@ class _ExpectedTapState extends State<ExpectedTap> {
 
                 optaionList(),
                 SizedBox(height: 10.h),
-                GestureDetector(
-                  onTap: () {
-                    if (isLoading == false) {
-                      runSimulation();
+                optionCube(lines, '원하는 줄 수', optionLines, (v) {
+                  setState(() {
+                    if (v == "기본 값") {
+                      lines = null;
                     } else {
-                      Fluttertoast.showToast(
-                        msg: "기댓값 계산중...",
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM,
-                        backgroundColor: const Color(0xAA000000),
-                        textColor: Colors.white,
-                        fontSize: 16.0.sp,
-                      );
+                      lines = v!;
                     }
-                  },
-                  child: Container(
-                    width: 150.w,
-                    height: 32.h,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [Typicalcolor.title, Typicalcolor.subtitle],
-                      ),
-                      borderRadius: BorderRadius.circular(9),
-                      border: Border.all(
-                        color: Typicalcolor.border,
-                        width: 2.w,
-                      ),
-                    ),
-                    child: twoText((isLoading) ? '계산 중...' : '계산하기', 20),
-                  ),
-                ),
+                  });
+                }),
+                SizedBox(height: 10.h),
+                resultBtn(),
 
-                SizedBox(height: 60.h),
+                SizedBox(height: 20.h),
                 finalResult(),
               ],
             ),
@@ -218,16 +239,22 @@ class _ExpectedTapState extends State<ExpectedTap> {
 
             changeAll();
 
-            firstOptions = (selectedPayload?['첫번째'] as List<dynamic>)
-                .map((e) => e['옵션'] as String)
-                .toList();
+            firstOptions =
+                (selectedPayload?['첫번째'] as List<dynamic>)
+                    .map((e) => e['옵션'] as String)
+                    .toList()
+                  ..insert(0, "기본 값");
 
-            secondOptions = (selectedPayload?['두번째'] as List<dynamic>)
-                .map((e) => e['옵션'] as String)
-                .toList();
-            thirdOptions = (selectedPayload?['세번째'] as List<dynamic>)
-                .map((e) => e['옵션'] as String)
-                .toList();
+            secondOptions =
+                (selectedPayload?['두번째'] as List<dynamic>)
+                    .map((e) => e['옵션'] as String)
+                    .toList()
+                  ..insert(0, "기본 값");
+            thirdOptions =
+                (selectedPayload?['세번째'] as List<dynamic>)
+                    .map((e) => e['옵션'] as String)
+                    .toList()
+                  ..insert(0, "기본 값");
           });
         }),
       ],
@@ -291,22 +318,34 @@ class _ExpectedTapState extends State<ExpectedTap> {
       children: [
         optionCube(selectFirst, '첫번째 옵션', firstOptions, (v) {
           setState(() {
-            selectFirst = v;
-            firstchance = _chanceData('첫번째', selectFirst!);
+            if (v == "기본 값") {
+              selectFirst = null;
+            } else {
+              selectFirst = v;
+              firstchance = _chanceData('첫번째', selectFirst!);
+            }
           });
         }),
         SizedBox(height: 10.h),
         optionCube(selectSecond, '두번째 옵션', secondOptions, (v) {
           setState(() {
-            selectSecond = v;
-            secondchance = _chanceData('두번째', selectSecond!);
+            if (v == "기본 값") {
+              selectSecond = null;
+            } else {
+              selectSecond = v;
+              secondchance = _chanceData('두번째', selectSecond!);
+            }
           });
         }),
         SizedBox(height: 10.h),
         optionCube(selectThird, '세번째 옵션', thirdOptions, (v) {
           setState(() {
-            selectThird = v;
-            thirdchance = _chanceData('세번째', selectThird!);
+            if (v == "기본 값") {
+              selectThird = null;
+            } else {
+              selectThird = v;
+              thirdchance = _chanceData('세번째', selectThird!);
+            }
           });
         }),
       ],
@@ -360,6 +399,83 @@ class _ExpectedTapState extends State<ExpectedTap> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  //결과 보기 버튼
+  GestureDetector resultBtn() {
+    return GestureDetector(
+      onTap: () {
+        if (isLoading == false) {
+          if (lines == "한 줄") {
+            (selectFirst == null)
+                ? Fluttertoast.showToast(
+                    msg: "첫번째 옵션을 설정해주세요...",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    backgroundColor: const Color(0xAA000000),
+                    textColor: Colors.white,
+                    fontSize: 16.0.sp,
+                  )
+                : runOneSimulation();
+          } else if (lines == "두 줄") {
+            (selectFirst == null || selectSecond == null)
+                ? Fluttertoast.showToast(
+                    msg: "첫번째 혹은 두번째 옵션을 설정해주세요...",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    backgroundColor: const Color(0xAA000000),
+                    textColor: Colors.white,
+                    fontSize: 16.0.sp,
+                  )
+                : runTwoSimulation();
+          } else if (lines == "세 줄") {
+            (selectFirst == null || selectSecond == null || selectThird == null)
+                ? Fluttertoast.showToast(
+                    msg: "첫번째 혹은 두번째 혹은 세번째 옵션을 설정해주세요...",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    backgroundColor: const Color(0xAA000000),
+                    textColor: Colors.white,
+                    fontSize: 16.0.sp,
+                  )
+                : runThreeSimulation();
+          } else {
+            Fluttertoast.showToast(
+              msg: "계산하기를 원하시는 줄 수 를 선택해주세요...",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              backgroundColor: const Color(0xAA000000),
+              textColor: Colors.white,
+              fontSize: 16.0.sp,
+            );
+          }
+        } else {
+          Fluttertoast.showToast(
+            msg: "기댓값 계산중...",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            backgroundColor: const Color(0xAA000000),
+            textColor: Colors.white,
+            fontSize: 16.0.sp,
+          );
+        }
+      },
+      child: Container(
+        width: 150.w,
+        height: 32.h,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Typicalcolor.title, Typicalcolor.subtitle],
+          ),
+          borderRadius: BorderRadius.circular(9),
+          border: Border.all(color: Typicalcolor.border, width: 2.w),
+        ),
+        child: twoText((isLoading) ? '계산 중...' : '계산하기', 20),
       ),
     );
   }
