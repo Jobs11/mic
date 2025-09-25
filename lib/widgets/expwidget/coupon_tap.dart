@@ -16,35 +16,38 @@ class CouponTap extends StatefulWidget {
 }
 
 class _CoupontapState extends State<CouponTap> {
-  late List<TextEditingController> usecontrollers;
-  late List<TextEditingController> timecontrollers;
+  late Map<String, TextEditingController> usecontrollers;
+  late Map<String, TextEditingController> timecontrollers;
+
+  late final Map<String, bool> useIf = {
+    "EXP": (200 <= widget.b.characterlevel && widget.b.characterlevel <= 259),
+    "상급 EXP": 260 <= widget.b.characterlevel,
+    "궁극의 유니온 성장의 비약": true,
+    "극한 성장의 비약": 250 <= widget.b.characterlevel,
+    "초월 성장의 비약": 270 <= widget.b.characterlevel,
+  };
 
   @override
   void initState() {
     super.initState();
-    usecontrollers = List.generate(
-      usecoupon.length,
-      (i) => TextEditingController(
-        text: usecoupon.values.elementAt(i).toString(),
-      ), // 초기값 세팅도 가능
-    );
+    usecontrollers = {
+      for (var entry in usecoupon.entries)
+        entry.key: TextEditingController(text: entry.value.toString()),
+    };
 
-    timecontrollers = List.generate(
-      timecoupon.length,
-      (i) => TextEditingController(
-        text: timecoupon.values.elementAt(i).toString(),
-      ), // 초기값 세팅도 가능
-    );
+    timecontrollers = {
+      for (var entry in timecoupon.entries)
+        entry.key: TextEditingController(text: entry.value.toString()),
+    };
   }
 
   @override
   void dispose() {
-    // 메모리 누수 방지 → 꼭 dispose
-    for (final c in usecontrollers) {
+    for (final c in usecontrollers.values) {
       c.dispose();
     }
 
-    for (final c in timecontrollers) {
+    for (final c in timecontrollers.values) {
       c.dispose();
     }
 
@@ -97,7 +100,12 @@ class _CoupontapState extends State<CouponTap> {
               itemCount: usecoupon.length,
               itemBuilder: (context, index) {
                 String useitem = usecoupon.keys.elementAt(index);
-                return usewidget(index, useitem);
+                return usewidget(
+                  index,
+                  useitem,
+                  useitemLevel[useitem]!,
+                  useIf[useitem]!,
+                );
               },
             ),
           ),
@@ -107,7 +115,7 @@ class _CoupontapState extends State<CouponTap> {
   }
 
   // 사용아이템 설정 구간
-  Widget usewidget(int index, String useitem) {
+  Widget usewidget(int index, String useitem, String level, bool isLv) {
     return Padding(
       padding: EdgeInsets.only(left: 8.w),
       child: Row(
@@ -116,7 +124,7 @@ class _CoupontapState extends State<CouponTap> {
 
           SizedBox(width: 10.w),
 
-          Expanded(child: twoText(useitem, 14)),
+          Expanded(child: twoText("$useitem$level", 14)),
           SizedBox(width: 10.w),
 
           Padding(
@@ -124,36 +132,46 @@ class _CoupontapState extends State<CouponTap> {
             child: Container(
               width: 60.w,
               height: 24.h,
-
+              alignment: Alignment.center,
               decoration: BoxDecoration(
                 border: Border.all(color: Color(0xFF6a4423)),
                 color: Color(0xFFfdecbe),
                 borderRadius: BorderRadius.circular(12.r),
               ),
-              child: TextField(
-                controller: usecontrollers[index],
-                maxLength: 4,
-                keyboardType: TextInputType.number, // 숫자 키패드
-                inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly, // 숫자만 허용
-                ],
-                textAlign: TextAlign.center, // 👈 중앙 정렬
-                style: TextStyle(
-                  fontSize: 14.sp, // 글자 크기 (원하는 크기로 조정)
-                  fontWeight: FontWeight.bold,
-                ),
-                decoration: const InputDecoration(
-                  border: InputBorder.none, // 테두리 제거 (컨테이너 테두리만 보이게)
-                  isCollapsed: true, // 안쪽 패딩 최소화
-                  contentPadding: EdgeInsets.zero, // 여백 제거 → 진짜 중앙정렬 느낌
-                  counterText: '',
-                ),
-                onChanged: (v) {
-                  if (v.isNotEmpty) {
-                    usecoupon[useitem] = int.parse(v);
-                  }
-                },
-              ),
+              child: (isLv)
+                  ? TextField(
+                      controller: usecontrollers[useitem],
+                      maxLength: 4,
+                      keyboardType: TextInputType.number, // 숫자 키패드
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly, // 숫자만 허용
+                      ],
+                      textAlign: TextAlign.center, // 👈 중앙 정렬
+                      style: TextStyle(
+                        fontSize: 14.sp, // 글자 크기 (원하는 크기로 조정)
+                        fontWeight: FontWeight.bold,
+                      ),
+                      decoration: const InputDecoration(
+                        border: InputBorder.none, // 테두리 제거 (컨테이너 테두리만 보이게)
+                        isCollapsed: true, // 안쪽 패딩 최소화
+                        contentPadding: EdgeInsets.zero, // 여백 제거 → 진짜 중앙정렬 느낌
+                        counterText: '',
+                      ),
+                      onChanged: (v) {
+                        if (v.isNotEmpty) {
+                          usecoupon[useitem] = int.parse(v);
+                        } else {
+                          usecoupon[useitem] = 0;
+                        }
+                      },
+                    )
+                  : Text(
+                      "레벨 제한",
+                      style: TextStyle(
+                        fontSize: 12.sp, // 글자 크기 (원하는 크기로 조정)
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
             ),
           ),
         ],
@@ -228,7 +246,7 @@ class _CoupontapState extends State<CouponTap> {
                 borderRadius: BorderRadius.circular(12.r),
               ),
               child: TextField(
-                controller: timecontrollers[index],
+                controller: timecontrollers[timeitem],
                 maxLength: 5,
                 keyboardType: TextInputType.number, // 숫자 키패드
                 inputFormatters: [
@@ -248,6 +266,8 @@ class _CoupontapState extends State<CouponTap> {
                 onChanged: (v) {
                   if (v.isNotEmpty) {
                     timecoupon[timeitem] = double.parse(v);
+                  } else {
+                    timecoupon[timeitem] = 0.0;
                   }
                 },
               ),

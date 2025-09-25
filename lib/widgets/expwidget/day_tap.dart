@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:mic/dialog.dart/monsterpark.dart';
+import 'package:mic/dialog/monsterpark.dart';
 import 'package:mic/function/datas.dart';
 import 'package:mic/function/expdata/day_contents.dart';
 import 'package:mic/api/model/basic.dart';
@@ -169,6 +169,7 @@ class _DaytapState extends State<DayTap> {
                       setState(() {
                         // result로 상태 갱신
                         // 예: 선택한 지역 저장 등
+                        monsterpark['입장여부'] = false;
                       });
                     }
                   },
@@ -193,30 +194,43 @@ class _DaytapState extends State<DayTap> {
               children: [
                 Expanded(child: twoText('몬스터파크 [${monsterpark['지역']}]', 12)),
 
-                Checkbox(
-                  value: monsterpark['입장여부'],
-                  checkColor: Colors.white, // 체크 표시 색
-                  // 선택/비활성 등 상태별 채움색
-                  fillColor: WidgetStateProperty.resolveWith<Color?>((states) {
-                    if (states.contains(WidgetState.disabled)) {
-                      return Typicalcolor.bg;
-                    }
-                    if (states.contains(WidgetState.selected)) {
-                      return Typicalcolor.title; // 선택 시
-                    }
-                    return Typicalcolor.bg; // 평소
-                  }),
-                  side: BorderSide(
-                    // 테두리 색
-                    color: Typicalcolor.subborder,
-                    width: 2,
-                  ),
-                  onChanged: (v) {
-                    setState(() {
-                      monsterpark['입장여부'] = v ?? false;
-                    });
-                  },
-                ),
+                (widget.b.characterlevel >= daylevellimit[monsterpark['지역']]!)
+                    ? Checkbox(
+                        value: monsterpark['입장여부'],
+                        checkColor: Colors.white, // 체크 표시 색
+                        // 선택/비활성 등 상태별 채움색
+                        fillColor: WidgetStateProperty.resolveWith<Color?>((
+                          states,
+                        ) {
+                          if (states.contains(WidgetState.disabled)) {
+                            return Typicalcolor.bg;
+                          }
+                          if (states.contains(WidgetState.selected)) {
+                            return Typicalcolor.title; // 선택 시
+                          }
+                          return Typicalcolor.bg; // 평소
+                        }),
+                        side: BorderSide(
+                          // 테두리 색
+                          color: Typicalcolor.subborder,
+                          width: 2,
+                        ),
+                        onChanged: (v) {
+                          setState(() {
+                            monsterpark['입장여부'] = v ?? false;
+                          });
+                        },
+                      )
+                    : Container(
+                        width: 48.w,
+                        height: 48.h,
+                        alignment: Alignment.center,
+                        child: Icon(
+                          Icons.disabled_by_default,
+                          color: Typicalcolor.title,
+                          size: 20.sp,
+                        ),
+                      ),
               ],
             ),
           ),

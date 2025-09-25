@@ -252,7 +252,7 @@ class _EnhanceTapState extends State<EnhanceTap> {
                   ),
                   child: twoTitle('스타포스 강화 시뮬레이터', 18),
                 ),
-
+                SizedBox(height: 4.h),
                 SizedBox(
                   height: 360.h,
                   child: SingleChildScrollView(
@@ -265,7 +265,7 @@ class _EnhanceTapState extends State<EnhanceTap> {
                     ),
                   ),
                 ),
-
+                SizedBox(height: 4.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
