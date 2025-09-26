@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:mic/function/currentuser.dart';
+import 'package:mic/api/model/api.dart';
 import 'package:mic/api/model/basic.dart';
 
 class Basicservice {

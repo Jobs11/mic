@@ -24,11 +24,6 @@ class CurrentCharacter {
   Basic? basic;
 }
 
-class ApiKey {
-  static const String apiKey =
-      "live_da6f72d9c70b2283a2c35e3028a299350e412e2aabd496681ef9be1a8d975d88efe8d04e6d233bd35cf2fabdeb93fb0d";
-}
-
 class Bossdata {
   static final List<Map<String, dynamic>> bossList = [];
 }
