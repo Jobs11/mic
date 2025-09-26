@@ -2,25 +2,13 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mic/function/datas.dart';
+import 'package:mic/function/starforce_expected_fn.dart';
 
+// rows: PerStarStat 리스트 (simulateOnce 결과의 perStar 정렬본)
 class StarforceBarChart extends StatelessWidget {
   const StarforceBarChart({super.key, required this.rows});
 
-  final List<List<dynamic>> rows;
-
-  // 색상(이미지 톤)
-  static const Color navy = Color(0xFF002645);
-  static const Color panel = Color(0xFF002645);
-  static const Color line = Color(0xFF083566);
-  static const Color gold = Color(0xFFfdebc6);
-
-  double? _parseRate(dynamic v) {
-    if (v == null) return null;
-    final s = v.toString().trim();
-    if (s == '—' || s.isEmpty) return null;
-    // "55,6" → 55.6
-    return double.tryParse(s.replaceAll(',', '.'));
-  }
+  final List<PerStarStat> rows;
 
   @override
   Widget build(BuildContext context) {
@@ -28,32 +16,31 @@ class StarforceBarChart extends StatelessWidget {
     final groups = <BarChartGroupData>[];
     double maxY = 0;
 
-    for (final r in rows) {
-      final String xLabel = r[0].toString();
-      final rate = _parseRate(r[1]); // 성공률
+    // 성 순서대로 정렬 (안 되어있다면 대비)
+    final ordered = [...rows]..sort((a, b) => a.star.compareTo(b.star));
 
-      // x축 값(정수). 같은 성이 중복되면 index 기반으로 밀어넣음
-      final x = int.tryParse(xLabel) ?? (groups.length + 1);
+    for (final r in ordered) {
+      if (r.attempts <= 0) continue; // 시도 0이면 스킵
 
-      if (rate != null) {
-        maxY = rate > maxY ? rate : maxY;
-        groups.add(
-          BarChartGroupData(
-            x: x,
-            barRods: [
-              BarChartRodData(
-                toY: rate,
-                width: 6.w,
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(4),
-                  topRight: Radius.circular(4),
-                ),
-                color: Typicalcolor.bg,
+      final rate = (r.success / r.attempts) * 100.0; // 실측 성공률(%)
+      if (rate > maxY) maxY = rate;
+
+      groups.add(
+        BarChartGroupData(
+          x: r.star, // 1,2,3...
+          barRods: [
+            BarChartRodData(
+              toY: rate,
+              width: 6.w,
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(4),
+                topRight: Radius.circular(4),
               ),
-            ],
-          ),
-        );
-      }
+              color: Typicalcolor.bg, // 막대 색
+            ),
+          ],
+        ),
+      );
     }
 
     // 여유 여백
@@ -95,7 +82,7 @@ class StarforceBarChart extends StatelessWidget {
               show: true,
               border: Border.all(color: Typicalcolor.subborder, width: 2.w),
             ),
-            barGroups: groups..sort((a, b) => a.x.compareTo(b.x)),
+            barGroups: groups,
             titlesData: FlTitlesData(
               rightTitles: const AxisTitles(
                 sideTitles: SideTitles(showTitles: false),
@@ -104,7 +91,7 @@ class StarforceBarChart extends StatelessWidget {
                 sideTitles: SideTitles(showTitles: false),
               ),
 
-              // X축: 성(1~10 같은 정수 라벨)
+              // X축: 성 (정수 라벨)
               bottomTitles: AxisTitles(
                 sideTitles: SideTitles(
                   showTitles: true,
@@ -121,35 +108,55 @@ class StarforceBarChart extends StatelessWidget {
                 ),
               ),
 
-              // Y축: 성공률(간단히 정수/한 자리 소수)
+              // Y축: 성공률(%)
               leftTitles: AxisTitles(
                 sideTitles: SideTitles(
                   showTitles: true,
-                  reservedSize: 34.sp,
-                  getTitlesWidget: (value, meta) => Text(
-                    value % 20 == 0
-                        ? value.toStringAsFixed(value % 1 == 0 ? 0 : 1)
-                        : '',
-                    style: TextStyle(
-                      color: Typicalcolor.font,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
+                  reservedSize: 36.sp,
+                  getTitlesWidget: (value, meta) {
+                    // 20% 단위로 라벨 표시
+                    if (value % 20 == 0) {
+                      final txt = value % 1 == 0
+                          ? value.toStringAsFixed(0)
+                          : value.toStringAsFixed(1);
+                      return Text(
+                        txt,
+                        style: TextStyle(
+                          color: Typicalcolor.font,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  },
                 ),
               ),
             ),
             barTouchData: BarTouchData(
               enabled: true,
               touchTooltipData: BarTouchTooltipData(
-                getTooltipColor: (_) => Typicalcolor.bg, // ← 여기로 변경
-                getTooltipItem: (group, groupIndex, rod, rodIndex) =>
-                    BarTooltipItem(
-                      '성 ${group.x}\n성공률 ${rod.toY.toStringAsFixed(1)}%',
-                      TextStyle(
-                        color: Typicalcolor.font,
-                        fontWeight: FontWeight.w800,
-                      ),
+                getTooltipColor: (_) => Typicalcolor.bg,
+                getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                  // 툴팁에 시도/메소까지 노출 (해당 성 정보 찾기)
+                  final star = group.x;
+                  final stat = ordered.firstWhere(
+                    (e) => e.star == star,
+                    orElse: () => PerStarStat(star),
+                  );
+                  final rate = rod.toY.toStringAsFixed(1);
+                  final tries = stat.attempts;
+                  final meso = stat.mesoSpent;
+
+                  return BarTooltipItem(
+                    '성 $star → ${star + 1}\n'
+                    '성공률 $rate%\n'
+                    '시도 $tries 회 · 메소 $meso',
+                    TextStyle(
+                      color: Typicalcolor.font,
+                      fontWeight: FontWeight.w800,
                     ),
+                  );
+                },
               ),
             ),
           ),

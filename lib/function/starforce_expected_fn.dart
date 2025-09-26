@@ -259,6 +259,28 @@ int applyMesoFormula({
 
 /// ====== 시뮬레이터 ======
 
+class PerStarStat {
+  final int star; // from = star (k -> k+1 시도)
+  int attempts = 0; // 총 시도 수
+  int success = 0; // 성공 횟수
+  int stay = 0; // 유지 횟수
+  int down = 0; // 하락 횟수
+  int destroy = 0; // 파괴 횟수
+  int mesoSpent = 0; // 이 성에서 쓴 총 메소
+
+  PerStarStat(this.star);
+
+  Map<String, dynamic> toJson() => {
+    "성": star,
+    "시도": attempts,
+    "성공": success,
+    "유지": stay,
+    "하락": down,
+    "파괴": destroy,
+    "메소": mesoSpent,
+  };
+}
+
 class SimResult {
   final int tries;
   final int totalMeso;
@@ -267,6 +289,10 @@ class SimResult {
   final int downCount;
   final int destroyCount;
 
+  // ▼ 추가: 성별 집계(옵션), 타임라인 로그(옵션)
+  final Map<int, PerStarStat>? perStar; // key = fromStar
+  final List<int>? starTimeline; // 각 시도 "전"의 fromStar 스냅샷
+
   const SimResult({
     required this.tries,
     required this.totalMeso,
@@ -274,11 +300,9 @@ class SimResult {
     required this.stayCount,
     required this.downCount,
     required this.destroyCount,
+    this.perStar,
+    this.starTimeline,
   });
-
-  @override
-  String toString() =>
-      'tries=$tries, meso=$totalMeso, S:$successCount / St:$stayCount / Dn:$downCount / X:$destroyCount';
 }
 
 class StarforceSimulator {
@@ -293,9 +317,12 @@ class StarforceSimulator {
     required int start,
     required int target,
     required EventConfig cfg,
-    int destroyRollbackTo = 12, // 파괴 시 롤백 규칙(예시)
+    int destroyRollbackTo = 12,
     Random? random,
-    bool safeguardAsFailDown = true, // 세이프가드: 파괴를 하락으로 간주
+    bool safeguardAsFailDown = true,
+
+    // 상세 집계/로그 수집 여부
+    bool collectDetail = true,
   }) async {
     final rng = random ?? Random();
     int cur = start;
@@ -304,48 +331,70 @@ class StarforceSimulator {
 
     int cS = 0, cSt = 0, cDn = 0, cX = 0;
 
+    // 성별 집계 & 타임라인
+    final Map<int, PerStarStat> perStar = {};
+    final List<int> timeline = [];
+
     while (cur < target) {
-      // 강화 전 비용 산정 (fromStar = 현재성)
+      if (collectDetail) timeline.add(cur);
+
+      // 1) 비용
       final base = mesoTable.baseCost(equipLevel, cur);
       final cost = applyMesoFormula(base: base, fromStar: cur, cfg: cfg);
       totalMeso += cost;
 
-      // 확률 적용
+      // 2) 확률
       final baseRates = probTable.rates(equipLevel, cur);
       final r = applyProbOptions(baseRates, cur, cfg);
 
+      // 3) 현재 성 집계 객체 (nullable)
+      PerStarStat? stat;
+      if (collectDetail) {
+        stat = perStar.putIfAbsent(cur, () => PerStarStat(cur));
+        stat.attempts += 1;
+        stat.mesoSpent += cost;
+      }
+
+      // 4) 롤
       final roll = rng.nextDouble();
       tries++;
 
       final pS = r.success;
       final pSt = r.failStay;
       final pDn = r.failDown;
-      // final pX = r.destroy;
 
       if (roll < pS) {
         cS++;
+        if (collectDetail) stat?.success += 1;
         cur += 1;
       } else if (roll < pS + pSt) {
         cSt++;
+        if (collectDetail) stat?.stay += 1;
         // stay
       } else if (roll < pS + pSt + pDn) {
         cDn++;
+        if (collectDetail) stat?.down += 1;
         cur -= 1;
         if (cur < 0) cur = 0;
       } else {
-        // destroy
-        cX++;
-        if (cfg.eventOn &&
+        // destroy or safeguard-as-down
+        final safeguardActive =
+            (cfg.eventOn &&
             cfg.safeguard &&
             cur >= 12 &&
             cur <= 16 &&
-            safeguardAsFailDown) {
-          // 세이프가드: 파괴를 "하락"으로 처리
+            safeguardAsFailDown);
+
+        if (safeguardActive) {
+          // 파괴를 하락으로 간주 (destroy 카운트 X)
           cDn++;
+          if (collectDetail) stat?.down += 1;
           cur -= 1;
           if (cur < 0) cur = 0;
         } else {
-          // 보편적 커뮤니티 규칙: 파괴 시 특정 성으로 롤백
+          // 실제 파괴
+          cX++;
+          if (collectDetail) stat?.destroy += 1;
           cur = destroyRollbackTo;
         }
       }
@@ -358,6 +407,8 @@ class StarforceSimulator {
       stayCount: cSt,
       downCount: cDn,
       destroyCount: cX,
+      perStar: collectDetail ? perStar : null,
+      starTimeline: collectDetail ? timeline : null,
     );
   }
 

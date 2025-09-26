@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mic/function/currentuser.dart';
 import 'package:mic/function/datas.dart';
 import 'package:mic/function/starforce_expected_fn.dart';
-import 'package:mic/widgets/starforcewidget/starforce_bar_chart.dart';
+// import 'package:mic/widgets/starforcewidget/starforce_bar_chart.dart';
 
 class StarExpectedTap extends StatefulWidget {
   const StarExpectedTap({super.key});
@@ -21,6 +21,7 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
   bool eventOn = false; // 이벤트 여부 체크
   bool reduceDestroy30 = false;
   bool starCatch = false;
+  List<PerStarStat> rows = [];
 
   int equips = equiplevel.first;
 
@@ -148,7 +149,7 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               starTable(),
-              StarforceBarChart(rows: rows),
+              // StarforceBarChart(rows: rows),
             ],
           ),
           SizedBox(height: 7.h),
@@ -640,7 +641,7 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
   //각 성마다 성공률&메소사용량
   Widget starTable() {
     return Container(
-      width: 160,
+      width: 314,
       padding: EdgeInsets.all(3), // border 두께
       decoration: BoxDecoration(
         color: Typicalcolor.subborder,
@@ -663,8 +664,8 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
           child: Table(
             columnWidths: const {
               0: FixedColumnWidth(40), // 성
-              1: FlexColumnWidth(1), // 성공률
-              2: FlexColumnWidth(1.3), // 기대 메소
+              1: FlexColumnWidth(0.5), // 성공률
+              2: FlexColumnWidth(2), // 기대 메소
             },
             border: TableBorder(
               horizontalInside: BorderSide(
@@ -717,20 +718,23 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
                     ),
                   ),
                   children: [
+                    // 성 정보 (예: 1→2)
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: 5.h),
                       child: Align(
                         alignment: Alignment.center,
-                        child: twoText(r[0], 10),
+                        child: twoText("${r.star}→${r.star + 1}", 10),
                       ),
                     ),
+                    // 시도 횟수
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: 5.h),
                       child: Align(
                         alignment: Alignment.center,
-                        child: twoText(r[1], 10),
+                        child: twoText("${r.attempts}", 10),
                       ),
                     ),
+                    // 총 메소 (오른쪽 정렬)
                     Padding(
                       padding: EdgeInsets.symmetric(
                         vertical: 5.h,
@@ -738,7 +742,7 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
                       ),
                       child: Align(
                         alignment: Alignment.centerRight,
-                        child: twoText(r[2].toString(), 10),
+                        child: twoText('${formatPower(r.mesoSpent)} 메소', 10),
                       ),
                     ),
                   ],
@@ -783,25 +787,40 @@ class _StarExpectedTapState extends State<StarExpectedTap> {
           start: _value.toInt(),
           target: target,
           cfg: cfg,
+          collectDetail: true,
         );
 
-        // final stats = await sim.simulateMany(
-        //   equipLevel: 250,
-        //   start: _value.toInt(),
-        //   target: target,
-        //   cfg: cfg,
-        //   runs: 3,
-        // );
+        List<PerStarStat> getOrderedPerStar(
+          SimResult r, {
+          required int start, // 보통 1
+          required int target, // 예: 22면 1~21
+        }) {
+          final map = r.perStar ?? const {};
+          final list = <PerStarStat>[];
+
+          for (int k = start; k < target; k++) {
+            // 방문하지 않은 성도 표에 보여주고 싶으면 빈 행 생성
+            final s = map[k] ?? PerStarStat(k);
+            list.add(s);
+          }
+          // 혹시 안전하게 정렬
+          list.sort((a, b) => a.star.compareTo(b.star));
+          return list;
+        }
+
+        final r = getOrderedPerStar(
+          once,
+          start: _value.toInt(),
+          target: target,
+        );
+
         setState(() {
           totalTry = once.tries;
           totalMeso = once.totalMeso;
           totalDestroy = (once.destroyCount / once.tries).toStringAsFixed(2);
 
           goalController.text = target.toString();
-
-          // totalTry = int.parse(stats['tries']['avg'].toString());
-          // totalMeso = int.parse(stats['meso']['avg'].toString());
-          // totalDestroy = stats['destroy']['avg'].toString();
+          rows = r;
         });
       },
       child: Container(
