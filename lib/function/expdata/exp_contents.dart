@@ -88,4 +88,4 @@ Map<String, int> usecoupon = {
   "초월 성장의 비약": 0,
 };
 
-Map<String, double> timecoupon = {"펀치킹": 0.0, "VIP 리조트": 0.0};
+Map<String, double> timecoupon = {"펀치킹": 0.0, "VIP 사우나": 0.0};

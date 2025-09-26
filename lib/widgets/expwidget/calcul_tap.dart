@@ -70,6 +70,23 @@ class _CalcultapState extends State<CalculTap> {
   int goalWeek = 0;
   int goalRemainExp = 0;
 
+  //사용 아이템
+  int expResult = 0;
+  double expcentResult = 0.0;
+
+  int highexpResult = 0;
+  double highexpcentResult = 0.0;
+
+  int limitResult = 0;
+  double limitcentResult = 0.0;
+
+  int transResult = 0;
+  double transcentResult = 0.0;
+
+  //기간 아이템
+  int saunaResult = 0;
+  double saunacentResult = 0.0;
+
   //목표레벨 검증 현재레벨+1 ~ 300까지
   void _validateGoal() {
     final minLevel = widget.b.characterlevel + 1;
@@ -511,14 +528,207 @@ class _CalcultapState extends State<CalculTap> {
         requiredExp += expToNext;
       }
     }
-
+    int weeks = 0;
     // 필요한 주차 계산 (올림)
-    int weeks = (requiredExp / weeklyExp).ceil();
+    if (weeklyExp == 0) {
+      weeks = 0;
+    } else {
+      weeks = (requiredExp / weeklyExp).ceil();
+    }
 
     return {
       "requiredExp": requiredExp, // 총 필요 경험치
       "weeks": weeks, // 총 필요 주차
     };
+  }
+
+  //사용아이템
+  Future<Map<String, Map<String, num>>> calcEachExpAndPotion({
+    required int level,
+    required Map<String, int>
+    usecoupon, // {"EXP":n,"상급 EXP":m,"극한 성장의 비약":a,"초월 성장의 비약":b}
+  }) async {
+    final expToNext = await _loadExpToNext(level);
+    if (expToNext <= 0) {
+      return {
+        "EXP 데이터": {"exp": 0, "percent": 0.0},
+        "상급 EXP 데이터": {"exp": 0, "percent": 0.0},
+        "극성비 데이터": {"exp": 0, "percent": 0.0},
+        "초성비 데이터": {"exp": 0, "percent": 0.0},
+      };
+    }
+
+    // 데이터 로드(한 번만)
+    final couponStr = await rootBundle.loadString(
+      'assets/datas/exp_coupon.json',
+    );
+    final Map<String, dynamic> couponTable = jsonDecode(couponStr);
+
+    final potionStr = await rootBundle.loadString(
+      'assets/datas/growth_potions.json',
+    );
+    final Map<String, dynamic> potionTable = jsonDecode(potionStr);
+
+    // -------------------- EXP 데이터 --------------------
+    final expCount = (usecoupon["EXP"] ?? 0);
+    final expUnit = _lookupCouponUnitExp(couponTable, "EXP", level);
+    final expGain = expUnit * expCount;
+    final expPct = (expGain / expToNext) * 100.0;
+
+    // -------------------- 상급 EXP 데이터 --------------------
+    final advCount = (usecoupon["상급 EXP"] ?? 0);
+    final advUnit = _lookupCouponUnitExp(couponTable, "상급 EXP", level);
+    final advGain = advUnit * advCount;
+    final advPct = (advGain / expToNext) * 100.0;
+
+    // -------------------- 극성비 데이터(극한 성장의 비약) --------------------
+    final extremeCount = (usecoupon["극한 성장의 비약"] ?? 0);
+    final extremeUnitPct = _lookupPotionUnitPercent(
+      potionTable,
+      "극한 성장의 비약",
+      level,
+    ); // 1개당 % 값
+    final extremePct = extremeUnitPct * extremeCount; // 합계 %
+    final extremeGain = ((extremePct / 100.0) * expToNext).floor();
+
+    // -------------------- 초성비 데이터(초월 성장의 비약) --------------------
+    final transcendCount = (usecoupon["초월 성장의 비약"] ?? 0);
+    final transcendUnitPct = _lookupPotionUnitPercent(
+      potionTable,
+      "초월 성장의 비약",
+      level,
+    );
+    final transcendPct = transcendUnitPct * transcendCount;
+    final transcendGain = ((transcendPct / 100.0) * expToNext).floor();
+
+    return {
+      "EXP 데이터": {"exp": expGain, "percent": expPct},
+      "상급 EXP 데이터": {"exp": advGain, "percent": advPct},
+      "극성비 데이터": {"exp": extremeGain, "percent": extremePct},
+      "초성비 데이터": {"exp": transcendGain, "percent": transcendPct},
+    };
+  }
+
+  Future<void> _loaduseitem() async {
+    final a = await calcEachExpAndPotion(
+      level: widget.b.characterlevel,
+      usecoupon: usecoupon,
+    );
+    setState(() {
+      expResult = a["EXP 데이터"]!["exp"]!.toInt();
+      expcentResult = double.parse(
+        a["EXP 데이터"]!["percent"]!.toStringAsFixed(2),
+      );
+
+      highexpResult = a["상급 EXP 데이터"]!["exp"]!.toInt();
+      highexpcentResult = double.parse(
+        a["상급 EXP 데이터"]!["percent"]!.toStringAsFixed(2),
+      );
+
+      limitResult = a["극성비 데이터"]!["exp"]!.toInt();
+      limitcentResult = double.parse(
+        a["극성비 데이터"]!["percent"]!.toStringAsFixed(2),
+      );
+
+      transResult = a["초성비 데이터"]!["exp"]!.toInt();
+      transcentResult = double.parse(
+        a["초성비 데이터"]!["percent"]!.toStringAsFixed(2),
+      );
+    });
+  }
+
+  /// 현재 레벨 필요 경험치
+  Future<int> _loadExpToNext(int level) async {
+    final expStr = await rootBundle.loadString(
+      'assets/datas/maplestory_exp.json',
+    );
+    final List<dynamic> expList = jsonDecode(expStr);
+    final match = expList.cast<Map<String, dynamic>>().firstWhere(
+      (e) => e['level'] == level,
+      orElse: () => const {'exp_to_next': null},
+    );
+    final v = match['exp_to_next'];
+    if (v is int) return v;
+    if (v is num) return v.toInt();
+    return 0;
+  }
+
+  /// 쿠폰(절대값) 1개당 EXP
+  int _lookupCouponUnitExp(
+    Map<String, dynamic> couponTable,
+    String key,
+    int level,
+  ) {
+    final dynamic byLevel = couponTable[key];
+    if (byLevel is Map<String, dynamic>) {
+      final raw = byLevel[level.toString()];
+      if (raw is int) return raw;
+      if (raw is num) return raw.toInt();
+    }
+    return 0;
+  }
+
+  /// 성장비약(퍼센트) 1개당 %
+  double _lookupPotionUnitPercent(
+    Map<String, dynamic> potionTable,
+    String key,
+    int level,
+  ) {
+    final dynamic byLevel = potionTable[key];
+    if (byLevel is Map<String, dynamic>) {
+      final raw = byLevel[level.toString()];
+      if (raw is num) return raw.toDouble();
+    }
+    return 0.0;
+  }
+
+  // 사우나
+  Future<Map<String, dynamic>> calcVipExp({
+    required int level,
+    required Map<String, double> timecoupon,
+  }) async {
+    final vipStr = await rootBundle.loadString('assets/datas/vip_system.json');
+    final expStr = await rootBundle.loadString(
+      'assets/datas/maplestory_exp.json',
+    );
+
+    final vipData = jsonDecode(vipStr) as Map<String, dynamic>;
+    final expData = (jsonDecode(expStr) as List).cast<Map<String, dynamic>>();
+
+    final levelData = expData.firstWhere((e) => e["level"] == level);
+    final expToNext = (levelData["exp_to_next"] as num).toInt();
+
+    final percent = (vipData["VIP 사우나"][level.toString()] as num).toDouble();
+    final baseExp = expToNext * (percent / 100.0);
+
+    // 결과 맵 (각 항목별 따로)
+    final results = <String, int>{};
+    double p = 0.0;
+    timecoupon.forEach((key, value) {
+      if (key == "VIP 사우나") {
+        results[key] = (baseExp * value).toInt(); // VIP는 계산됨
+        p = double.parse((percent * value).toStringAsFixed(3));
+      } else if (key == "펀치킹") {
+        results[key] = 0; // 퍼센트 데이터 없음 → 경험치 0 or 나중 처리
+      }
+    });
+
+    return {
+      "percent": p,
+      "exp": results, // 합계가 아니라 개별 Map 반환
+    };
+  }
+
+  Future<void> _loadPeriod() async {
+    final a = await calcVipExp(
+      level: widget.b.characterlevel,
+      timecoupon: timecoupon,
+    );
+
+    setState(() {
+      saunaResult = a["exp"]["VIP 사우나"];
+      saunacentResult = a["percent"];
+    });
   }
 
   @override
@@ -532,6 +742,8 @@ class _CalcultapState extends State<CalculTap> {
     _loadEpic();
     _loadsum();
     _loadWeek();
+    _loaduseitem();
+    _loadPeriod();
   }
 
   @override
@@ -1143,6 +1355,70 @@ class _CalcultapState extends State<CalculTap> {
                           expRows(
                             "에픽던전 경험치",
                             (istyped) ? formatPower(epicExp) : epiccentExp,
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    SizedBox(height: 2.h),
+
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 6.w,
+                        vertical: 4.h,
+                      ),
+                      width: double.infinity,
+                      height: 130.h,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Typicalcolor.title, // 왼쪽 밝은 파랑
+                            Typicalcolor.subtitle, // 오른쪽
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        border: Border.all(
+                          color: Color(0xFFfbe9c2),
+                          width: 3.w,
+                        ),
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
+                      child: Column(
+                        children: [
+                          twoText("쿠폰 경험치", 14),
+                          SizedBox(height: 2.h),
+                          expRows(
+                            "EXP 쿠폰",
+                            (istyped) ? formatPower(expResult) : expcentResult,
+                          ),
+
+                          expRows(
+                            "상급 EXP 쿠폰",
+                            (istyped)
+                                ? formatPower(highexpResult)
+                                : highexpcentResult,
+                          ),
+
+                          expRows(
+                            "극한 성장의 비약",
+                            (istyped)
+                                ? formatPower(limitResult)
+                                : limitcentResult,
+                          ),
+
+                          expRows(
+                            "초월 성장의 비약",
+                            (istyped)
+                                ? formatPower(transResult)
+                                : transcentResult,
+                          ),
+
+                          expRows(
+                            "VIP 사우나",
+                            (istyped)
+                                ? formatPower(saunaResult)
+                                : saunacentResult,
                           ),
                         ],
                       ),

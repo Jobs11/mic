@@ -250,7 +250,7 @@ class _CoupontapState extends State<CouponTap> {
                 maxLength: 5,
                 keyboardType: TextInputType.number, // 숫자 키패드
                 inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly, // 숫자만 허용
+                  FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')),
                 ],
                 textAlign: TextAlign.center, // 👈 중앙 정렬
                 style: TextStyle(
